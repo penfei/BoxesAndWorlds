@@ -83,6 +83,7 @@ package boxesandworlds.game.objects.player
 		}
 		
 		public function jump():void {
+			_view.showJump();
 			body.velocity.set(new Vec2(0, 0));
 			body.applyImpulse(new Vec2(0.0, _properties.jumpPower));
 			_properties.isJump = false;

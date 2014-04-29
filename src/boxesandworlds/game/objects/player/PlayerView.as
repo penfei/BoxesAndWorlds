@@ -19,7 +19,7 @@ package boxesandworlds.game.objects.player
 		private var _player:Player;
 		private var _uiStay:HeroStayUI;
 		private var _uiWalk:HeroWalkUI;
-		private var _uiJump:HeroWalkUI;
+		private var _uiJump:HeroJumpUI;
 		
 		public function PlayerView(game:Game, player:Player) 
 		{
@@ -31,6 +31,7 @@ package boxesandworlds.game.objects.player
 			_ui = new Sprite
 			_uiStay = new HeroStayUI;
 			_uiWalk = new HeroWalkUI;
+			_uiJump = new HeroJumpUI;
 			_ui.addChild(_uiStay);
 			addChild(_ui);
 		}
@@ -49,6 +50,7 @@ package boxesandworlds.game.objects.player
 				game.sound.walking();
 				visibleState(_uiWalk);
 				unVisibleState(_uiStay);
+				unVisibleState(_uiJump);
 			}
 			_ui.rotationY = -180;
 		}
@@ -58,6 +60,7 @@ package boxesandworlds.game.objects.player
 				game.sound.walking();
 				visibleState(_uiWalk);
 				unVisibleState(_uiStay);
+				unVisibleState(_uiJump);
 			}
 			_ui.rotationY = 0;
 		}
@@ -66,7 +69,14 @@ package boxesandworlds.game.objects.player
 			if (_player.playerData.isOnEarth) {
 				visibleState(_uiStay);
 				unVisibleState(_uiWalk);
+				unVisibleState(_uiJump);
 			}
+		}
+		
+		public function showJump():void {
+			unVisibleState(_uiWalk);
+			unVisibleState(_uiStay);
+			visibleState(_uiJump);
 		}
 		
 		public function rotateY(value:Number):void {

@@ -16,10 +16,10 @@ package boxesandworlds.game.objects.items
 			super(game);
 		}
 		
-		public function get nonView():ItemView {return _view;}
-		public function set nonView(value:ItemView):void {_view = value;}
-		public function get nonData():ItemData {return _properties;}
-		public function set nonData(value:ItemData):void {_properties = value;}
+		public function get itemView():ItemView {return _view;}
+		public function set itemView(value:ItemView):void {_view = value;}
+		public function get itemData():ItemData {return _properties;}
+		public function set itemData(value:ItemData):void {_properties = value;}
 		
 	}
 

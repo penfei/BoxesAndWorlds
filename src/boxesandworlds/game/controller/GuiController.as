@@ -48,14 +48,15 @@ package boxesandworlds.game.controller
 		
 		override public function step():void {
 			_showedView = game.objects.me.view;
-			TweenLite.to(container, 0.5, { x: -_showedView.x + stageWidth / 2, y: -_showedView.y + stageHeight * 0.7 } );
+			//container.x = -_showedView.x + stageWidth / 2;
+			//container.y = -_showedView.y + stageHeight * 0.7;
 			
 			if (game.data.isTest) {
 				_debug.clear();
 				_debug.draw(game.physics.world);
 				_debug.flush();
-				_debug.transform.tx = -_showedView.x + stageWidth / 2;
-				_debug.transform.ty = -_showedView.y + stageHeight * 0.7;
+				//_debug.transform.tx = -_showedView.x + stageWidth / 2;
+				//_debug.transform.ty = -_showedView.y + stageHeight * 0.7;
 			}
 			
 			_menu.step();
