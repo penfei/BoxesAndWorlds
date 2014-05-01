@@ -42,8 +42,8 @@ package boxesandworlds.game.controller
 		
 		override public function step():void 
 		{	
-			for (var i:int = 0; i < _world.bodies.length; i++) {
-				var body:Body = _world.bodies.at(i);
+			for (var i:int = 0; i < _world.liveBodies.length; i++) {
+				var body:Body = _world.liveBodies.at(i);
 				if (body.userData.obj) {
 					var graphic:* = body.userData.obj.view;
 					if (graphic) {

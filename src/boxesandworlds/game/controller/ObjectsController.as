@@ -1,7 +1,9 @@
 package boxesandworlds.game.controller 
 {
 	import boxesandworlds.game.controller.World;
+	import boxesandworlds.game.objects.GameObject;
 	import boxesandworlds.game.objects.player.Player;
+	import boxesandworlds.game.objects.worldstructrure.WorldStructure;
 	import nape.geom.Vec2;
 	import nape.phys.Body;
 	import nape.phys.BodyType;
@@ -14,6 +16,9 @@ package boxesandworlds.game.controller
 	{
 		private var _me:Player;
 		private var _worlds:Vector.<World>;
+		
+		[Embed(source = "../../../../assets/cog.png")]
+		private var Cog:Class;
 		
 		public function ObjectsController(game:Game) 
 		{
@@ -34,6 +39,9 @@ package boxesandworlds.game.controller
 			var floor:Body = new Body(BodyType.STATIC);
             floor.shapes.add(new Polygon(Polygon.rect(10, 600, 780, 10)));
             floor.space = game.physics.world;
+			
+			var structure:WorldStructure = new WorldStructure(game);
+			structure.init( { physicsBitmapData:(new Cog()).bitmapData,  start:new Vec2(150, 200) } );
 		}
 		
 		override public function destroy():void {

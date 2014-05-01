@@ -1,24 +1,24 @@
 package boxesandworlds.game.controller 
 {
-	import boxesandworlds.game.objects.items.Item;
+	import boxesandworlds.game.objects.GameObject;
 	/**
 	 * ...
 	 * @author Sah
 	 */
 	public class World extends Controller
 	{
-		private var _items:Vector.<Item> = new Vector.<Item>;
+		private var _objects:Vector.<GameObject> = new Vector.<GameObject>;
 		
 		public function World(game:Game) 
 		{
 			super(game);
 		}
 			
-		public function get items():Vector.<Item> { return _items; }
+		public function get objects():Vector.<GameObject> { return _objects; }
 		
 		override public function init():void 
 		{
-			_items = new Vector.<Item>;
+			_objects = new Vector.<GameObject>;
 		}
 		
 		override public function step():void 

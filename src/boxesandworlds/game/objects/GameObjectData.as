@@ -33,12 +33,10 @@ package boxesandworlds.game.objects
 		private var _elasticity:Number;
 		private var _offsetX:Number;
 		private var _offsetY:Number;
-		private var _sliceCount:uint;
 		private var _startLV:Vec2;
 		private var _isDestroyPhysic:Boolean;
 		private var _mass:Number;
 		private var _offsetPoint:Vec2;
-		private var _isSliced:Boolean;
 		
 		protected var game:Game;
 		
@@ -55,10 +53,6 @@ package boxesandworlds.game.objects
 			else _startAngle = 0;
 			if (params.startLV) _startLV = params.startLV;
 			else _startLV = new Vec2;
-			if (params.isSliced) _isSliced = params.startLV;
-			else _isSliced = false;
-			if (params.sliceCount) sliceCount = params.sliceCount;
-			else sliceCount = 0;
 			_offsetX = OFFSET_X;
 			_offsetY = OFFSET_Y;
 			_isDestroyPhysic = false;
@@ -95,8 +89,6 @@ package boxesandworlds.game.objects
 		public function set offsetX(value:Number):void{_offsetX = value;}
 		public function get offsetY():Number {return _offsetY;}
 		public function set offsetY(value:Number):void{_offsetY = value;}
-		public function get sliceCount():uint {return _sliceCount;}
-		public function set sliceCount(value:uint):void {_sliceCount = value;}
 		public function get startLV():Vec2 {return _startLV;}
 		public function set startLV(value:Vec2):void {_startLV = value;}
 		public function get isDestroyPhysic():Boolean {return _isDestroyPhysic;}
@@ -107,7 +99,6 @@ package boxesandworlds.game.objects
 		public function set staticFriction(value:Number):void {_staticFriction = value;}
 		public function get offsetPoint():Vec2 {return _offsetPoint;}
 		public function set offsetPoint(value:Vec2):void {_offsetPoint = value;}
-		public function get isSliced():Boolean {return _isSliced;}
 		
 	}
 

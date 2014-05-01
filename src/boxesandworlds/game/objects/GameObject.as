@@ -22,8 +22,7 @@ package boxesandworlds.game.objects
 		private var _view:GameObjectView;
 		private var _properties:GameObjectData;
 		private var _contactList:BodyList;
-		private var _rayPoint1:Vec2;
-		private var _rayPoint2:Vec2;
+		private var _rayPoint:Vec2;
 		private var _ray:Ray;
 		private var _result:RayResult;
 		
@@ -35,6 +34,7 @@ package boxesandworlds.game.objects
 		}
 		
 		public function get body():Body { return _body; }
+		public function set body(value:Body):void {_body = value;}
 		public function get x():Number { return _body.position.x; }
 		public function get y():Number {return _body.position.y;}
 		public function get view():GameObjectView {return _view;}
@@ -43,7 +43,10 @@ package boxesandworlds.game.objects
 		public function set data(value:GameObjectData):void {_properties = value;}
 		
 		public function init(params:Object = null):void {
+			initPhysics();
+			initView();
 			
+			_rayPoint = new Vec2;
 		}
 		
 		public function step():void {
@@ -123,11 +126,12 @@ package boxesandworlds.game.objects
 			_body.space = game.physics.world;
 			
 			_properties.mass = _body.mass;
-			_rayPoint1 = new Vec2;
-			_rayPoint2 = new Vec2;
 		}
 		
 		protected function initView():void {
+			if (_view == null) {
+				_view = new GameObjectView(game, this);
+			}
 			_view.init();
 			_view.x = _body.position.x;
 			_view.y = _body.position.y;
@@ -136,19 +140,19 @@ package boxesandworlds.game.objects
 		}
 		
 		public function isOnEarth():Boolean {
-			_rayPoint1.x = body.position.x;
-			_rayPoint1.y = body.position.y + _properties.height / 2 + _properties.offsetY;
-			_ray = Ray.fromSegment(body.position, _rayPoint1);
+			_rayPoint.x = body.position.x;
+			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
+			_ray = Ray.fromSegment(body.position, _rayPoint);
 			_result = game.physics.world.rayCast(_ray);
 			if (_result && !rayCastSettings(_result.shape.body.userData.obj)) return true;
-			_rayPoint1.x = body.position.x + _properties.width / 2 + _properties.offsetX;
-			_rayPoint1.y = body.position.y + _properties.height / 2 + _properties.offsetY;
-			_ray = Ray.fromSegment(body.position, _rayPoint1);
+			_rayPoint.x = body.position.x + _properties.width / 2 + _properties.offsetX;
+			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
+			_ray = Ray.fromSegment(body.position, _rayPoint);
 			_result = game.physics.world.rayCast(_ray);
 			if (_result && angleRightDown() != 1  && !rayCastSettings(_result.shape.body.userData.obj)) return true;
-			_rayPoint1.x = body.position.x - _properties.width / 2 - _properties.offsetX;
-			_rayPoint1.y = body.position.y + _properties.height / 2 + _properties.offsetY;
-			_ray = Ray.fromSegment(body.position, _rayPoint1);
+			_rayPoint.x = body.position.x - _properties.width / 2 - _properties.offsetX;
+			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
+			_ray = Ray.fromSegment(body.position, _rayPoint);
 			_result = game.physics.world.rayCast(_ray);
 			if (_result && angleLeftDown() != 1 && !rayCastSettings(_result.shape.body.userData.obj)) return true;
 			
@@ -156,129 +160,129 @@ package boxesandworlds.game.objects
 		}
 		
 		public function angleLeftDown():Number {
-			_rayPoint1.x = body.position.x - _properties.width / 2 - _properties.offsetX;
-			_rayPoint1.y = body.position.y + _properties.height / 2 + _properties.offsetY;
+			_rayPoint.x = body.position.x - _properties.width / 2 - _properties.offsetX;
+			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			
-			return getAngleRayCast(body.position, _rayPoint1);
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		public function angleLeft():Number {
-			_rayPoint1.x = body.position.x - _properties.width / 2 - _properties.offsetX;
-			_rayPoint1.y = body.position.y;
+			_rayPoint.x = body.position.x - _properties.width / 2 - _properties.offsetX;
+			_rayPoint.y = body.position.y;
 			
-			return getAngleRayCast(body.position, _rayPoint1);
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		public function angleLeftDownFixture():Number {
-			_rayPoint1.x = body.position.x - _properties.width / 2 - _properties.offsetX;
-			_rayPoint1.y = body.position.y + _properties.height / 2 + _properties.offsetY;
+			_rayPoint.x = body.position.x - _properties.width / 2 - _properties.offsetX;
+			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			
-			return getAngleRayCastFixture(body.position, _rayPoint1);
+			return getAngleRayCastFixture(body.position, _rayPoint);
 		}
 		
 		public function angleLeftUpFixture():Number {
-			_rayPoint1.x = body.position.x - _properties.width / 2 - _properties.offsetX;
-			_rayPoint1.y = body.position.y - _properties.height / 2 - _properties.offsetY;
+			_rayPoint.x = body.position.x - _properties.width / 2 - _properties.offsetX;
+			_rayPoint.y = body.position.y - _properties.height / 2 - _properties.offsetY;
 			
-			return getAngleRayCastFixture(body.position, _rayPoint1);
+			return getAngleRayCastFixture(body.position, _rayPoint);
 		}
 		
 		public function angleLeftFixture():Number {
-			_rayPoint1.x = body.position.x - _properties.width / 2 - _properties.offsetX;
-			_rayPoint1.y = body.position.y;
+			_rayPoint.x = body.position.x - _properties.width / 2 - _properties.offsetX;
+			_rayPoint.y = body.position.y;
 			
-			return getAngleRayCastFixture(body.position, _rayPoint1);
+			return getAngleRayCastFixture(body.position, _rayPoint);
 		}
 		
 		public function angleLeftJump():Number {
-			_rayPoint1.x = body.position.x - _properties.width / 2 - _properties.offsetX - 3;
-			_rayPoint1.y = body.position.y;
+			_rayPoint.x = body.position.x - _properties.width / 2 - _properties.offsetX - 3;
+			_rayPoint.y = body.position.y;
 			
-			return getAngleRayCast(body.position, _rayPoint1);
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		public function angleLeftDownJump():Number {
-			_rayPoint1.x = body.position.x - _properties.width / 2 - _properties.offsetX - 3;
-			_rayPoint1.y = body.position.y + _properties.height / 2 + _properties.offsetY + 3
+			_rayPoint.x = body.position.x - _properties.width / 2 - _properties.offsetX - 3;
+			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY + 3
 			
-			return getAngleRayCast(body.position, _rayPoint1);
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		public function angleLeftUpJump():Number {
-			_rayPoint1.x = body.position.x - _properties.width / 2 - _properties.offsetX - 3;
-			_rayPoint1.y = body.position.y - _properties.height / 2 - _properties.offsetY - 3;
+			_rayPoint.x = body.position.x - _properties.width / 2 - _properties.offsetX - 3;
+			_rayPoint.y = body.position.y - _properties.height / 2 - _properties.offsetY - 3;
 			
-			return getAngleRayCast(body.position, _rayPoint1);
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		public function angleRightDown():Number {
-			_rayPoint1.x = body.position.x + _properties.width / 2 + _properties.offsetX;
-			_rayPoint1.y = body.position.y + _properties.height / 2 + _properties.offsetY;
+			_rayPoint.x = body.position.x + _properties.width / 2 + _properties.offsetX;
+			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			
-			return getAngleRayCast(body.position, _rayPoint1);
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		public function angleRight():Number {
-			_rayPoint1.x = body.position.x + _properties.width / 2 + _properties.offsetX;
-			_rayPoint1.y = body.position.y;
+			_rayPoint.x = body.position.x + _properties.width / 2 + _properties.offsetX;
+			_rayPoint.y = body.position.y;
 			
-			return getAngleRayCast(body.position, _rayPoint1);
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		public function angleRightDownFixture():Number {
-			_rayPoint1.x = body.position.x + _properties.width / 2 + _properties.offsetX;
-			_rayPoint1.y = body.position.y + _properties.height / 2 + _properties.offsetY;
+			_rayPoint.x = body.position.x + _properties.width / 2 + _properties.offsetX;
+			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			
-			return getAngleRayCastFixture(body.position, _rayPoint1);
+			return getAngleRayCastFixture(body.position, _rayPoint);
 		}
 		
 		public function angleRightUpFixture():Number {
-			_rayPoint1.x = body.position.x + _properties.width / 2 + _properties.offsetX;
-			_rayPoint1.y = body.position.y - _properties.height / 2 - _properties.offsetY;
+			_rayPoint.x = body.position.x + _properties.width / 2 + _properties.offsetX;
+			_rayPoint.y = body.position.y - _properties.height / 2 - _properties.offsetY;
 			
-			return getAngleRayCastFixture(body.position, _rayPoint1);
+			return getAngleRayCastFixture(body.position, _rayPoint);
 		}
 		
 		public function angleRightFixture():Number {
-			_rayPoint1.x = body.position.x + _properties.width / 2 + _properties.offsetX;
-			_rayPoint1.y = body.position.y;
+			_rayPoint.x = body.position.x + _properties.width / 2 + _properties.offsetX;
+			_rayPoint.y = body.position.y;
 			
-			return getAngleRayCastFixture(body.position, _rayPoint1);
+			return getAngleRayCastFixture(body.position, _rayPoint);
 		}
 		
 		public function angleRightJump():Number {
-			_rayPoint1.x = body.position.x + _properties.width / 2 + _properties.offsetX + 3;
-			_rayPoint1.y = body.position.y;
+			_rayPoint.x = body.position.x + _properties.width / 2 + _properties.offsetX + 3;
+			_rayPoint.y = body.position.y;
 			
-			return getAngleRayCast(body.position, _rayPoint1);
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		public function angleRightDownJump():Number {
-			_rayPoint1.x = body.position.x + _properties.width / 2 + _properties.offsetX + 3;
-			_rayPoint1.y = body.position.y + _properties.height / 2 + _properties.offsetY + 3;
+			_rayPoint.x = body.position.x + _properties.width / 2 + _properties.offsetX + 3;
+			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY + 3;
 			
-			return getAngleRayCast(body.position, _rayPoint1);
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		public function angleRightUpJump():Number {
-			_rayPoint1.x = body.position.x + _properties.width / 2 + _properties.offsetX + 3;
-			_rayPoint1.y = body.position.y - _properties.height / 2 - _properties.offsetY - 3;
+			_rayPoint.x = body.position.x + _properties.width / 2 + _properties.offsetX + 3;
+			_rayPoint.y = body.position.y - _properties.height / 2 - _properties.offsetY - 3;
 			
-			return getAngleRayCast(body.position, _rayPoint1);
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		public function angleDown():Number {
-			_rayPoint1.x = body.position.x;
-			_rayPoint1.y = body.position.y + _properties.height / 2 + _properties.offsetY;
+			_rayPoint.x = body.position.x;
+			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			
-			return getAngleRayCast(body.position, _rayPoint1);
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		public function angleDownJump():Number {
-			_rayPoint1.x = body.position.x;
-			_rayPoint1.y = body.position.y + _properties.height / 2 + _properties.offsetY + 10;
+			_rayPoint.x = body.position.x;
+			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY + 10;
 			
-			return getAngleRayCast(body.position, _rayPoint1);
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		private function getAngleRayCast(original:Vec2, vector:Vec2):Number {

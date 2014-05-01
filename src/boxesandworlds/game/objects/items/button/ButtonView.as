@@ -1,13 +1,13 @@
 package boxesandworlds.game.objects.items.button 
 {
 	import boxesandworlds.game.controller.Game;
-	import boxesandworlds.game.objects.GameObjectView;
+	import boxesandworlds.game.objects.items.ItemView;
 	import flash.display.Sprite;
 	/**
 	 * ...
 	 * @author Sah
 	 */
-	public class ButtonView extends GameObjectView
+	public class ButtonView extends ItemView
 	{
 		private var _ui:Sprite;
 		private var _button:Button;

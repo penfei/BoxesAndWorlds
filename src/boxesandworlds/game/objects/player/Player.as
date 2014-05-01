@@ -30,8 +30,7 @@ package boxesandworlds.game.objects.player
 			
 			_view = new PlayerView(game, this);
 			view = _view;
-			initPhysics();
-			initView();
+			super.init();
 			
 			body.cbTypes.add(game.physics.meType);
 			body.cbTypes.add(game.physics.movableType);
@@ -83,7 +82,6 @@ package boxesandworlds.game.objects.player
 		}
 		
 		public function jump():void {
-			_view.showJump();
 			body.velocity.set(new Vec2(0, 0));
 			body.applyImpulse(new Vec2(0.0, _properties.jumpPower));
 			_properties.isJump = false;

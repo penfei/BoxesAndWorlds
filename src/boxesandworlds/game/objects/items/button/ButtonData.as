@@ -2,11 +2,12 @@ package boxesandworlds.game.objects.items.button
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.GameObjectData;
+	import boxesandworlds.game.objects.items.ItemData;
 	/**
 	 * ...
 	 * @author Sah
 	 */
-	public class ButtonData extends GameObjectData
+	public class ButtonData extends ItemData
 	{
 		
 		public function ButtonData(game:Game) 
