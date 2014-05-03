@@ -1,13 +1,9 @@
 package boxesandworlds.game.controller 
 {
-	import boxesandworlds.game.controller.World;
-	import boxesandworlds.game.objects.GameObject;
+	import boxesandworlds.game.world.World;
 	import boxesandworlds.game.objects.player.Player;
-	import boxesandworlds.game.objects.worldstructrure.WorldStructure;
+	import boxesandworlds.game.world.World;
 	import nape.geom.Vec2;
-	import nape.phys.Body;
-	import nape.phys.BodyType;
-	import nape.shape.Polygon;
 	/**
 	 * ...
 	 * @author ...
@@ -16,9 +12,6 @@ package boxesandworlds.game.controller
 	{
 		private var _me:Player;
 		private var _worlds:Vector.<World>;
-		
-		[Embed(source = "../../../../assets/cog.png")]
-		private var Cog:Class;
 		
 		public function ObjectsController(game:Game) 
 		{
@@ -32,16 +25,14 @@ package boxesandworlds.game.controller
 		{
 			_me = new Player(game);
 			//_me.init( { start:game.level.data.startHeroPostion } );
-			_me.init( { start:new Vec2(50, 200) } );
+			_me.init( { start:new Vec2(650, 200) } );
 			
 			_worlds = new Vector.<World>;
+			var world:World = new World(game);
+			world.init({axis:new Vec2(400, 400)});
+			_worlds.push(world);
 			
-			var floor:Body = new Body(BodyType.STATIC);
-            floor.shapes.add(new Polygon(Polygon.rect(10, 600, 780, 10)));
-            floor.space = game.physics.world;
-			
-			var structure:WorldStructure = new WorldStructure(game);
-			structure.init( { physicsBitmapData:(new Cog()).bitmapData,  start:new Vec2(150, 200) } );
+			world.addPlayerToWorld();
 		}
 		
 		override public function destroy():void {
@@ -64,6 +55,11 @@ package boxesandworlds.game.controller
 		public function resize():void 
 		{
 			
+		}
+		
+		public function rotateWorld():void 
+		{
+			_worlds[0].rotate(90);
 		}
 	}
 

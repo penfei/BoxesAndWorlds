@@ -2,6 +2,7 @@ package boxesandworlds.game.objects.worldstructrure
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.GameObject;
+	import nape.constraint.PivotJoint;
 	import nape.geom.GeomPoly;
 	import nape.geom.GeomPolyList;
 	import nape.geom.MarchingSquares;
@@ -60,9 +61,9 @@ package boxesandworlds.game.objects.worldstructrure
 			}
 			polys.clear();
 
-			var pivot:Vec2 = body.localCOM.mul(-1);
-			body.translateShapes(pivot);
-			body.userData.graphicOffset = pivot;
+			//var pivot:Vec2 = body.localCOM.mul(-1);
+			//body.translateShapes(pivot);
+			//body.userData.graphicOffset = pivot;
 			
 			body.space = game.physics.world;
 			_properties.mass = body.mass;

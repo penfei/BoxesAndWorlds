@@ -53,6 +53,14 @@ package boxesandworlds.game.objects
 			else _startAngle = 0;
 			if (params.startLV) _startLV = params.startLV;
 			else _startLV = new Vec2;
+			if (params.elasticity) _elasticity = params.elasticity;
+			else _elasticity = 0;
+			if (params.dynamicFriction) _dynamicFriction = params.dynamicFriction;
+			else _dynamicFriction = 1;
+			if (params.staticFriction) _staticFriction = params.staticFriction;
+			else _staticFriction = 2;
+			if (params.density) _density = params.density;
+			else _density = 1;
 			_offsetX = OFFSET_X;
 			_offsetY = OFFSET_Y;
 			_isDestroyPhysic = false;

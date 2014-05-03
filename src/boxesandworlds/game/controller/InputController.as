@@ -73,7 +73,8 @@ package boxesandworlds.game.controller
 		
 		private function keybordDownHandler(e:KeyboardEvent):void 
 		{
-			if(!game.data.isGameOver){
+			if (!game.data.isGameOver) {
+				if (e.keyCode == Keyboard.R) game.objects.rotateWorld();
 				if (e.keyCode == Keyboard.D || e.keyCode == Keyboard.RIGHT) game.objects.me.playerData.isMoveRight = true;
 				if (e.keyCode == Keyboard.A || e.keyCode == Keyboard.LEFT) game.objects.me.playerData.isMoveLeft = true;
 				if (e.keyCode == Keyboard.SPACE || e.keyCode == Keyboard.UP || e.keyCode == Keyboard.W) game.objects.me.playerData.isMoveUp = true;

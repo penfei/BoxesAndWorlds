@@ -12,7 +12,7 @@ package boxesandworlds.game.objects.items.button
 		
 		public function ButtonData(game:Game) 
 		{
-			super(game)
+			super(game);
 		}
 		
 		override public function init(params:Object):void 

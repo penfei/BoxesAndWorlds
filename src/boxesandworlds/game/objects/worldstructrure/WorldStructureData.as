@@ -35,6 +35,8 @@ package boxesandworlds.game.objects.worldstructrure
 			if (params.bodyType) bodyType = params.bodyType;
 			else bodyType = BodyType.STATIC;
 			container = game.gui.container;
+			width = _physicsBitmapData.width;
+			height = _physicsBitmapData.height;
 		}
 		
 		public function get physicsBitmapData():BitmapData {return _physicsBitmapData;}
