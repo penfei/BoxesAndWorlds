@@ -50,10 +50,7 @@ package boxesandworlds.game.objects.player
 			_properties.isOnEarth = isOnEarth();
 			
 			if (_properties.isMoveUp && _properties.isJump && canJump()) {
-				if (angleRightJump() > 0.8) jumpLeft()
-				else if (angleLeftJump() > 0.8) jumpRight();
-				else 
-					jump();
+				jump();
 			}
 			if (_properties.isMoveLeft && !_properties.isMoveRight) {
 				goLeft()
@@ -89,21 +86,13 @@ package boxesandworlds.game.objects.player
 		
 		public function canJump():Boolean {
 			if (_properties.isOnEarth) return true;
-			var list:BodyList = contacts;
-			for (var i:int = 0; i < list.length; i++) {
-				if(!(list.at(i).userData.obj is Player)) return true
-			}
-			if (_properties.isMoveLeft && (angleLeftJump() > 0.5 || angleLeftDownJump() > 0.5 || angleLeftUpJump() > 0.5))
-				return true
-			if (_properties.isMoveRight && (angleRightJump() > 0.5 || angleRightDownJump() > 0.5 || angleRightUpJump() > 0.5))
-				return true
 			return false;
 		}
 		
 		public function goLeft():void {
 			_view.showLeft();
 			if (isLeftNothing) {
-				var s:Number = -(_properties.speed - getVelocityCount(_properties.speed, angleLeftDown()));
+				var s:Number = -(_properties.speed - getVelocityCount(_properties.speed, angleLeftDownFixture()));
 				if (_properties.isOnEarth) {
 					body.velocity.x = s;
 				}
@@ -119,7 +108,7 @@ package boxesandworlds.game.objects.player
 		public function goRight():void {
 			_view.showRight();
 			if (isRightNothing) {
-				var s:Number = _properties.speed - getVelocityCount(_properties.speed, angleRightDown());
+				var s:Number = _properties.speed - getVelocityCount(_properties.speed, angleRightDownFixture());
 				if(_properties.isOnEarth)
 					body.velocity.x = s;
 				else {

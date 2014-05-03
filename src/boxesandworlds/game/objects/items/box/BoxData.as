@@ -31,7 +31,7 @@ package boxesandworlds.game.objects.items.box
 			elasticity = 0.4;
 			dynamicFriction = 1;
 			staticFriction = 2;
-			density = 1;
+			density = 10;
 		}
 	}
 

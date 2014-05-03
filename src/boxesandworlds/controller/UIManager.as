@@ -47,7 +47,7 @@ package boxesandworlds.controller {
 		 * инициализация canvas
 		 */
 		public function init():void {
-			_canvas.stage.addEventListener(Event.RESIZE, resize);
+			//_canvas.stage.addEventListener(Event.RESIZE, resize);
 			
 			_miniPreloader = new MiniPreloaderUI;
 			_canvas.parent.addChild(_miniPreloader);
