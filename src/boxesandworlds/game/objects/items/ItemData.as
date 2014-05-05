@@ -8,11 +8,21 @@ package boxesandworlds.game.objects.items
 	 */
 	public class ItemData extends GameObjectData
 	{
+		private var _canAdded:Boolean;
 		
 		public function ItemData(game:Game) 
 		{
 			super(game);
 		}
+		
+		override public function init(params:Object):void 
+		{
+			_canAdded = true;
+			super.init(params);
+		}
+		
+		public function get canAdded():Boolean {return _canAdded;}
+		public function set canAdded(value:Boolean):void {_canAdded = value;}
 		
 	}
 

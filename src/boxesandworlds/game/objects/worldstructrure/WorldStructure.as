@@ -44,7 +44,7 @@ package boxesandworlds.game.objects.worldstructrure
 		override protected function initPhysics():void {
 			var iso:BitmapDataIso = new BitmapDataIso(_properties.physicsBitmapData, 0x80);
 			
-			body = new Body(_properties.bodyType, _properties.startPosition);
+			body = new Body(_properties.bodyType, _properties.start);
 			
 			var polys:GeomPolyList = MarchingSquares.run(iso, iso.bounds, _properties.granularity, _properties.quality);
 			for (var i:int = 0; i < polys.length; i++) {

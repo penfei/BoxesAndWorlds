@@ -29,6 +29,7 @@ package boxesandworlds.game.controller
 		public function get menu():Menu {return _menu;}
 		public function get stageWidth():Number { return _canvas.stage.stageWidth }
 		public function get stageHeight():Number { return _canvas.stage.stageHeight}
+		public function get debug():Debug {return _debug;}
 		
 		override public function init():void 
 		{
@@ -54,6 +55,7 @@ package boxesandworlds.game.controller
 			if (game.data.isTest) {
 				_debug.clear();
 				_debug.draw(game.physics.world);
+				//_debug.drawAABB(game.objects.me.itemArea, 0xff00ff);
 				_debug.flush();
 				//_debug.transform.tx = -_showedView.x + stageWidth / 2;
 				//_debug.transform.ty = -_showedView.y + stageHeight * 0.7;
