@@ -2,6 +2,8 @@ package boxesandworlds.game.objects.player
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.GameObject;
+	import boxesandworlds.game.objects.items.Item;
+	import nape.geom.AABB;
 	import nape.geom.Vec2;
 	import nape.phys.BodyList;
 	/**
@@ -13,6 +15,9 @@ package boxesandworlds.game.objects.player
 		private var _view:PlayerView;
 		private var _properties:PlayerData;
 		
+		private var _item:Item;
+		private var _itemArea:AABB;
+		
 		public function Player(game:Game) 
 		{
 			super(game);
@@ -21,7 +26,11 @@ package boxesandworlds.game.objects.player
 		public function get playerData():PlayerData {return _properties;}
 		public function set playerData(value:PlayerData):void {_properties = value;}
 		public function get playerView():PlayerView {return _view;}
-		public function set playerView(value:PlayerView):void {_view = value;}
+		public function set playerView(value:PlayerView):void { _view = value; }
+		public function get item():Item { return _item; }
+		public function get itemArea():AABB {return _itemArea;}
+		
+		public function get hasItem():Boolean {return _item != null;}
 		
 		override public function init(params:Object = null):void {
 			data = new PlayerData(game);
@@ -37,6 +46,8 @@ package boxesandworlds.game.objects.player
 			body.cbTypes.add(game.physics.collisionType);
 			body.shapes.at(0).filter.collisionGroup = 0x0100;
 			body.allowRotation = false;
+			
+			_itemArea = new AABB();
 		}
 		
 		
@@ -50,10 +61,7 @@ package boxesandworlds.game.objects.player
 			_properties.isOnEarth = isOnEarth();
 			
 			if (_properties.isMoveUp && _properties.isJump && canJump()) {
-				if (angleRightJump() > 0.8) jumpLeft()
-				else if (angleLeftJump() > 0.8) jumpRight();
-				else 
-					jump();
+				jump();
 			}
 			if (_properties.isMoveLeft && !_properties.isMoveRight) {
 				goLeft()
@@ -64,7 +72,11 @@ package boxesandworlds.game.objects.player
 			if ((!_properties.isMoveLeft && !_properties.isMoveRight) || (_properties.isMoveLeft && _properties.isMoveRight))
 				stopMotion()
 			
-			if (!game.data.isGameOver) _view.step();
+			if (hasItem) {
+				_item.body.position.set(body.position);
+				_item.body.rotation = 0;
+			}
+			if (!game.data.isGameOver) _view.step();			
 		}
 		
 		private function jumpLeft():void 
@@ -89,21 +101,13 @@ package boxesandworlds.game.objects.player
 		
 		public function canJump():Boolean {
 			if (_properties.isOnEarth) return true;
-			var list:BodyList = contacts;
-			for (var i:int = 0; i < list.length; i++) {
-				if(!(list.at(i).userData.obj is Player)) return true
-			}
-			if (_properties.isMoveLeft && (angleLeftJump() > 0.5 || angleLeftDownJump() > 0.5 || angleLeftUpJump() > 0.5))
-				return true
-			if (_properties.isMoveRight && (angleRightJump() > 0.5 || angleRightDownJump() > 0.5 || angleRightUpJump() > 0.5))
-				return true
 			return false;
 		}
 		
 		public function goLeft():void {
 			_view.showLeft();
 			if (isLeftNothing) {
-				var s:Number = -(_properties.speed - getVelocityCount(_properties.speed, angleLeftDown()));
+				var s:Number = -(_properties.speed - getVelocityCount(_properties.speed, angleLeftDownFixture()));
 				if (_properties.isOnEarth) {
 					body.velocity.x = s;
 				}
@@ -119,7 +123,7 @@ package boxesandworlds.game.objects.player
 		public function goRight():void {
 			_view.showRight();
 			if (isRightNothing) {
-				var s:Number = _properties.speed - getVelocityCount(_properties.speed, angleRightDown());
+				var s:Number = _properties.speed - getVelocityCount(_properties.speed, angleRightDownFixture());
 				if(_properties.isOnEarth)
 					body.velocity.x = s;
 				else {
@@ -140,6 +144,72 @@ package boxesandworlds.game.objects.player
 		public function getVelocityCount(speed:Number, angle:Number):Number {
 			if (angle == 1) return angle * speed;
 			return angle * speed * 0.7;
+		}
+		
+		public function itemAction():void 
+		{
+			if (!hasItem) {
+				var bodyList:BodyList = getBodiesInItemArea();
+				var dis:Number = int.MAX_VALUE;
+				var pItem:Item;
+				for (var i:int = 0; i < bodyList.length; i++) {
+					var d:Number = Vec2.distance(body.position, bodyList.at(i).position);
+					if (bodyList.at(i).userData.obj is Item && (bodyList.at(i).userData.obj as Item).itemData.canAdded && d < dis) {
+						dis = d;
+						pItem = bodyList.at(i).userData.obj as Item;
+					}
+				}
+				addItem(pItem);
+			} else resetItem();
+		}
+		
+		public function enterTeleport():void 
+		{
+			var bodyList:BodyList = getBodiesInItemArea();
+			var dis:Number = int.MAX_VALUE;
+			var pTeleport:GameObject;
+			for (var i:int = 0; i < bodyList.length; i++) {
+				var d:Number = Vec2.distance(body.position, bodyList.at(i).position);
+				var teleport:GameObject = bodyList.at(i).userData.obj as GameObject;
+				if (teleport != null && teleport.data.canTeleport && teleport.target != null && teleport != _item && d < dis) {
+					dis = d;
+					pTeleport = teleport;
+				}
+			}
+			teleportTo(pTeleport);
+		}
+		
+		public function teleportTo(teleport:GameObject):void 
+		{
+			if (teleport != null && teleport != _item) {
+				if (_item == teleport.target) resetItem();
+				body.position.set(teleport.target.body.position);
+			}
+		}
+		
+		public function resetItem():void 
+		{
+			if (_item != null) {
+				_item.removeFromPlayer();
+				_item = null;
+			}
+		}
+		
+		private function addItem(pItem:Item):void 
+		{
+			if (pItem != null) {
+				_item = pItem;
+				_item.addToPlayer();
+			}
+		}
+		
+		private function getBodiesInItemArea():BodyList {
+			_itemArea.width = _properties.width + _properties.itemAreaIndentX * 2;
+			_itemArea.height = _properties.height + _properties.itemAreaIndentY * 2;
+			_itemArea.x = body.position.x - _properties.width / 2 - _properties.itemAreaIndentX;
+			_itemArea.y = body.position.y - _properties.height / 2 - _properties.itemAreaIndentY;
+			var bodyList:BodyList = game.physics.world.bodiesInAABB(_itemArea, false, true, null, bodyList);
+			return bodyList;
 		}
 	}
 

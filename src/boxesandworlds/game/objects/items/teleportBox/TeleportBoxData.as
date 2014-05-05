@@ -1,4 +1,4 @@
-package boxesandworlds.game.objects.items.box 
+package boxesandworlds.game.objects.items.teleportBox 
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.GameObjectData;
@@ -8,10 +8,9 @@ package boxesandworlds.game.objects.items.box
 	 * ...
 	 * @author Sah
 	 */
-	public class BoxData extends ItemData
-	{
-		
-		public function BoxData(game:Game) 
+	public class TeleportBoxData extends ItemData
+	{		
+		public function TeleportBoxData(game:Game) 
 		{
 			super(game);
 		}
@@ -29,6 +28,7 @@ package boxesandworlds.game.objects.items.box
 			dynamicFriction = 1;
 			staticFriction = 2;
 			density = 10;
+			canTeleport = true;
 			super.parse(params);
 		}
 	}

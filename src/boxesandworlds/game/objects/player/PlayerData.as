@@ -17,6 +17,8 @@ package boxesandworlds.game.objects.player
 		private var _isJump:Boolean;
 		private var _jumpPower:Number;
 		private var _isOnEarth:Boolean;
+		private var _itemAreaIndentX:Number;
+		private var _itemAreaIndentY:Number;
 		
 		public function PlayerData(game:Game) 
 		{
@@ -36,7 +38,7 @@ package boxesandworlds.game.objects.player
 			dynamicFriction = 0;
 			staticFriction = 0;
 			elasticity = 0.0;
-			offsetX = 5;
+			offsetX = 1;
 			offsetY = 5;
 			_speed = 300;
 			_jumpPower = -35000;
@@ -45,6 +47,9 @@ package boxesandworlds.game.objects.player
 			_isMoveUp = false;
 			_isJump = true;
 			_isOnEarth = false;
+			_itemAreaIndentX = 30;
+			_itemAreaIndentY = 30;
+			super.parse(params);
 		}
 		
 		public function get isMoveRight():Boolean {return _isMoveRight;}
@@ -63,12 +68,15 @@ package boxesandworlds.game.objects.player
 		public function set jumpPower(value:Number):void {_jumpPower = value;}
 		public function get isOnEarth():Boolean {return _isOnEarth;}
 		public function set isOnEarth(value:Boolean):void {_isOnEarth = value;}
+		public function get itemAreaIndentX():Number {return _itemAreaIndentX;}
+		public function set itemAreaIndentX(value:Number):void {_itemAreaIndentX = value;}
+		public function get itemAreaIndentY():Number {return _itemAreaIndentY;}
+		public function set itemAreaIndentY(value:Number):void { _itemAreaIndentY = value; }
 		
 		public function get anyButton():Boolean {
 			if (isMoveRight || isMoveLeft || isMoveUp || isMoveDown) return true;
 			else return false;
 		}
-		
 	}
 
 }

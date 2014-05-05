@@ -28,11 +28,15 @@ package boxesandworlds.game.controller
 			_me.init( { start:new Vec2(650, 200) } );
 			
 			_worlds = new Vector.<World>;
-			var world:World = new World(game);
-			world.init({axis:new Vec2(400, 400)});
-			_worlds.push(world);
+			var world1:World = new World(game);
+			world1.init({axis:new Vec2(400, 400)});
+			_worlds.push(world1);
 			
-			world.addPlayerToWorld();
+			world1.addPlayerToWorld();
+			
+			for each(var world:World in _worlds) {
+				world.createConnections();
+			}
 		}
 		
 		override public function destroy():void {

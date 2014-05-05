@@ -8,7 +8,6 @@ package boxesandworlds.controller {
 		private static var _instance:Core;
 		private var _ui:UIManager;
 		private var _data:DataManager;
-		private var _server:DataManager;
 		
 		public function Core() 
 		{

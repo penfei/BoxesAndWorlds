@@ -3,11 +3,10 @@ package boxesandworlds.game.world
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.GameObject;
 	import boxesandworlds.game.objects.items.box.Box;
+	import boxesandworlds.game.objects.items.teleportBox.TeleportBox;
 	import boxesandworlds.game.objects.player.Player;
 	import boxesandworlds.game.objects.worldstructrure.WorldStructure;
-	import boxesandworlds.game.utils.MathUtils;
 	import nape.geom.Vec2;
-	import nape.phys.BodyType;
 	/**
 	 * ...
 	 * @author Sah
@@ -42,10 +41,25 @@ package boxesandworlds.game.world
 			
 			_objects.push(_structure);
 			
-			for (var i:uint = 0; i < 5; i++) {
-				var box:Box = new Box(_game);
-				box.init( { start:new Vec2(100 + i * 50, 100) });
+			var teleports:Vector.<TeleportBox> = new Vector.<TeleportBox>();
+			for (var i:uint = 0; i < 2; i++) {
+				var box:TeleportBox = new TeleportBox(_game);
+				box.init( { start:new Vec2(100 + i * 50, 100), teleportId: 2 - i, id: 1 + i });
 				_objects.push(box);
+				teleports.push(box);
+			}
+			
+			for (i = 0; i < 3; i++) {
+				var box2:Box = new Box(_game);
+				box2.init( { start:new Vec2(300 + i * 50, 100) });
+				_objects.push(box2);
+			}
+		}
+		
+		public function createConnections():void 
+		{
+			for each(var obj:GameObject in _objects) {
+				obj.findTeleportTarget();
 			}
 		}
 		

@@ -16,6 +16,18 @@ package boxesandworlds.game.objects.items
 			super(game);
 		}
 		
+		public function addToPlayer():void 
+		{
+			body.shapes.at(0).filter.collisionMask = 0;
+			body.allowRotation = false;
+		}
+		
+		public function removeFromPlayer():void 
+		{
+			body.shapes.at(0).filter.collisionMask = -1;
+			body.allowRotation = true;
+		}
+		
 		public function get itemView():ItemView {return _view;}
 		public function set itemView(value:ItemView):void {_view = value;}
 		public function get itemData():ItemData {return _properties;}

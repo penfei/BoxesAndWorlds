@@ -19,7 +19,7 @@ package boxesandworlds.game.objects
 		
 		private var _bodyShapeType:String;
 		private var _bodyType:BodyType;
-		private var _startPosition:Vec2;
+		private var _start:Vec2;
 		private var _shapePoints:Array;
 		private var _width:Number;
 		private var _height:Number;
@@ -37,6 +37,8 @@ package boxesandworlds.game.objects
 		private var _isDestroyPhysic:Boolean;
 		private var _mass:Number;
 		private var _offsetPoint:Vec2;
+		private var _teleportId:uint;
+		private var _canTeleport:Boolean;
 		
 		protected var game:Game;
 		
@@ -47,32 +49,32 @@ package boxesandworlds.game.objects
 		
 		public function init(params:Object):void 
 		{
-			if (params.start) _startPosition = params.start;
-			else _startPosition = new Vec2();
-			if (params.angle) _startAngle = params.angle;
-			else _startAngle = 0;
-			if (params.startLV) _startLV = params.startLV;
-			else _startLV = new Vec2;
-			if (params.elasticity) _elasticity = params.elasticity;
-			else _elasticity = 0;
-			if (params.dynamicFriction) _dynamicFriction = params.dynamicFriction;
-			else _dynamicFriction = 1;
-			if (params.staticFriction) _staticFriction = params.staticFriction;
-			else _staticFriction = 2;
-			if (params.density) _density = params.density;
-			else _density = 1;
+			_canTeleport = false;
+			_start = new Vec2();
+			_startAngle = 0;
+			_startLV = new Vec2();
+			_elasticity = 0;
+			_dynamicFriction = 1;
+			_staticFriction = 2;
+			_density = 1;
 			_offsetX = OFFSET_X;
 			_offsetY = OFFSET_Y;
 			_isDestroyPhysic = false;
-			_offsetPoint = new Vec2;
+			_offsetPoint = new Vec2();
+		}
+		
+		protected function parse(params:Object):void {
+			for (var key:String in params) {
+				this[key] = params[key];
+			}
 		}
 		
 		public function get bodyShapeType():String {return _bodyShapeType;}
 		public function set bodyShapeType(value:String):void {_bodyShapeType = value;}
 		public function get bodyType():BodyType {return _bodyType;}
 		public function set bodyType(value:BodyType):void {_bodyType = value;}
-		public function get startPosition():Vec2 {return _startPosition;}
-		public function set startPosition(value:Vec2):void { _startPosition = value; }
+		public function get start():Vec2 {return _start;}
+		public function set start(value:Vec2):void { _start = value; }
 		public function get width():Number {return _width;}
 		public function get height():Number {return _height;}
 		public function set width(value:Number):void {_width = value;}
@@ -107,7 +109,10 @@ package boxesandworlds.game.objects
 		public function set staticFriction(value:Number):void {_staticFriction = value;}
 		public function get offsetPoint():Vec2 {return _offsetPoint;}
 		public function set offsetPoint(value:Vec2):void {_offsetPoint = value;}
-		
+		public function get teleportId():uint {return _teleportId;}
+		public function set teleportId(value:uint):void { _teleportId = value; }
+		public function get canTeleport():Boolean {return _canTeleport;}
+		public function set canTeleport(value:Boolean):void {_canTeleport = value;}
 	}
 
 }

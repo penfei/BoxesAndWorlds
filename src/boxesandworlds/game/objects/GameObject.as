@@ -1,6 +1,8 @@
 package boxesandworlds.game.objects 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.world.World;
+	import flash.display.Sprite;
 	import nape.dynamics.Arbiter;
 	import nape.geom.Ray;
 	import nape.geom.RayResult;
@@ -25,6 +27,7 @@ package boxesandworlds.game.objects
 		private var _rayPoint:Vec2;
 		private var _ray:Ray;
 		private var _result:RayResult;
+		private var _teleportTarget:GameObject;
 		
 		protected var game:Game;
 		
@@ -41,6 +44,8 @@ package boxesandworlds.game.objects
 		public function get data():GameObjectData {return _properties;}
 		public function set view(value:GameObjectView):void {_view = value;}
 		public function set data(value:GameObjectData):void {_properties = value;}
+		public function get target():GameObject {return _teleportTarget;}
+		public function set target(value:GameObject):void { _teleportTarget = value; }
 		
 		public function init(params:Object = null):void {
 			initPhysics();
@@ -102,11 +107,11 @@ package boxesandworlds.game.objects
 			   if(!_contactList.has(arb.body1)) _contactList.add(arb.body1);
 			   if(!_contactList.has(arb.body2)) _contactList.add(arb.body2);
 			});
-			return _contactList
+			return _contactList;
 		}
 		
 		protected function initPhysics():void {
-			_body = new Body(_properties.bodyType, _properties.startPosition);
+			_body = new Body(_properties.bodyType, _properties.start);
 			
 			_body.userData.obj = this;
 			_body.velocity.set(_properties.startLV);
@@ -139,22 +144,35 @@ package boxesandworlds.game.objects
 			_properties.container.addChild(_view);
 		}
 		
+		public function findTeleportTarget():void 
+		{
+			if (_properties.teleportId != 0) {
+				for each(var world:World in game.objects.worlds) {
+					for each(var obj:GameObject in world.objects) {
+						if (obj.data.id == _properties.teleportId) {
+							_teleportTarget = obj;
+						}
+					}
+				}
+			}
+		}
+		
 		public function isOnEarth():Boolean {
 			_rayPoint.x = body.position.x;
 			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			_ray = Ray.fromSegment(body.position, _rayPoint);
 			_result = game.physics.world.rayCast(_ray);
 			if (_result && !rayCastSettings(_result.shape.body.userData.obj)) return true;
-			_rayPoint.x = body.position.x + _properties.width / 2 + _properties.offsetX;
+			_rayPoint.x = body.position.x + _properties.width / 2 - _properties.offsetX;
 			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			_ray = Ray.fromSegment(body.position, _rayPoint);
 			_result = game.physics.world.rayCast(_ray);
-			if (_result && angleRightDown() != 1  && !rayCastSettings(_result.shape.body.userData.obj)) return true;
-			_rayPoint.x = body.position.x - _properties.width / 2 - _properties.offsetX;
+			if (_result && !rayCastSettings(_result.shape.body.userData.obj)) return true;
+			_rayPoint.x = body.position.x - _properties.width / 2 + _properties.offsetX;
 			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			_ray = Ray.fromSegment(body.position, _rayPoint);
 			_result = game.physics.world.rayCast(_ray);
-			if (_result && angleLeftDown() != 1 && !rayCastSettings(_result.shape.body.userData.obj)) return true;
+			if (_result && !rayCastSettings(_result.shape.body.userData.obj)) return true;
 			
 			return false;
 		}

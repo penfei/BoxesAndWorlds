@@ -1,5 +1,6 @@
 package boxesandworlds.game.controller 
 {
+	import flash.utils.getTimer;
 	import nape.callbacks.CbType;
 	import nape.geom.Vec2;
 	import nape.phys.Body;
@@ -17,6 +18,7 @@ package boxesandworlds.game.controller
 		private var _movableType:CbType;
 		private var _collisionType:CbType;
 		private var _buttonType:CbType;
+		private var _previosTime:int;
 		
 		public function PhysicsController(game:Game) 
 		{
@@ -42,6 +44,12 @@ package boxesandworlds.game.controller
 		
 		override public function step():void 
 		{	
+			var curTime:uint = getTimer();
+            var deltaTime:Number = (curTime - _previosTime);
+            if (deltaTime == 0) {
+                return;
+            }
+			
 			for (var i:int = 0; i < _world.liveBodies.length; i++) {
 				var body:Body = _world.liveBodies.at(i);
 				if (body.userData.obj) {
@@ -52,9 +60,22 @@ package boxesandworlds.game.controller
 						graphic.rotation = body.rotation * 180 / Math.PI;
 					}
 				}
-			}
-			
-			_world.step(1 / game.stage.frameRate);
+			}			
+
+            var stepSize:Number = (1000 / game.stage.frameRate);
+            stepSize = 1000/60;
+            var steps:uint = Math.round(deltaTime / stepSize);
+
+            var delta:Number = Math.round(deltaTime - (steps * stepSize));
+            _previosTime = (curTime - delta);
+            if (steps > 4) {
+                steps = 4;
+            }
+            deltaTime = steps * stepSize;
+
+            while (steps-- > 0) {
+                _world.step(stepSize * 0.001);
+            }
 		}
 		
 		override public function destroy():void 
