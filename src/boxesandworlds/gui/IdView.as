@@ -29,6 +29,7 @@ package boxesandworlds.gui {
 		}
 		
 		public function hideAnimation(sec:Number = DEFAULT_ANIMATION_TIME):void {
+			
 		}
 		
 		public function showAnimation(sec:Number = DEFAULT_ANIMATION_TIME):void {

@@ -27,10 +27,11 @@ package boxesandworlds.gui.page {
 		override public function setup():void {
 			_ui = new MainPageUI();
 			
-			_ui.btnGame.buttonMode = _ui.btnVolume.buttonMode = _ui.btnMusic.buttonMode = true;
+			_ui.btnGame.buttonMode = _ui.btnVolume.buttonMode = _ui.btnMusic.buttonMode = _ui.btnEditor.buttonMode = true;
 			_ui.btnGame.addEventListener(MouseEvent.CLICK, gameClickHandler);
 			_ui.btnVolume.addEventListener(MouseEvent.CLICK, btnVolumeClickHandler);
 			_ui.btnMusic.addEventListener(MouseEvent.CLICK, btnMusicClickHandler);
+			_ui.btnEditor.addEventListener(MouseEvent.CLICK, btnEditorClickHandler);
 			
 			_volsSounds = new Vector.<VolumePlace>;
 			_volsMusic = new Vector.<VolumePlace>;
@@ -39,8 +40,8 @@ package boxesandworlds.gui.page {
 				var place:VolumePlace = new VolumePlace(i + 1);
 				var placeMusic:VolumePlace = new VolumePlace(i + 1);
 				place.x = placeMusic.x = 600 + 20 * i;
-				place.y = 340;
-				placeMusic.y = 400;
+				place.y = 390;
+				placeMusic.y = 450;
 				place.addEventListener(VolumePlace.VOLUME_CLICK, volumeSoundClickHandler);
 				placeMusic.addEventListener(VolumePlace.VOLUME_CLICK, volumeMusicClickHandler);
 				_ui.addChild(place);
@@ -71,6 +72,10 @@ package boxesandworlds.gui.page {
 			else Core.data.volumeSound = 1;
 			updateVolume();
 			updateButton();
+		}
+		
+		private function btnEditorClickHandler(e:MouseEvent):void {
+			Core.ui.showPage(UIManager.EDITOR_PAGE_ID);
 		}
 		
 		private function updateButton():void 

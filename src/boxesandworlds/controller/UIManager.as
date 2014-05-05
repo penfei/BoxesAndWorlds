@@ -21,6 +21,7 @@ package boxesandworlds.controller {
 		static public const MAIN_PAGE_ID:uint = 101;
 		static public const GAME_PAGE_ID:uint = 102;
 		static public const SETTINGS_PAGE_ID:uint = 103;
+		static public const EDITOR_PAGE_ID:uint = 104;
 		
 		private var _currentPage:Page = null;
 		private var _previosPage:Page = null;
@@ -47,7 +48,7 @@ package boxesandworlds.controller {
 		 * инициализация canvas
 		 */
 		public function init():void {
-			_canvas.stage.addEventListener(Event.RESIZE, resize);
+			//_canvas.stage.addEventListener(Event.RESIZE, resize);
 			
 			_miniPreloader = new MiniPreloaderUI;
 			_canvas.parent.addChild(_miniPreloader);
@@ -128,7 +129,9 @@ package boxesandworlds.controller {
 				case SETTINGS_PAGE_ID:
 					return new SettingsPage();
 				case GAME_PAGE_ID:
-					return new GamePage(_nextPageParams)
+					return new GamePage(_nextPageParams);
+				case EDITOR_PAGE_ID:
+					return new EditorPage();
 				default: 
 					return null;
 			}
