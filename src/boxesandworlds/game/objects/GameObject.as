@@ -28,6 +28,7 @@ package boxesandworlds.game.objects
 		private var _ray:Ray;
 		private var _result:RayResult;
 		private var _teleportTarget:GameObject;
+		private var _world:World;
 		
 		protected var game:Game;
 		
@@ -46,6 +47,8 @@ package boxesandworlds.game.objects
 		public function set data(value:GameObjectData):void {_properties = value;}
 		public function get target():GameObject {return _teleportTarget;}
 		public function set target(value:GameObject):void { _teleportTarget = value; }
+		public function get world():World {return _world;}
+		public function set world(value:World):void {_world = value;}
 		
 		public function init(params:Object = null):void {
 			initPhysics();

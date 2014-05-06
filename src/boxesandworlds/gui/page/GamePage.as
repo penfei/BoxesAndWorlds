@@ -42,15 +42,6 @@ package boxesandworlds.gui.page {
 			}
 		}
 		
-		//public
-		override public function hideAnimation(sec:Number = DEFAULT_ANIMATION_TIME):void {
-			doHideAnimationComplete();
-		}
-
-		override public function showAnimation(sec:Number = DEFAULT_ANIMATION_TIME):void {
-			doShowAnimationComplete();
-		}
-		
 		public function newGame():void {			
 			setupGame();
 		}
