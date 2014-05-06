@@ -26,7 +26,7 @@ package
 			if (stage) {
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 				stage.align = StageAlign.TOP_LEFT;
-				stage.addEventListener(MouseEvent.RIGHT_CLICK, rightMouseDownHandler);
+				//stage.addEventListener(MouseEvent.RIGHT_CLICK, rightMouseDownHandler);
 				
 				init(stage.loaderInfo.parameters);
 			}
@@ -36,7 +36,7 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			//SWFProfiler.init(stage, this);
+			SWFProfiler.init(stage, this);
 			
 			initCore(params)
 		}

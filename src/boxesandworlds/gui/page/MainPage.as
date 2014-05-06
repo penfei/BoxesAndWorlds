@@ -127,17 +127,6 @@ package boxesandworlds.gui.page {
 			Core.ui.showPage(UIManager.GAME_PAGE_ID);
 		}
 		
-		//public
-		override public function hideAnimation(sec:Number = DEFAULT_ANIMATION_TIME):void {
-			super.hideAnimation()
-			doHideAnimation(_ui, sec);
-		}
-
-		override public function showAnimation(sec:Number = DEFAULT_ANIMATION_TIME):void {
-			super.showAnimation()
-			doShowAnimation(_ui, sec);
-		}
-		
 		override public function resize():void {
 			_ui.x = (stage.stageWidth - 1200) / 2;
 			if (_ui.x < -270) _ui.x = -270;

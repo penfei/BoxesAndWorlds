@@ -74,23 +74,8 @@ package boxesandworlds.game.objects.player
 			
 			if (hasItem) {
 				_item.body.position.set(body.position);
-				_item.body.rotation = 0;
 			}
 			if (!game.data.isGameOver) _view.step();			
-		}
-		
-		private function jumpLeft():void 
-		{
-			body.velocity.set(new Vec2(0, 0));
-			body.applyImpulse(new Vec2(_properties.jumpPower, _properties.jumpPower));
-			_properties.isJump = false;
-		}
-		
-		private function jumpRight():void 
-		{
-			body.velocity.set(new Vec2(0, 0));
-			body.applyImpulse(new Vec2(-_properties.jumpPower, _properties.jumpPower));
-			_properties.isJump = false;
 		}
 		
 		public function jump():void {
@@ -105,6 +90,7 @@ package boxesandworlds.game.objects.player
 		}
 		
 		public function goLeft():void {
+			_properties.isRight = false;
 			_view.showLeft();
 			if (isLeftNothing) {
 				var s:Number = -(_properties.speed - getVelocityCount(_properties.speed, angleLeftDownFixture()));
@@ -121,6 +107,7 @@ package boxesandworlds.game.objects.player
 		}
 		
 		public function goRight():void {
+			_properties.isRight = true;
 			_view.showRight();
 			if (isRightNothing) {
 				var s:Number = _properties.speed - getVelocityCount(_properties.speed, angleRightDownFixture());
@@ -184,12 +171,23 @@ package boxesandworlds.game.objects.player
 			if (teleport != null && teleport != _item) {
 				if (_item == teleport.target) resetItem();
 				body.position.set(teleport.target.body.position);
+				world.removeGameObject(this);
+				teleport.target.world.addGameObject(this);
+				if (hasItem) {
+					_item.world.removeGameObject(_item);
+					teleport.target.world.addGameObject(_item);
+				}
 			}
 		}
 		
 		public function resetItem():void 
 		{
 			if (_item != null) {
+				var pos:Vec2 = new Vec2(body.position.x - (_properties.width + _item.itemData.width + 10) / 2, body.position.y);
+				if (_properties.isRight) {
+					pos.x = body.position.x + (_properties.width + _item.itemData.width + 10) / 2
+				}
+				_item.body.position.set(pos);
 				_item.removeFromPlayer();
 				_item = null;
 			}

@@ -36,7 +36,6 @@ package boxesandworlds.game.objects
 		private var _startLV:Vec2;
 		private var _isDestroyPhysic:Boolean;
 		private var _mass:Number;
-		private var _offsetPoint:Vec2;
 		private var _teleportId:uint;
 		private var _canTeleport:Boolean;
 		
@@ -60,7 +59,6 @@ package boxesandworlds.game.objects
 			_offsetX = OFFSET_X;
 			_offsetY = OFFSET_Y;
 			_isDestroyPhysic = false;
-			_offsetPoint = new Vec2();
 		}
 		
 		protected function parse(params:Object):void {
@@ -107,8 +105,6 @@ package boxesandworlds.game.objects
 		public function set mass(value:Number):void {_mass = value;}
 		public function get staticFriction():Number {return _staticFriction;}
 		public function set staticFriction(value:Number):void {_staticFriction = value;}
-		public function get offsetPoint():Vec2 {return _offsetPoint;}
-		public function set offsetPoint(value:Vec2):void {_offsetPoint = value;}
 		public function get teleportId():uint {return _teleportId;}
 		public function set teleportId(value:uint):void { _teleportId = value; }
 		public function get canTeleport():Boolean {return _canTeleport;}

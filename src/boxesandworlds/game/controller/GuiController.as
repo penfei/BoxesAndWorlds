@@ -1,10 +1,12 @@
 package boxesandworlds.game.controller 
 {
 	import boxesandworlds.game.gui.Menu;
+	import boxesandworlds.game.world.WorldData;
 	import boxesandworlds.gui.View;
 	import com.greensock.TweenLite;
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
+	import nape.geom.Vec2;
 	import nape.util.BitmapDebug;
 	import nape.util.Debug;
 	/**
@@ -16,7 +18,6 @@ package boxesandworlds.game.controller
 		private var _debug:Debug;
 		private var _canvas:View;
 		private var _mainContainer:Sprite;
-		private var _showedView:View;
 		private var _menu:Menu;
 		
 		public function GuiController(game:Game) 
@@ -48,17 +49,17 @@ package boxesandworlds.game.controller
 		}
 		
 		override public function step():void {
-			_showedView = game.objects.me.view;
-			//container.x = -_showedView.x + stageWidth / 2;
-			//container.y = -_showedView.y + stageHeight * 0.7;
+			var data:WorldData = game.objects.me.world.data;
+			container.x = -data.axis.x + data.width / 2;
+			container.y = -data.axis.y + data.height / 2;
 			
 			if (game.data.isTest) {
 				_debug.clear();
 				_debug.draw(game.physics.world);
 				//_debug.drawAABB(game.objects.me.itemArea, 0xff00ff);
 				_debug.flush();
-				//_debug.transform.tx = -_showedView.x + stageWidth / 2;
-				//_debug.transform.ty = -_showedView.y + stageHeight * 0.7;
+				_debug.transform.tx = container.x;
+				_debug.transform.ty = container.y;
 			}
 			
 			_menu.step();

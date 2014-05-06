@@ -24,10 +24,12 @@ package boxesandworlds.gui.page {
 		
 		override public function hideAnimation(sec:Number = DEFAULT_ANIMATION_TIME):void {
 			super.hideAnimation(sec);
+			doHideAnimationComplete();
 		}
 		
 		override public function showAnimation(sec:Number = DEFAULT_ANIMATION_TIME):void {
 			super.showAnimation(sec);
+			doShowAnimationComplete();
 		}
 		
 		//protected
