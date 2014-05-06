@@ -2,6 +2,7 @@ package boxesandworlds.game.objects.items
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.GameObject;
+	import nape.geom.Vec2;
 	/**
 	 * ...
 	 * @author Sah
@@ -20,10 +21,12 @@ package boxesandworlds.game.objects.items
 		{
 			body.shapes.at(0).filter.collisionMask = 0;
 			body.allowRotation = false;
+			body.angularVel = 0;
 		}
 		
 		public function removeFromPlayer():void 
 		{
+			body.velocity = Vec2.weak();
 			body.shapes.at(0).filter.collisionMask = -1;
 			body.allowRotation = true;
 		}

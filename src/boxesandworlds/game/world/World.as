@@ -31,16 +31,18 @@ package boxesandworlds.game.world
 			_objects = new Vector.<GameObject>;
 		}
 		
-		public function createConnections():void 
+		public function postInit():void 
 		{
 			for each(var obj:GameObject in _objects) {
-				obj.findTeleportTarget();
+				obj.postInit();
 			}
 		}
 		
 		public function step():void 
 		{
-			
+			for each(var obj:GameObject in _objects) {
+				obj.step();
+			}
 		}
 		
 		public function destroy():void 
@@ -70,7 +72,7 @@ package boxesandworlds.game.world
 		
 		public function rotate(angle:Number):void 
 		{
-			var a:Number = 2 * Math.PI * (angle / 360);
+			var a:Number = angle - _data.rotation;
 			for each(var obj:GameObject in _objects) {
 				if(obj.body.isStatic()) obj.body.space = null;
 				obj.body.rotate(_data.axis, a);
@@ -79,6 +81,7 @@ package boxesandworlds.game.world
 				}
 				if(obj.body.isStatic()) obj.body.space = _game.physics.world;
 			}
+			_data.rotation = angle;
 		}
 		
 		

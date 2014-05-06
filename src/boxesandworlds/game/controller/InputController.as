@@ -74,7 +74,6 @@ package boxesandworlds.game.controller
 		private function keybordDownHandler(e:KeyboardEvent):void 
 		{
 			if (!game.data.isGameOver) {
-				if (e.keyCode == Keyboard.R) game.objects.rotateWorld();
 				if (e.keyCode == Keyboard.E) game.objects.me.itemAction();
 				if (e.keyCode == Keyboard.S || e.keyCode == Keyboard.DOWN) game.objects.me.enterTeleport();
 				if (e.keyCode == Keyboard.D || e.keyCode == Keyboard.RIGHT) game.objects.me.playerData.isMoveRight = true;

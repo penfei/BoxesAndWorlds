@@ -19,6 +19,7 @@ package boxesandworlds.game.objects.player
 		private var _isOnEarth:Boolean;
 		private var _itemAreaIndentX:Number;
 		private var _itemAreaIndentY:Number;
+		private var _isRight:Boolean;
 		
 		public function PlayerData(game:Game) 
 		{
@@ -49,6 +50,7 @@ package boxesandworlds.game.objects.player
 			_isOnEarth = false;
 			_itemAreaIndentX = 30;
 			_itemAreaIndentY = 30;
+			_isRight = true;
 			super.parse(params);
 		}
 		
@@ -77,6 +79,8 @@ package boxesandworlds.game.objects.player
 			if (isMoveRight || isMoveLeft || isMoveUp || isMoveDown) return true;
 			else return false;
 		}
+		public function get isRight():Boolean {return _isRight;}
+		public function set isRight(value:Boolean):void {_isRight = value;}
 	}
 
 }

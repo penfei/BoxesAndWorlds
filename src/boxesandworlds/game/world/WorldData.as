@@ -9,9 +9,11 @@ package boxesandworlds.game.world
 	public class WorldData 
 	{
 		private var _game:Game;
+		private var _id:uint;
 		private var _width:int;
 		private var _height:int;
 		private var _axis:Vec2;
+		private var _rotation:Number;
 		
 		public function WorldData(game:Game) 
 		{
@@ -19,6 +21,8 @@ package boxesandworlds.game.world
 		}
 		
 		public function init(params:Object):void {
+			_id = params.id;
+			_rotation = 0;
 			if (params.width) _width = params.width;
 			else _width = 800;
 			if (params.height) _height = params.height;
@@ -30,6 +34,9 @@ package boxesandworlds.game.world
 		public function get width():int {return _width;}
 		public function get height():int {return _height;}
 		public function get axis():Vec2 {return _axis;}
+		public function get id():uint {return _id;}
+		public function get rotation():Number {return _rotation;}
+		public function set rotation(value:Number):void {_rotation = value;}
 		
 	}
 

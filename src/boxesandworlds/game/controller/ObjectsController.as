@@ -2,6 +2,7 @@ package boxesandworlds.game.controller
 {
 	import boxesandworlds.game.objects.items.box.Box;
 	import boxesandworlds.game.objects.items.teleportBox.TeleportBox;
+	import boxesandworlds.game.objects.items.worldBox.WorldBox;
 	import boxesandworlds.game.objects.worldstructrure.WorldStructure;
 	import boxesandworlds.game.world.World;
 	import boxesandworlds.game.objects.player.Player;
@@ -33,15 +34,15 @@ package boxesandworlds.game.controller
 		{
 			_me = new Player(game);
 			//_me.init( { start:game.level.data.startHeroPostion } );
-			_me.init( { start:new Vec2(650, 200) } );
+			_me.init( { start:new Vec2(450, 200) } );
 			
 			_worlds = new Vector.<World>;
 			var world1:World = new World(game);
-			world1.init({axis:new Vec2(400, 400)});
+			world1.init({id:1, axis:new Vec2(400, 400)});
 			_worlds.push(world1);
 			
 			var world2:World = new World(game);
-			world2.init({axis:new Vec2(1300, 400)});
+			world2.init({id:2, axis:new Vec2(1400, 400)});
 			_worlds.push(world2);
 			
 			var structure:WorldStructure = new WorldStructure(game);
@@ -57,20 +58,26 @@ package boxesandworlds.game.controller
 			world1.addGameObject(box);
 			
 			box = new TeleportBox(game);
-			box.init( { start:new Vec2(1100, 100), teleportId: 1, id: 2 } );
+			box.init( { start:new Vec2(1200, 100), teleportId: 1, id: 2 } );
 			world2.addGameObject(box);
+			
+			var worldBox:WorldBox = new WorldBox(game);
+			worldBox.init( { start:new Vec2(600, 100), childWorldId: 2 } );
+			world1.addGameObject(worldBox);
 			
 			for (var i:uint = 0; i < 3; i++) {
 				var box2:Box = new Box(game);
-				box2.init( { start:new Vec2(300 + i * 50, 100) });
+				box2.init( { start:new Vec2(300+ i * 50, 100 ) });
 				world1.addGameObject(box2);
 			}
 			
 			world1.addGameObject(_me);
 			
 			for each(var world:World in _worlds) {
-				world.createConnections();
+				world.postInit();
 			}
+			
+			//world1.rotate(90);
 		}
 		
 		override public function destroy():void {
@@ -93,11 +100,6 @@ package boxesandworlds.game.controller
 		public function resize():void 
 		{
 			
-		}
-		
-		public function rotateWorld():void 
-		{
-			_me.world.rotate(90);
 		}
 	}
 
