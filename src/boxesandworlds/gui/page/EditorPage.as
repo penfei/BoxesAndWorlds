@@ -20,14 +20,6 @@ package boxesandworlds.gui.page {
 		}
 		
 		// public
-		override public function hideAnimation(sec:Number = DEFAULT_ANIMATION_TIME):void {
-			doHideAnimation(_ui, sec);
-		}
-
-		override public function showAnimation(sec:Number = DEFAULT_ANIMATION_TIME):void {
-			doShowAnimation(_ui, sec);
-		}
-
 		override public function setup():void {
 			_ui = new EditorPageUI;
 			addChild(_ui);
