@@ -32,6 +32,7 @@ package boxesandworlds.game.objects.items.teleportBox
 			super.init();
 			
 			body.cbTypes.add(game.physics.collisionType);
+			//body.shapes.at(0).filter.collisionMask = ~0x0100;
 		}
 	}
 

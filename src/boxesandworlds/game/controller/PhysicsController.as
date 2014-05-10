@@ -1,12 +1,14 @@
 package boxesandworlds.game.controller 
 {
 	import flash.utils.getTimer;
+	import nape.callbacks.CbEvent;
 	import nape.callbacks.CbType;
+	import nape.callbacks.InteractionCallback;
+	import nape.callbacks.InteractionListener;
+	import nape.callbacks.InteractionType;
 	import nape.geom.Vec2;
 	import nape.phys.Body;
 	import nape.space.Space;
-	import nape.util.BitmapDebug;
-	import nape.util.Debug;
 	/**
 	 * ...
 	 * @author Sah
@@ -29,7 +31,7 @@ package boxesandworlds.game.controller
 		public function get movableType():CbType {return _movableType;}
 		public function get collisionType():CbType {return _collisionType;}
 		public function get meType():CbType {return _meType;}
-		public function get buttonType():CbType {return _buttonType;}
+		public function get buttonType():CbType { return _buttonType; }
 		
 		override public function init():void 
 		{			
@@ -50,8 +52,8 @@ package boxesandworlds.game.controller
                 return;
             }
 			
-			for (var i:int = 0; i < _world.liveBodies.length; i++) {
-				var body:Body = _world.liveBodies.at(i);
+			for (var i:int = 0; i < _world.bodies.length; i++) {
+				var body:Body = _world.bodies.at(i);
 				if (body.userData.obj) {
 					var graphic:* = body.userData.obj.view;
 					if (graphic) {
@@ -82,7 +84,6 @@ package boxesandworlds.game.controller
 		{
 			_world.clear();
 		}
-		
 	}
 
 }

@@ -94,13 +94,23 @@ package boxesandworlds.game.objects
 			}
 		}
 		
-		public function get isRightNothing():Boolean {
+		public function get isRightNothingFixture():Boolean {
 			if (angleRightFixture() == 1 || angleRightUpFixture() == 1 || angleRightDownFixture() == 1) return false;
 			return true;
 		}
 		
-		public function get isLeftNothing():Boolean {
+		public function get isLeftNothingFixture():Boolean {
 			if (angleLeftFixture() == 1 || angleLeftUpFixture() == 1 || angleLeftDownFixture() == 1) return false;
+			return true;
+		}
+		
+		public function get isRightNothing():Boolean {
+			if (angleRight() == 1 || angleRightUp() == 1 || angleRightDown() == 1) return false;
+			return true;
+		}
+		
+		public function get isLeftNothing():Boolean {
+			if (angleLeft() == 1 || angleLeftUp() == 1 || angleLeftDown() == 1) return false;
 			return true;
 		}
 		
@@ -166,18 +176,18 @@ package boxesandworlds.game.objects
 			_ray = Ray.fromSegment(body.position, _rayPoint);
 			_result = game.physics.world.rayCast(_ray);
 			if (_result) {
-				if(!rayCastSettings(_result.shape.body.userData.obj)) return true;
+				if(!rayCastSettings(_result.shape)) return true;
 			}
 			_rayPoint.x = body.position.x + _properties.width / 2 - _properties.offsetX;
 			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			_ray = Ray.fromSegment(body.position, _rayPoint);
 			_result = game.physics.world.rayCast(_ray);
-			if (_result != null && !rayCastSettings(_result.shape.body.userData.obj) && angleRightDown() != 1) return true;
+			if (_result != null && !rayCastSettings(_result.shape) && angleRightDown() != 1) return true;
 			_rayPoint.x = body.position.x - _properties.width / 2 + _properties.offsetX;
 			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			_ray = Ray.fromSegment(body.position, _rayPoint);
 			_result = game.physics.world.rayCast(_ray);
-			if (_result != null && !rayCastSettings(_result.shape.body.userData.obj) && angleLeftDown() != 1) return true;
+			if (_result != null && !rayCastSettings(_result.shape) && angleLeftDown() != 1) return true;
 			return false;
 		}
 		
@@ -207,6 +217,13 @@ package boxesandworlds.game.objects
 			_rayPoint.y = body.position.y - _properties.height / 2 - _properties.offsetY;
 			
 			return getAngleRayCastFixture(body.position, _rayPoint);
+		}
+		
+		public function angleLeftUp():Number {
+			_rayPoint.x = body.position.x - _properties.width / 2 - _properties.offsetX;
+			_rayPoint.y = body.position.y - _properties.height / 2 - _properties.offsetY;
+			
+			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
 		public function angleLeftFixture():Number {
@@ -265,6 +282,13 @@ package boxesandworlds.game.objects
 			return getAngleRayCastFixture(body.position, _rayPoint);
 		}
 		
+		public function angleRightUp():Number {
+			_rayPoint.x = body.position.x + _properties.width / 2 + _properties.offsetX;
+			_rayPoint.y = body.position.y - _properties.height / 2 - _properties.offsetY;
+			
+			return getAngleRayCast(body.position, _rayPoint);
+		}
+		
 		public function angleRightFixture():Number {
 			_rayPoint.x = body.position.x + _properties.width / 2 + _properties.offsetX;
 			_rayPoint.y = body.position.y;
@@ -307,13 +331,22 @@ package boxesandworlds.game.objects
 			return getAngleRayCast(body.position, _rayPoint);
 		}
 		
+		public function findTarget():GameObject { 
+			if (_properties.canTeleport) return _teleportTarget;
+			return null;
+		}
+		
+		public function getTeleportTargetPosition(params:Object = null):Vec2 { 
+			return _body.position;
+		}
+		
 		private function getAngleRayCast(original:Vec2, vector:Vec2):Number {
 			var angle:Number = 0;
 			_ray = Ray.fromSegment(original, vector);
 			_result = game.physics.world.rayCast(_ray);
 			if (_result) {
 				angle = Math.abs(_result.normal.x * (90 / ANGLE));
-				if (rayCastSettings(_result.shape.body.userData.obj))
+				if (rayCastSettings(_result.shape))
 					return 0
 			}
 			if (angle > 1) angle = 1;
@@ -327,14 +360,16 @@ package boxesandworlds.game.objects
 			if (_result) {
 				angle = Math.abs(_result.normal.x * (90 / ANGLE));
 				if (_result.shape.body.isDynamic()) return 0;
-				if (rayCastSettings(_result.shape.body.userData.obj))
+				if (rayCastSettings(_result.shape))
 					return 0
 			}
 			if (angle > 1) angle = 1;
 			return angle;
 		}
 		
-		protected function rayCastSettings(obj:GameObject):Boolean {
+		protected function rayCastSettings(shape:Shape):Boolean {
+			if (!((shape.filter.collisionGroup & _body.shapes.at(0).filter.collisionMask) && (_body.shapes.at(0).filter.collisionGroup & shape.filter.collisionMask))) return true;
+			if (shape.sensorEnabled) return true;
 			return false
 		}
 	}
