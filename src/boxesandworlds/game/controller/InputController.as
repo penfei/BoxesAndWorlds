@@ -75,6 +75,7 @@ package boxesandworlds.game.controller
 		{
 			if (!game.data.isGameOver) {
 				if (e.keyCode == Keyboard.E) game.objects.me.itemAction();
+				if (e.keyCode == Keyboard.Q) game.objects.me.itemRotate();
 				if (e.keyCode == Keyboard.S || e.keyCode == Keyboard.DOWN) game.objects.me.enterTeleport();
 				if (e.keyCode == Keyboard.D || e.keyCode == Keyboard.RIGHT) game.objects.me.playerData.isMoveRight = true;
 				if (e.keyCode == Keyboard.A || e.keyCode == Keyboard.LEFT) game.objects.me.playerData.isMoveLeft = true;

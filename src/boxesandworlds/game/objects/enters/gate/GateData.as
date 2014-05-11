@@ -1,18 +1,16 @@
-package boxesandworlds.game.objects.items.worldBox 
+package boxesandworlds.game.objects.enters.gate 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.objects.enters.EnterData;
 	import boxesandworlds.game.objects.GameObjectData;
-	import boxesandworlds.game.objects.items.ItemData;
 	import nape.phys.BodyType;
 	/**
 	 * ...
 	 * @author Sah
 	 */
-	public class WorldBoxData extends ItemData
-	{
-		private var _childWorldId:uint;
-		
-		public function WorldBoxData(game:Game) 
+	public class GateData extends EnterData
+	{			
+		public function GateData(game:Game) 
 		{
 			super(game);
 		}
@@ -20,8 +18,8 @@ package boxesandworlds.game.objects.items.worldBox
 		override public function init(params:Object):void 
 		{
 			super.init(params);
-			type = "WorldBox";
-			bodyType = BodyType.DYNAMIC;
+			type = "Gate";
+			bodyType = BodyType.STATIC;
 			width = 40;
 			height = 40;
 			container = game.gui.container;
@@ -33,9 +31,6 @@ package boxesandworlds.game.objects.items.worldBox
 			canTeleport = true;
 			super.parse(params);
 		}
-		
-		public function get childWorldId():uint {return _childWorldId;}
-		public function set childWorldId(value:uint):void {_childWorldId = value;}
 	}
 
 }

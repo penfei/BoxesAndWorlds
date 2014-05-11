@@ -19,7 +19,7 @@ package boxesandworlds.game.objects.items.teleportBox
 		override public function init():void {
 			_ui = new Sprite();
 			_ui.graphics.beginFill(0xFF0000);
-			_ui.graphics.drawRect(-obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height); 
+			_ui.graphics.drawRect( -obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height);
 			addChild(_ui);
 		}
 	}

@@ -1,11 +1,12 @@
 package boxesandworlds.game.controller 
 {
+	import boxesandworlds.game.objects.enters.EnterData;
+	import boxesandworlds.game.objects.enters.gate.Gate;
 	import boxesandworlds.game.objects.items.box.Box;
 	import boxesandworlds.game.objects.items.teleportBox.TeleportBox;
 	import boxesandworlds.game.objects.items.worldBox.WorldBox;
-	import boxesandworlds.game.objects.worldstructrure.WorldStructure;
-	import boxesandworlds.game.world.World;
 	import boxesandworlds.game.objects.player.Player;
+	import boxesandworlds.game.objects.worldstructrure.WorldStructure;
 	import boxesandworlds.game.world.World;
 	import nape.geom.Vec2;
 	/**
@@ -64,12 +65,24 @@ package boxesandworlds.game.controller
 			var worldBox:WorldBox = new WorldBox(game);
 			worldBox.init( { start:new Vec2(600, 100), childWorldId: 2 } );
 			world1.addGameObject(worldBox);
+			//gate после worldbox
+			var gate:Gate = new Gate(game);
+			gate.init( { start:new Vec2(1030, 635), width:60, height:150} );
+			world2.addGameObject(gate);
+			
+			gate = new Gate(game);
+			gate.init( { start:new Vec2(1335, 27), width:220, height:55, edge:EnterData.TOP} );
+			world2.addGameObject(gate);
 			
 			for (var i:uint = 0; i < 3; i++) {
 				var box2:Box = new Box(game);
 				box2.init( { start:new Vec2(300+ i * 50, 100 ) });
 				world1.addGameObject(box2);
 			}
+			
+			box2 = new Box(game);
+			box2.init( { start:new Vec2(600, 50)});
+			world1.addGameObject(box2);
 			
 			world1.addGameObject(_me);
 			

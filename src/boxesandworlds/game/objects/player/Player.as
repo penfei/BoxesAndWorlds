@@ -1,6 +1,8 @@
 package boxesandworlds.game.objects.player 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.objects.enters.Enter;
+	import boxesandworlds.game.objects.enters.gate.Gate;
 	import boxesandworlds.game.objects.GameObject;
 	import boxesandworlds.game.objects.items.Item;
 	import nape.geom.AABB;
@@ -60,22 +62,36 @@ package boxesandworlds.game.objects.player
 			super.step();
 			_properties.isOnEarth = isOnEarth();
 			
-			if (_properties.isMoveUp && _properties.isJump && canJump()) {
-				jump();
-			}
-			if (_properties.isMoveLeft && !_properties.isMoveRight) {
-				goLeft()
-			}
-			if (_properties.isMoveRight && !_properties.isMoveLeft) {
-				goRight();
-			}
-			if ((!_properties.isMoveLeft && !_properties.isMoveRight) || (_properties.isMoveLeft && _properties.isMoveRight))
-				stopMotion()
+			if (_properties.isMoveUp && _properties.isJump && canJump()) jump();
+			if (_properties.isMoveLeft && !_properties.isMoveRight) goLeft();
+			if (_properties.isMoveRight && !_properties.isMoveLeft) goRight();
+			if ((!_properties.isMoveLeft && !_properties.isMoveRight) || (_properties.isMoveLeft && _properties.isMoveRight)) stopMotion();
 			
 			if (hasItem) {
 				_item.body.position.set(body.position);
 			}
+			
+			if (!world.worldBody.contains(body.position)) {
+				teleportWithEnter();
+			}
+			
 			if (!game.data.isGameOver) _view.step();			
+		}
+		
+		private function teleportWithEnter():void 
+		{
+			var enter:Enter;
+			var dis:Number = int.MAX_VALUE;
+			for each(var obj:GameObject in world.objects) {
+				if (obj is Enter && (obj as Enter).enterData.canTeleport && Vec2.distance(body.position, obj.body.position) < dis) {
+					dis = Vec2.distance(body.position, obj.body.position);
+					enter = obj as Enter;
+				}
+			}
+			if (world.worldBox != null && enter != null) {
+				var params:Object = { teleported: this, from:enter };
+				teleportTo(enter.findTarget(), params);
+			} else trace("я вывалился, а куда не знаю");
 		}
 		
 		public function jump():void {
@@ -92,16 +108,12 @@ package boxesandworlds.game.objects.player
 		public function goLeft():void {
 			_properties.isRight = false;
 			_view.showLeft();
-			if (isLeftNothing) {
+			if (isLeftNothingFixture) {
 				var s:Number = -(_properties.speed - getVelocityCount(_properties.speed, angleLeftDownFixture()));
-				if (_properties.isOnEarth) {
-					body.velocity.x = s;
-				}
-				else {
+				if (_properties.isOnEarth) body.velocity.x = s;
+				else if(isLeftNothing){
 					body.velocity.x -= _properties.speed / 5;
-					if (body.velocity.x < s) {
-						body.velocity.x = s;
-					}
+					if (body.velocity.x < s) body.velocity.x = s;
 				}
 			}
 		}
@@ -109,15 +121,12 @@ package boxesandworlds.game.objects.player
 		public function goRight():void {
 			_properties.isRight = true;
 			_view.showRight();
-			if (isRightNothing) {
+			if (isRightNothingFixture) {
 				var s:Number = _properties.speed - getVelocityCount(_properties.speed, angleRightDownFixture());
-				if(_properties.isOnEarth)
-					body.velocity.x = s;
-				else {
+				if(_properties.isOnEarth) body.velocity.x = s;
+				else if(isRightNothing){
 					body.velocity.x += _properties.speed / 5;
-					if (body.velocity.x > s) {
-						body.velocity.x = s;
-					}
+					if (body.velocity.x > s) body.velocity.x = s;
 				}
 			}
 		}
@@ -150,6 +159,13 @@ package boxesandworlds.game.objects.player
 			} else resetItem();
 		}
 		
+		public function itemRotate():void 
+		{
+			if (hasItem) {
+				_item.body.rotate(_item.body.position, 1.5708);
+			}
+		}
+		
 		public function enterTeleport():void 
 		{
 			var bodyList:BodyList = getBodiesInItemArea();
@@ -158,24 +174,27 @@ package boxesandworlds.game.objects.player
 			for (var i:int = 0; i < bodyList.length; i++) {
 				var d:Number = Vec2.distance(body.position, bodyList.at(i).position);
 				var teleport:GameObject = bodyList.at(i).userData.obj as GameObject;
-				if (teleport != null && teleport.data.canTeleport && teleport.target != null && teleport != _item && d < dis) {
-					dis = d;
-					pTeleport = teleport;
+				if(teleport != null){
+					var t:GameObject = teleport.findTarget();
+					if (t != null && teleport != _item && d < dis) {
+						dis = d;
+						pTeleport = t;
+					}
 				}
 			}
 			teleportTo(pTeleport);
 		}
 		
-		public function teleportTo(teleport:GameObject):void 
+		public function teleportTo(teleportTarget:GameObject, params:Object = null):void 
 		{
-			if (teleport != null && teleport != _item) {
-				if (_item == teleport.target) resetItem();
-				body.position.set(teleport.target.body.position);
+			if (teleportTarget != null) {
+				if (_item == teleportTarget) resetItem();
+				body.position.set(teleportTarget.getTeleportTargetPosition(params));
 				world.removeGameObject(this);
-				teleport.target.world.addGameObject(this);
+				teleportTarget.world.addGameObject(this);
 				if (hasItem) {
 					_item.world.removeGameObject(_item);
-					teleport.target.world.addGameObject(_item);
+					teleportTarget.world.addGameObject(_item);
 				}
 			}
 		}
