@@ -2,7 +2,7 @@ package boxesandworlds.editor.items {
 	import editor.EditorItem001UI;
 	/**
 	 * ...
-	 * @author xiii
+	 * @author Jarkony
 	 */
 	public class EditorItem001 extends EditorItem {
 		

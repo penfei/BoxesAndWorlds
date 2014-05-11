@@ -5,7 +5,7 @@ package boxesandworlds.editor {
 	import flash.events.MouseEvent;
 	/**
 	 * ...
-	 * @author xiii
+	 * @author Jarkony
 	 */
 	public class EditorPopup extends Sprite{
 		

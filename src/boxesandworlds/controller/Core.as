@@ -1,4 +1,5 @@
 package boxesandworlds.controller {
+	import flash.display.Stage;
 	/**
 	 * ...
 	 * @author Sah
@@ -8,6 +9,7 @@ package boxesandworlds.controller {
 		private static var _instance:Core;
 		private var _ui:UIManager;
 		private var _data:DataManager;
+		private var _stage:Stage;
 		
 		public function Core() 
 		{
@@ -36,6 +38,16 @@ package boxesandworlds.controller {
 
 		public static function set ui(value:UIManager):void {
 			instance._ui = value;
+		}
+		
+		public function get stage():Stage 
+		{
+			return _stage;
+		}
+		
+		public function set stage(value:Stage):void 
+		{
+			_stage = value;
 		}
 		
 		public static function init():void {

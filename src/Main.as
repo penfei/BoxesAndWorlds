@@ -16,7 +16,7 @@ package
 	 * ...
 	 * @author Sah
 	 */
-	[SWF(width = "1200", height = "800", frameRate = "30")]
+	[SWF(width = "1200", height = "700", frameRate = "30")]
 	public class Main extends Sprite 
 	{
 		private var _canvas:View;
@@ -36,7 +36,7 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			SWFProfiler.init(stage, this);
+			//SWFProfiler.init(stage, this);
 			
 			initCore(params)
 		}
@@ -47,6 +47,7 @@ package
 			
 			Core.data = new DataManager(params);
 			Core.ui = new UIManager(_canvas);
+			Core.instance.stage = stage;
 			Core.data.addEventListener(Event.COMPLETE, initCompleteHandler);
 			Core.init();
 		}

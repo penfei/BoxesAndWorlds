@@ -1,6 +1,7 @@
 package boxesandworlds.gui.page {
 	import boxesandworlds.controller.Core;
 	import boxesandworlds.controller.UIManager;
+	import boxesandworlds.editor.EditorAreaItems;
 	import boxesandworlds.editor.EditorPopup;
 	import com.greensock.easing.Expo;
 	import com.greensock.easing.Linear;
@@ -8,12 +9,16 @@ package boxesandworlds.gui.page {
 	import editor.EditorPageUI;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	
+	/**
+	 * ...
+	 * @author Jarkony
+	 */
 	public class EditorPage extends Page {
 		
 		// ui
 		private var _ui:EditorPageUI;
 		private var _popup:EditorPopup;
+		private var _areaItems:EditorAreaItems;
 		
 		public function EditorPage() {
 			super(UIManager.EDITOR_PAGE_ID);
@@ -35,10 +40,20 @@ package boxesandworlds.gui.page {
 			_popup.addEventListener(EditorPopup.EDITOR_EXIT, popupExitHandler);
 			
 			_ui.btnSave.buttonMode = _ui.btnClear.buttonMode = _ui.btnExit.buttonMode = true;
-			
 			_ui.btnSave.addEventListener(MouseEvent.CLICK, btnSaveClickHandler);
 			_ui.btnClear.addEventListener(MouseEvent.CLICK, btnClearClickHandler);
 			_ui.btnExit.addEventListener(MouseEvent.CLICK, btnExitClickHandler);
+			
+			_areaItems = new EditorAreaItems();
+			_ui.areaItems.addChild(_areaItems);
+			
+			setupTempPositions();
+		}
+		
+		protected function setupTempPositions():void {
+			var step:int = 100;
+			_ui.btnSave.y = _ui.btnExit.y = _ui.btnClear.y = _ui.btnClear.y - step;
+			_ui.bgButtons.y -= step;
 		}
 		
 		protected function showPopup():void {
@@ -84,10 +99,8 @@ package boxesandworlds.gui.page {
 		}
 		
 		private function popupExitHandler(e:Event):void {
-			hidePopup();
 			Core.ui.showPage(UIManager.MAIN_PAGE_ID);
 		}
 		
 	}
-
 }
