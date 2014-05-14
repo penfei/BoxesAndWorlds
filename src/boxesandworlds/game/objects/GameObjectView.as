@@ -21,6 +21,16 @@ package boxesandworlds.game.objects
 			
 		}
 		
+		public function step():void 
+		{
+			
+		}
+		
+		public function showHintTeleport():void 
+		{
+			
+		}
+		
 	}
 
 }

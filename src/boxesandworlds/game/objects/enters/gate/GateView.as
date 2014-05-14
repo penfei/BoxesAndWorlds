@@ -10,17 +10,25 @@ package boxesandworlds.game.objects.enters.gate
 	public class GateView extends EnterView
 	{
 		private var _ui:Sprite;
+		private var _gate:Gate;
 		
 		public function GateView(game:Game, gate:Gate) 
 		{
 			super(game, gate);
+			_gate = gate;
 		}
 		
 		override public function init():void {
 			_ui = new Sprite();
 			_ui.graphics.beginFill(0x330066);
-			_ui.graphics.drawRect(-obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height); 
+			_ui.graphics.drawRect( -obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height);
+			_ui.alpha = 0.5;
 			addChild(_ui);
+		}
+		
+		override public function step():void 
+		{
+			_ui.alpha = _gate.enterData.isOpen ? 0.5 : 1;
 		}
 	}
 

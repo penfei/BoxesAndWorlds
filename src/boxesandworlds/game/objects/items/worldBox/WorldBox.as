@@ -8,10 +8,14 @@ package boxesandworlds.game.objects.items.worldBox
 	import boxesandworlds.game.objects.items.Item;
 	import boxesandworlds.game.objects.items.ItemData;
 	import boxesandworlds.game.world.World;
+	import nape.constraint.PivotJoint;
+	import nape.constraint.WeldJoint;
 	import nape.dynamics.InteractionFilter;
+	import nape.geom.AABB;
 	import nape.geom.Ray;
 	import nape.geom.RayResult;
 	import nape.geom.Vec2;
+	import nape.phys.BodyList;
 	/**
 	 * ...
 	 * @author Sah
@@ -22,11 +26,21 @@ package boxesandworlds.game.objects.items.worldBox
 		private var _properties:WorldBoxData;
 		
 		private var _childWorld:World;
+		private var _worldBoxArea:AABB;
+		private var _connectedWorldBox:WorldBox;
+		private var _connectedEdge:String;
+		private var _ray:Ray;
+		private var _result:RayResult;
+		private var _connectedEdgePoint:Vec2;
 		
 		public function WorldBox(game:Game) 
 		{
 			super(game);
 		}
+		
+		public function get childWorld():World {return _childWorld;}
+		public function get connectedEdge():String {return _connectedEdge;}
+		public function get connectedEdgePoint():Vec2 {return _connectedEdgePoint;}
 		
 		override public function init(params:Object = null):void {
 			data = new WorldBoxData(game);
@@ -41,6 +55,8 @@ package boxesandworlds.game.objects.items.worldBox
 			super.init();
 			
 			body.cbTypes.add(game.physics.collisionType);
+			body.shapes.at(0).filter.collisionGroup = 0x0010;
+			_worldBoxArea = new AABB();
 		}
 		
 		override public function postInit():void 
@@ -52,6 +68,7 @@ package boxesandworlds.game.objects.items.worldBox
 					if (world.data.id == _properties.childWorldId) {
 						_childWorld = world;
 						world.worldBox = this;
+						_view.postInit();
 					}
 				}
 			}
@@ -61,25 +78,22 @@ package boxesandworlds.game.objects.items.worldBox
 		{
 			if (_properties.canTeleport) {
 				var gates:Vector.<Gate> = new Vector.<Gate>();
+				var pGate:Gate;
 				for each(var obj:GameObject in _childWorld.objects) {
-					if (obj is Gate && (obj as Gate).data.canTeleport) {
-						gates.push(obj as Gate);
-					}
+					pGate = obj as Gate;
+					if (pGate != null && pGate.enterData.isOpen) gates.push(pGate);
 				}
 				var dis:Number = int.MAX_VALUE;
-				var pGate:Gate;
 				var ray:Ray;
 				var result:RayResult;
 				var p:Vec2;
+				var d:Number;
+				pGate = null;
 				for each(var gate:Gate in gates) {
-					if (gate.enterData.edge == EnterData.LEFT) p = Vec2.weak( - data.width / 2 + 1, 0);
-					else if (gate.enterData.edge == EnterData.RIGHT) p = Vec2.weak(data.width / 2 - 1, 0);
-					else if (gate.enterData.edge == EnterData.TOP) p = Vec2.weak(0, - data.height / 2 + 1);
-					else if (gate.enterData.edge == EnterData.BOTTOM) p = Vec2.weak(0, data.height / 2 - 1);
-					ray = Ray.fromSegment(body.localPointToWorld(p), game.objects.me.body.position);
-					result = game.physics.world.rayCast(ray, false, new InteractionFilter(1, game.objects.me.body.shapes.at(0).filter.collisionGroup));
-					if (result && result.distance < dis) {
-						dis = result.distance;
+					p = getPointByEdge(gate.enterData.edge);
+					d =  Vec2.distance(body.localPointToWorld(p), game.objects.me.body.position);
+					if(d < dis){
+						dis = d;
 						pGate = gate;
 					}
 				}
@@ -89,14 +103,8 @@ package boxesandworlds.game.objects.items.worldBox
 		}
 		
 		override public function getTeleportTargetPosition(params:Object = null):Vec2 {
-			trace(params.from);
 			var enter:Enter = params.from;
-			var obj:GameObject = params.teleported;
-			var p:Vec2;
-			if (enter.enterData.edge == EnterData.LEFT) p = Vec2.weak( -data.width / 2, 0);
-			else if (enter.enterData.edge == EnterData.RIGHT) p = Vec2.weak(data.width / 2, 0);
-			else if (enter.enterData.edge == EnterData.TOP) p = Vec2.weak(0, -data.height / 2);
-			else if (enter.enterData.edge == EnterData.BOTTOM) p = Vec2.weak(0, data.height / 2);
+			var p:Vec2 = getPointByEdge(enter.enterData.edge);
 			return body.localPointToWorld(p);
 		}
 		
@@ -104,6 +112,96 @@ package boxesandworlds.game.objects.items.worldBox
 		{
 			super.step();
 			_childWorld.rotate(body.rotation);
+			
+			_connectedWorldBox = null;
+			if (this == game.objects.me.item) searchWorldBoxes();
+		}
+		
+		override public function addToPlayer():void 
+		{
+			super.addToPlayer();
+			
+			for (var i:uint = 0; i < body.constraints.length; i++) {
+				body.constraints.at(i).space = null;
+			}
+			
+			_childWorld.clearConnectedWorlds();
+		}
+		
+		override public function removeFromPlayer(position:Vec2):void 
+		{	
+			if (_connectedWorldBox != null) {
+				//trace(_connectedEdge, _connectedWorldBox.connectedEdge, _connectedEdgePoint, _connectedWorldBox.connectedEdgePoint);
+				var p:Vec2 = _connectedWorldBox.connectedEdgePoint.copy();
+				body.position.set(_connectedWorldBox.body.localPointToWorld(p));
+				var pivotJoint:PivotJoint = new PivotJoint(body, _connectedWorldBox.body, _connectedEdgePoint, p);
+				pivotJoint.space = game.physics.world;
+				
+				_childWorld.connectWorldToEdge(_connectedWorldBox.childWorld, _connectedEdge);
+				_connectedWorldBox.childWorld.connectWorldToEdge(_childWorld, _connectedWorldBox.connectedEdge);
+			} else body.position.set(position);
+			
+			body.velocity = Vec2.weak();
+			body.shapes.at(0).filter.collisionMask = -1;
+			body.allowRotation = true;
+		}
+		
+		public function findEdge(worldBox:WorldBox):void {
+			_ray = Ray.fromSegment(body.position, worldBox.body.position);
+			_result = game.physics.world.rayCast(_ray, true);
+			var localRayPoint:Vec2 = body.worldPointToLocal(_ray.at(_result.distance));
+			
+			var dis:Number = int.MAX_VALUE;
+			if (Math.abs(localRayPoint.x - data.width / 2) < dis) {
+				dis = Math.abs(localRayPoint.x - data.width / 2);
+				_connectedEdge = EnterData.RIGHT;
+				_connectedEdgePoint = Vec2.weak(data.width / 2);
+			}
+			if (Math.abs(-localRayPoint.x - data.width / 2) < dis) {
+				dis = Math.abs(-localRayPoint.x - data.width / 2);
+				_connectedEdge = EnterData.LEFT;
+				_connectedEdgePoint = Vec2.weak(-data.width / 2);
+			}
+			if (Math.abs(localRayPoint.y - data.height / 2) < dis) {
+				dis = Math.abs(localRayPoint.y - data.width / 2);
+				_connectedEdge = EnterData.BOTTOM;
+				_connectedEdgePoint = Vec2.weak(0, data.height / 2);
+			}
+			if (Math.abs(-localRayPoint.y - data.height / 2) < dis) {
+				dis = Math.abs(-localRayPoint.y - data.width / 2);
+				_connectedEdge = EnterData.TOP;
+				_connectedEdgePoint = Vec2.weak(0, -data.height / 2);
+			}
+			_view.showConnectedEdge();
+		}
+		
+		public function getPointByEdge(edge:String):Vec2 {
+			if (edge == EnterData.LEFT) return Vec2.weak( -data.width / 2, 0);
+			if (edge == EnterData.RIGHT) return Vec2.weak( data.width / 2, 0);
+			if (edge == EnterData.TOP) return Vec2.weak( 0, -data.height / 2);
+			if (edge == EnterData.BOTTOM) return Vec2.weak( 0, data.height / 2);
+			return Vec2.weak();
+		}
+		
+		private function searchWorldBoxes():void 
+		{
+			var bodyList:BodyList = game.objects.me.getBodiesInItemArea();
+			var dis:Number = int.MAX_VALUE;
+			_connectedEdge = "";
+			_connectedEdgePoint = null;
+			
+			for (var i:int = 0; i < bodyList.length; i++) {
+				var d:Number = Vec2.distance(body.position, bodyList.at(i).position);
+				var box:WorldBox = bodyList.at(i).userData.obj as WorldBox;
+				if (box != null && box != this && d < dis) {
+					dis = d;
+					_connectedWorldBox = box;
+				}
+			}
+			if (_connectedWorldBox != null) {
+				findEdge(_connectedWorldBox);
+				_connectedWorldBox.findEdge(this);
+			} 
 		}
 	}
 

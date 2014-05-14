@@ -27,12 +27,10 @@ package boxesandworlds.data
 			//_sound.load(new URLRequest("http://stas.snpdev.ru/music/" + _url + "?noCache=" + String(Math.random())));
 			_sound.load(new URLRequest("http://stas.snpdev.ru/music/" + _url));
 			//_sound.load(new URLRequest(_url));
-			//trace("start", _url)
 		}
 		
 		private function loadCompleteHandler(e:Event):void 
 		{
-			//trace("load", _url)
 			_isLoad = true;
 			dispatchEvent(new Event(Event.COMPLETE));
 		}

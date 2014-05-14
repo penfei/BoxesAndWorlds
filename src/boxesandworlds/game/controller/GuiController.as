@@ -41,6 +41,7 @@ package boxesandworlds.game.controller
 			_canvas.addChild(_mainContainer);
 			
 			_debug = new BitmapDebug(stageWidth, stageHeight, game.stage.color, true);
+			_debug.drawConstraints = true;
             if (game.data.isTest) _canvas.addChild(_debug.display);
 			
 			_menu = new Menu(game);
