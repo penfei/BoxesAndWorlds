@@ -16,9 +16,8 @@ package boxesandworlds.editor.items {
 		// vars
 		private var _id:int;
 		
-		public function EditorItem(id:int, ui:MovieClip) {
+		public function EditorItem(id:int) {
 			_id = id;
-			_ui = ui;
 			setup();
 		}
 		
@@ -36,17 +35,16 @@ package boxesandworlds.editor.items {
 		
 		// protected
 		protected function setup():void {
-			if (_ui != null) {
-				addChild(_ui);
-				
-				_mcWarning = new Sprite();
-				_mcWarning.graphics.beginFill(0xff0000, .5);
-				_mcWarning.graphics.drawRect(0, 0, _ui.width, _ui.height);
-				_mcWarning.graphics.endFill();
-				_mcWarning.mouseChildren = _mcWarning.mouseEnabled = false;
-				_mcWarning.alpha = 0;
-				addChild(_mcWarning);
-			}
+			_ui = new EditorItemsEnum.EDITOR_ITEMS_UI_CLASS[_id]();
+			addChild(_ui);
+			
+			_mcWarning = new Sprite();
+			_mcWarning.graphics.beginFill(0xff0000, .5);
+			_mcWarning.graphics.drawRect(0, 0, _ui.width, _ui.height);
+			_mcWarning.graphics.endFill();
+			_mcWarning.mouseChildren = _mcWarning.mouseEnabled = false;
+			_mcWarning.alpha = 0;
+			addChild(_mcWarning);
 		}
 		
 	}

@@ -16,7 +16,7 @@ package
 	 * ...
 	 * @author Sah
 	 */
-	[SWF(width = "1200", height = "700", frameRate = "30")]
+	[SWF(width = "1200", height = "800", frameRate = "30")]
 	public class Main extends Sprite 
 	{
 		private var _canvas:View;

@@ -3,6 +3,9 @@ package boxesandworlds.gui.page {
 	import boxesandworlds.controller.UIManager;
 	import boxesandworlds.editor.EditorAreaItems;
 	import boxesandworlds.editor.EditorPopup;
+	import boxesandworlds.editor.events.EditorEventNewItem;
+	import boxesandworlds.editor.items.EditorItem;
+	import boxesandworlds.editor.items.EditorItemsEnum;
 	import com.greensock.easing.Expo;
 	import com.greensock.easing.Linear;
 	import com.greensock.TweenMax;
@@ -19,6 +22,8 @@ package boxesandworlds.gui.page {
 		private var _ui:EditorPageUI;
 		private var _popup:EditorPopup;
 		private var _areaItems:EditorAreaItems;
+		private var _items:Vector.<EditorItem>;
+		private var _currentItem:EditorItem;
 		
 		public function EditorPage() {
 			super(UIManager.EDITOR_PAGE_ID);
@@ -46,10 +51,14 @@ package boxesandworlds.gui.page {
 			
 			_areaItems = new EditorAreaItems();
 			_ui.areaItems.addChild(_areaItems);
+			_areaItems.addEventListener(EditorEventNewItem.NEW_ITEM, addNewItemHandler);
 			
-			setupTempPositions();
+			_items = new Vector.<EditorItem>();
+			
+			//setupTempPositions();
 		}
 		
+		/* функция для калькулятора Бори */
 		protected function setupTempPositions():void {
 			var step:int = 100;
 			_ui.btnSave.y = _ui.btnExit.y = _ui.btnClear.y = _ui.btnClear.y - step;
@@ -102,5 +111,11 @@ package boxesandworlds.gui.page {
 			Core.ui.showPage(UIManager.MAIN_PAGE_ID);
 		}
 		
+		private function addNewItemHandler(e:EditorEventNewItem):void {
+			var item:EditorItem = new EditorItem(EditorItemsEnum.EDITOR_ITEMS_ID[e.id]);
+			_items.push(item);
+		}
+		
 	}
+	
 }

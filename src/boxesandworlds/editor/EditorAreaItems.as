@@ -1,9 +1,9 @@
 package boxesandworlds.editor {
 	import boxesandworlds.controller.Core;
 	import boxesandworlds.editor.controls.EditorVerticalScroller;
-	import boxesandworlds.editor.items.EditorItem;
-	import boxesandworlds.editor.items.EditorItem001;
-	import boxesandworlds.editor.items.EditorItem002;
+	import boxesandworlds.editor.events.EditorEventNewItem;
+	import boxesandworlds.editor.items.EditorItemPreview;
+	import boxesandworlds.editor.items.EditorItemsEnum;
 	import editor.EditorAreaItemsUI;
 	import editor.EditorScrollItemsUI;
 	import flash.display.Sprite;
@@ -17,19 +17,11 @@ package boxesandworlds.editor {
 		
 		// ui
 		private var _ui:EditorAreaItemsUI;
-		private var _items:Vector.<EditorItem>;
+		private var _items:Vector.<EditorItemPreview>;
 		private var _scroll:EditorVerticalScroller;
 		
 		public function EditorAreaItems() {
 			setup();
-		}
-		
-		// public
-		public function addItems(items:Vector.<EditorItem>):void {
-			_items = items;
-			for (var i:uint = 0, len:uint = _items.length; i < len; ++i) {
-				
-			}
 		}
 		
 		// protected
@@ -38,22 +30,18 @@ package boxesandworlds.editor {
 			addChild(_ui);
 			
 			var content:Sprite = new Sprite();
-			_items = new Vector.<EditorItem>();
-			var len:int = 58;
+			var len:int = EditorItemsEnum.EDITOR_ITEMS_PREVIEW_UI_CLASS.length;
+			_items = new Vector.<EditorItemPreview>();
 			_items.length = len;
 			for (var i:uint = 0; i < len; ++i) {
-				var item:EditorItem;
-				if (i % 2 == 0) {
-					item = new EditorItem001();
-				}else {
-					item = new EditorItem002();
-				}
+				var item:EditorItemPreview = new EditorItemPreview(EditorItemsEnum.EDITOR_ITEMS_ID[i]);
 				_items[i] = item;
 				item.x = 10 + 10 * (i % 5) + 55 * (i % 5);
 				item.y = 10 + 10 * (int(i / 5)) + 55 * (int(i / 5));
 				item.buttonMode = true;
 				item.addEventListener(MouseEvent.ROLL_OVER, itemOverHandler);
 				item.addEventListener(MouseEvent.ROLL_OUT, itemOutHandler);
+				item.addEventListener(MouseEvent.MOUSE_DOWN, itemDownHandler);
 				content.addChild(item);
 			}
 			var s:Sprite = new Sprite();
@@ -67,19 +55,25 @@ package boxesandworlds.editor {
 			addChild(_scroll);
 		}
 		
-		private function itemOverHandler(e:MouseEvent):void 
-		{
-			var target:EditorItem = e.target as EditorItem;
+		// handlers
+		private function itemOverHandler(e:MouseEvent):void {
+			var target:EditorItemPreview = e.target as EditorItemPreview;
 			if (target != null) {
 				target.showHint();
 			}
 		}
 		
-		private function itemOutHandler(e:MouseEvent):void 
-		{
-			var target:EditorItem = e.target as EditorItem;
+		private function itemOutHandler(e:MouseEvent):void {
+			var target:EditorItemPreview = e.target as EditorItemPreview;
 			if (target != null) {
 				target.hideHint();
+			}
+		}
+		
+		private function itemDownHandler(e:MouseEvent):void {
+			var item:EditorItemPreview = e.target as EditorItemPreview;
+			if (item != null) {
+				dispatchEvent(new EditorEventNewItem(EditorEventNewItem.NEW_ITEM, item.id));
 			}
 		}
 		

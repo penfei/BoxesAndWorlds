@@ -9,10 +9,6 @@ package boxesandworlds.editor.items {
 	 */
 	public class EditorItemPreview extends Sprite {
 		
-		// const
-		static public const EDITOR_ITEM_001:int = 1;
-		static public const EDITOR_ITEM_002:int = 2;
-		
 		// ui
 		private var _ui:MovieClip;
 		private var _mcHint:Sprite;
@@ -30,28 +26,25 @@ package boxesandworlds.editor.items {
 		
 		// public
 		public function showHint():void {
-			TweenMax.to(_mcHint, .2, { alpha:1 } );
+			TweenMax.to(_mcHint, .3, { alpha:1 } );
 		}
 		
 		public function hideHint():void {
-			TweenMax.to(_mcHint, .2, { alpha:0 } );
+			TweenMax.to(_mcHint, .3, { alpha:0 } );
 		}
 		
 		// protected
 		protected function setup():void {
-			switch(_id) {
-				case
-			}
+			_ui = new EditorItemsEnum.EDITOR_ITEMS_PREVIEW_UI_CLASS[_id];
+			addChild(_ui);
 			
-				addChild(_ui);
-				
-				_mcHint = new Sprite();
-				_mcHint.graphics.beginFill(0xffffff, .15);
-				_mcHint.graphics.drawRect(0, 0, _ui.width, _ui.height);
-				_mcHint.graphics.endFill();
-				_mcHint.mouseChildren = _mcHint.mouseEnabled = false;
-				_mcHint.alpha = 0;
-				addChildAt(_mcHint, 0);
+			_mcHint = new Sprite();
+			_mcHint.graphics.beginFill(0xffffff, .15);
+			_mcHint.graphics.drawRect(0, 0, _ui.width, _ui.height);
+			_mcHint.graphics.endFill();
+			_mcHint.mouseChildren = _mcHint.mouseEnabled = false;
+			_mcHint.alpha = 0;
+			addChildAt(_mcHint, 0);
 		}
 		
 	}
