@@ -2,6 +2,7 @@ package boxesandworlds.game.objects.enters
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.GameObject;
+	import boxesandworlds.game.world.World;
 	import nape.geom.Vec2;
 	import nape.phys.Body;
 	import nape.phys.BodyType;
@@ -17,6 +18,8 @@ package boxesandworlds.game.objects.enters
 		private var _view:EnterView;
 		private var _properties:EnterData;
 		
+		private var _previosAvailability:Boolean;
+		
 		public function Enter(game:Game) 
 		{
 			super(game);
@@ -30,9 +33,24 @@ package boxesandworlds.game.objects.enters
 		{
 			super.step();
 			
-			_properties.isOpen = world != null && world.worldBox != null;
+			_previosAvailability = _properties.isOpen;
+			_properties.isOpen = checkAvailability();
 			
-			if (_properties.isOpen) open();
+			if (_properties.isOpen != _previosAvailability) {
+				if (_properties.isOpen) open();
+				else close();
+			}
+			_view.step();
+		}
+		
+		public function checkAvailability():Boolean {
+			if (world == null) return false;
+			if (world.worldBox == null) return false;
+			var w:World = world.getConnectedWorldByEdge(enterData.edge);
+			if (w != null) {
+				if (w.getEnterByEdge(w.getEdgeByWorld(world)) == null) return false;
+			}
+			return true;
 		}
 		
 		public function open():void {
@@ -46,12 +64,18 @@ package boxesandworlds.game.objects.enters
 		
 		override public function findTarget():GameObject
 		{
-			if (_properties.isOpen) return world.worldBox;
+			if (_properties.isOpen) {
+				var w:World = world.getConnectedWorldByEdge(enterData.edge);
+				if (w != null) {
+					return w.getEnterByEdge(w.getEdgeByWorld(world));
+				}
+				return world.worldBox;
+			}
 			return null;
 		}
 		
 		override public function getTeleportTargetPosition(params:Object = null):Vec2 {
-			var p:Vec2;
+			//var p:Vec2;
 			//if (enterData.edge == EnterData.LEFT) p = Vec2.weak( data.width / 2 + 10, 0);
 			//else if (enterData.edge == EnterData.RIGHT) p = Vec2.weak(-data.width / 2 - 10, 0);
 			//else if (enterData.edge == EnterData.TOP) p = Vec2.weak(0, data.height / 2 + 10);

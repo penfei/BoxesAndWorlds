@@ -38,6 +38,7 @@ package boxesandworlds.game.objects
 		private var _mass:Number;
 		private var _teleportId:uint;
 		private var _canTeleport:Boolean;
+		private var _needButtonToTeleport:Boolean;
 		
 		protected var game:Game;
 		
@@ -59,6 +60,7 @@ package boxesandworlds.game.objects
 			_offsetX = OFFSET_X;
 			_offsetY = OFFSET_Y;
 			_isDestroyPhysic = false;
+			_needButtonToTeleport = false;
 		}
 		
 		protected function parse(params:Object):void {
@@ -109,6 +111,8 @@ package boxesandworlds.game.objects
 		public function set teleportId(value:uint):void { _teleportId = value; }
 		public function get canTeleport():Boolean {return _canTeleport;}
 		public function set canTeleport(value:Boolean):void {_canTeleport = value;}
+		public function get needButtonToTeleport():Boolean {return _needButtonToTeleport;}
+		public function set needButtonToTeleport(value:Boolean):void {_needButtonToTeleport = value;}
 	}
 
 }

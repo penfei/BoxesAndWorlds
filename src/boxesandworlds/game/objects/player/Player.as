@@ -19,6 +19,7 @@ package boxesandworlds.game.objects.player
 		
 		private var _item:Item;
 		private var _itemArea:AABB;
+		private var _potencialTeleportTarget:GameObject;
 		
 		public function Player(game:Game) 
 		{
@@ -31,10 +32,11 @@ package boxesandworlds.game.objects.player
 		public function set playerView(value:PlayerView):void { _view = value; }
 		public function get item():Item { return _item; }
 		public function get itemArea():AABB {return _itemArea;}
-		
+		public function get potencialTeleport():GameObject {return _potencialTeleportTarget;}
 		public function get hasItem():Boolean {return _item != null;}
 		
-		override public function init(params:Object = null):void {
+		override public function init(params:Object = null):void 
+		{
 			data = new PlayerData(game);
 			_properties = data as PlayerData;
 			data.init(params);
@@ -43,17 +45,22 @@ package boxesandworlds.game.objects.player
 			view = _view;
 			super.init();
 			
+			_itemArea = new AABB();
+		}
+		
+		override protected function initPhysics():void 
+		{
+			super.initPhysics();
+			
 			body.cbTypes.add(game.physics.meType);
 			body.cbTypes.add(game.physics.movableType);
 			body.cbTypes.add(game.physics.collisionType);
 			body.shapes.at(0).filter.collisionGroup = 0x0100;
+			body.shapes.at(0).filter.collisionMask = ~0x0010;
 			body.allowRotation = false;
-			
-			_itemArea = new AABB();
 		}
-		
-		
-		override public function destroy():void {
+		override public function destroy():void 
+		{
 			super.destroy();
 		}
 		
@@ -67,6 +74,7 @@ package boxesandworlds.game.objects.player
 			if (_properties.isMoveRight && !_properties.isMoveLeft) goRight();
 			if ((!_properties.isMoveLeft && !_properties.isMoveRight) || (_properties.isMoveLeft && _properties.isMoveRight)) stopMotion();
 			
+			searchPotencialTeleport();
 			if (hasItem) {
 				_item.body.position.set(body.position);
 			}
@@ -94,18 +102,21 @@ package boxesandworlds.game.objects.player
 			} else trace("я вывалился, а куда не знаю");
 		}
 		
-		public function jump():void {
+		public function jump():void 
+		{
 			body.velocity.set(new Vec2(0, 0));
 			body.applyImpulse(new Vec2(0.0, _properties.jumpPower));
 			_properties.isJump = false;
 		}
 		
-		public function canJump():Boolean {
+		public function canJump():Boolean 
+		{
 			if (_properties.isOnEarth) return true;
 			return false;
 		}
 		
-		public function goLeft():void {
+		public function goLeft():void 
+		{
 			_properties.isRight = false;
 			_view.showLeft();
 			if (isLeftNothingFixture) {
@@ -118,7 +129,8 @@ package boxesandworlds.game.objects.player
 			}
 		}
 		
-		public function goRight():void {
+		public function goRight():void
+		{
 			_properties.isRight = true;
 			_view.showRight();
 			if (isRightNothingFixture) {
@@ -131,7 +143,8 @@ package boxesandworlds.game.objects.player
 			}
 		}
 		
-		public function stopMotion():void {
+		public function stopMotion():void
+		{
 			_view.showStay();
 			body.velocity.x *= 0.6;
 			if (Math.abs(body.velocity.x) < 0.1) body.velocity.x = 0;
@@ -148,11 +161,13 @@ package boxesandworlds.game.objects.player
 				var bodyList:BodyList = getBodiesInItemArea();
 				var dis:Number = int.MAX_VALUE;
 				var pItem:Item;
-				for (var i:int = 0; i < bodyList.length; i++) {
-					var d:Number = Vec2.distance(body.position, bodyList.at(i).position);
-					if (bodyList.at(i).userData.obj is Item && (bodyList.at(i).userData.obj as Item).itemData.canAdded && d < dis) {
+				var i:Item;
+				for (var j:int = 0; j < bodyList.length; j++) {
+					var d:Number = Vec2.distance(body.position, bodyList.at(j).position);
+					i = bodyList.at(j).userData.obj as Item;
+					if (i != null && i.itemData.canAdded && d < dis) {
 						dis = d;
-						pItem = bodyList.at(i).userData.obj as Item;
+						pItem = i;
 					}
 				}
 				addItem(pItem);
@@ -168,21 +183,7 @@ package boxesandworlds.game.objects.player
 		
 		public function enterTeleport():void 
 		{
-			var bodyList:BodyList = getBodiesInItemArea();
-			var dis:Number = int.MAX_VALUE;
-			var pTeleport:GameObject;
-			for (var i:int = 0; i < bodyList.length; i++) {
-				var d:Number = Vec2.distance(body.position, bodyList.at(i).position);
-				var teleport:GameObject = bodyList.at(i).userData.obj as GameObject;
-				if(teleport != null){
-					var t:GameObject = teleport.findTarget();
-					if (t != null && teleport != _item && d < dis) {
-						dis = d;
-						pTeleport = t;
-					}
-				}
-			}
-			teleportTo(pTeleport);
+			teleportTo(_potencialTeleportTarget);
 		}
 		
 		public function teleportTo(teleportTarget:GameObject, params:Object = null):void 
@@ -206,10 +207,19 @@ package boxesandworlds.game.objects.player
 				if (_properties.isRight) {
 					pos.x = body.position.x + (_properties.width + _item.itemData.width + 10) / 2
 				}
-				_item.body.position.set(pos);
-				_item.removeFromPlayer();
+				_item.removeFromPlayer(pos);
 				_item = null;
 			}
+		}
+		
+		public function getBodiesInItemArea():BodyList
+		{
+			_itemArea.width = _properties.width + _properties.itemAreaIndentX * 2;
+			_itemArea.height = _properties.height + _properties.itemAreaIndentY * 2;
+			_itemArea.x = body.position.x - _properties.width / 2 - _properties.itemAreaIndentX;
+			_itemArea.y = body.position.y - _properties.height / 2 - _properties.itemAreaIndentY;
+			var bodyList:BodyList = game.physics.world.bodiesInAABB(_itemArea, false, true, null, bodyList);
+			return bodyList;
 		}
 		
 		private function addItem(pItem:Item):void 
@@ -220,13 +230,27 @@ package boxesandworlds.game.objects.player
 			}
 		}
 		
-		private function getBodiesInItemArea():BodyList {
-			_itemArea.width = _properties.width + _properties.itemAreaIndentX * 2;
-			_itemArea.height = _properties.height + _properties.itemAreaIndentY * 2;
-			_itemArea.x = body.position.x - _properties.width / 2 - _properties.itemAreaIndentX;
-			_itemArea.y = body.position.y - _properties.height / 2 - _properties.itemAreaIndentY;
-			var bodyList:BodyList = game.physics.world.bodiesInAABB(_itemArea, false, true, null, bodyList);
-			return bodyList;
+		private function searchPotencialTeleport():void 
+		{
+			_potencialTeleportTarget = null;
+			var bodyList:BodyList = getBodiesInItemArea();
+			var dis:Number = int.MAX_VALUE;
+			var teleport:GameObject;
+			var potencialTeleport:GameObject;
+			
+			for (var i:int = 0; i < bodyList.length; i++) {
+				var d:Number = Vec2.distance(body.position, bodyList.at(i).position);
+				teleport = bodyList.at(i).userData.obj as GameObject;
+				if (teleport != null) {
+					var t:GameObject = teleport.findTarget();
+					if (t != null && teleport.data.needButtonToTeleport && teleport != _item && d < dis) {
+						dis = d;
+						_potencialTeleportTarget = t;
+						potencialTeleport = teleport;
+					}
+				}
+			}
+			if(potencialTeleport != null) potencialTeleport.view.showHintTeleport();
 		}
 	}
 

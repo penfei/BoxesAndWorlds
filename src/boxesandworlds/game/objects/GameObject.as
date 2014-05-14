@@ -4,6 +4,7 @@ package boxesandworlds.game.objects
 	import boxesandworlds.game.world.World;
 	import flash.display.Sprite;
 	import nape.dynamics.Arbiter;
+	import nape.dynamics.InteractionFilter;
 	import nape.geom.Ray;
 	import nape.geom.RayResult;
 	import nape.geom.Vec2;
@@ -29,6 +30,7 @@ package boxesandworlds.game.objects
 		private var _result:RayResult;
 		private var _teleportTarget:GameObject;
 		private var _world:World;
+		private var _filter:InteractionFilter;
 		
 		protected var game:Game;
 		
@@ -55,6 +57,7 @@ package boxesandworlds.game.objects
 			initView();
 			
 			_rayPoint = new Vec2;
+			_filter = new InteractionFilter(1, body.shapes.at(0).filter.collisionMask);
 		}
 		
 		public function step():void {
@@ -174,19 +177,17 @@ package boxesandworlds.game.objects
 			_rayPoint.x = body.position.x;
 			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			_ray = Ray.fromSegment(body.position, _rayPoint);
-			_result = game.physics.world.rayCast(_ray);
-			if (_result) {
-				if(!rayCastSettings(_result.shape)) return true;
-			}
+			_result = game.physics.world.rayCast(_ray, false, _filter);
+			if (_result != null && !rayCastSettings(_result.shape)) return true;
 			_rayPoint.x = body.position.x + _properties.width / 2 - _properties.offsetX;
 			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			_ray = Ray.fromSegment(body.position, _rayPoint);
-			_result = game.physics.world.rayCast(_ray);
+			_result = game.physics.world.rayCast(_ray, false, _filter);
 			if (_result != null && !rayCastSettings(_result.shape) && angleRightDown() != 1) return true;
 			_rayPoint.x = body.position.x - _properties.width / 2 + _properties.offsetX;
 			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;
 			_ray = Ray.fromSegment(body.position, _rayPoint);
-			_result = game.physics.world.rayCast(_ray);
+			_result = game.physics.world.rayCast(_ray, false, _filter);
 			if (_result != null && !rayCastSettings(_result.shape) && angleLeftDown() != 1) return true;
 			return false;
 		}
@@ -343,7 +344,7 @@ package boxesandworlds.game.objects
 		private function getAngleRayCast(original:Vec2, vector:Vec2):Number {
 			var angle:Number = 0;
 			_ray = Ray.fromSegment(original, vector);
-			_result = game.physics.world.rayCast(_ray);
+			_result = game.physics.world.rayCast(_ray, false, _filter);
 			if (_result) {
 				angle = Math.abs(_result.normal.x * (90 / ANGLE));
 				if (rayCastSettings(_result.shape))
@@ -356,7 +357,7 @@ package boxesandworlds.game.objects
 		private function getAngleRayCastFixture(original:Vec2, vector:Vec2):Number {
 			var angle:Number = 0;
 			_ray = Ray.fromSegment(original, vector);
-			_result = game.physics.world.rayCast(_ray);
+			_result = game.physics.world.rayCast(_ray, false, _filter);
 			if (_result) {
 				angle = Math.abs(_result.normal.x * (90 / ANGLE));
 				if (_result.shape.body.isDynamic()) return 0;

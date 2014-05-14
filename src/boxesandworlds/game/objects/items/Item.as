@@ -59,11 +59,12 @@ package boxesandworlds.game.objects.items
 			body.angularVel = 0;
 		}
 		
-		public function removeFromPlayer():void 
+		public function removeFromPlayer(position:Vec2):void 
 		{
 			body.velocity = Vec2.weak();
 			body.shapes.at(0).filter.collisionMask = -1;
 			body.allowRotation = true;
+			body.position.set(position);
 		}
 		
 		public function get itemView():ItemView {return _view;}

@@ -36,7 +36,7 @@ package boxesandworlds.game.objects.player
 			addChild(_ui);
 		}
 		
-		public function step():void {
+		override public function step():void {
 			
 		}
 		

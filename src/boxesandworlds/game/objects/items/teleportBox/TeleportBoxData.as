@@ -29,6 +29,7 @@ package boxesandworlds.game.objects.items.teleportBox
 			staticFriction = 2;
 			density = 10;
 			canTeleport = true;
+			needButtonToTeleport = true;
 			super.parse(params);
 		}
 	}

@@ -2,6 +2,7 @@ package boxesandworlds.game.objects.items.teleportBox
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.items.ItemView;
+	import com.greensock.TweenLite;
 	import flash.display.Sprite;
 	/**
 	 * ...
@@ -10,6 +11,7 @@ package boxesandworlds.game.objects.items.teleportBox
 	public class TeleportBoxView extends ItemView
 	{
 		private var _ui:Sprite;
+		private var _hintContainer:Sprite;
 		
 		public function TeleportBoxView(game:Game, box:TeleportBox) 
 		{
@@ -21,6 +23,19 @@ package boxesandworlds.game.objects.items.teleportBox
 			_ui.graphics.beginFill(0xFF0000);
 			_ui.graphics.drawRect( -obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height);
 			addChild(_ui);
+			
+			_hintContainer = new Sprite();
+			_hintContainer.graphics.beginFill(0xCC9900);
+			_hintContainer.graphics.drawCircle(0, 0, 5);
+			_hintContainer.alpha = 0;
+			_ui.addChild(_hintContainer);
+		}
+		
+		override public function showHintTeleport():void 
+		{
+			_hintContainer.alpha = 1;
+			TweenLite.killTweensOf(_hintContainer);
+			TweenLite.to(_hintContainer, 1, { alpha:0 } );
 		}
 	}
 

@@ -1,6 +1,8 @@
 package boxesandworlds.game.world 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.objects.enters.Enter;
+	import boxesandworlds.game.objects.enters.EnterData;
 	import boxesandworlds.game.objects.GameObject;
 	import boxesandworlds.game.objects.items.worldBox.WorldBox;
 	import boxesandworlds.game.objects.player.Player;
@@ -23,6 +25,7 @@ package boxesandworlds.game.world
 		private var _game:Game;
 		private var _worldBox:WorldBox;
 		private var _worldBody:Body;
+		private var _connectWorldsHash:Object;
 		
 		public function World(game:Game) 
 		{
@@ -41,6 +44,8 @@ package boxesandworlds.game.world
 			_data = new WorldData(_game);
 			_data.init(params);
 			_objects = new Vector.<GameObject>;
+			
+			_connectWorldsHash = { };
 			
 			_worldBody = new Body(BodyType.STATIC, data.axis);
 			var shape:Shape = new Polygon(Polygon.box(data.width, data.height));
@@ -111,7 +116,60 @@ package boxesandworlds.game.world
 			_data.rotation = angle;
 		}
 		
+		public function getOjbjectsByType(objClass:Class):Array
+		{
+			var arr:Array = new Array();
+			for each(var obj:GameObject in _objects) {
+				if (obj is objClass) arr.push(obj);
+			}
+			return arr;
+		}
 		
+		public function getConnectedWorldByEdge(edge:String):World
+		{
+			return _connectWorldsHash[edge];
+		}
+		
+		public function getEnterByEdge(edge:String):Enter
+		{
+			var enter:Enter;
+			for each(var obj:GameObject in _objects) {
+				enter = obj as Enter;
+				if (enter != null && enter.enterData.isOpen && enter.enterData.edge == edge) return enter;
+			}
+			return null;
+		}
+		
+		public function getEdgeByWorld(world:World):String 
+		{
+			for (var key:String in _connectWorldsHash) {
+				if (_connectWorldsHash[key] == world) return key;
+			}
+			return null;
+		}
+		
+		public function connectWorldToEdge(world:World, connectedEdge:String):void 
+		{
+			_connectWorldsHash[connectedEdge] = world;
+		}
+		
+		public function clearConnectedWorlds():void 
+		{
+			for each(var w:World in _connectWorldsHash) {
+				w.disconnectWorld(this);
+				disconnectWorld(w);
+			}
+		}
+		
+		public function disconnectWorld(world:World):void 
+		{
+			for (var key:String in _connectWorldsHash) {
+				if (_connectWorldsHash[key] == world) {
+					delete _connectWorldsHash[key];
+					return;
+				}
+			}
+		}
 	}
 
 }
