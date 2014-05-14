@@ -81,7 +81,7 @@ package boxesandworlds.game.controller
 			world2.addGameObject(box);
 			
 			var worldBox:WorldBox = new WorldBox(game);
-			worldBox.init( { start:new Vec2(600, 100), childWorldId: 2 } );
+			worldBox.init( { start:new Vec2(550, 100), childWorldId: 2 } );
 			world1.addGameObject(worldBox);
 			
 			worldBox = new WorldBox(game);
