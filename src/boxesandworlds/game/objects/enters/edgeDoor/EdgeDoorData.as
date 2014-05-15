@@ -16,23 +16,23 @@ package boxesandworlds.game.objects.enters.edgeDoor
 			super(game);
 		}
 		
-		public static function attributes():Object
+		public static function attributes():Vector.<Attribute>
 		{
-			var obj:Object = EnterData.attributes();
-			Attribute.pushAttribute(obj, "type", "EdgeDoor", Attribute.STRING, false);
-			Attribute.pushAttribute(obj, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING, false);
-			Attribute.pushAttribute(obj, "bodyType", BodyType.STATIC, Attribute.STRING, false);
-			Attribute.pushAttribute(obj, "width", 40, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "height", 40, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "density", 10, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "elasticity", 0.4, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "dynamicFriction", 1, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "staticFriction", 2, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "canTeleport", true, Attribute.BOOL);
-			return obj;
+			var arr:Vector.<Attribute> = EnterData.attributes();
+			Attribute.pushAttribute(arr, "type", "EdgeDoor", Attribute.STRING, false);
+			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING, false);
+			Attribute.pushAttribute(arr, "bodyType", BodyType.STATIC, Attribute.STRING, false);
+			Attribute.pushAttribute(arr, "width", 40, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "height", 40, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "density", 10, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "elasticity", 0.4, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "dynamicFriction", 1, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "staticFriction", 2, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "canTeleport", true, Attribute.BOOL);
+			return arr;
 		}
 		
-		override protected function getAttributes():Object {
+		override protected function getAttributes():Vector.<Attribute> {
 			return attributes();
 		}
 	}
