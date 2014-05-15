@@ -81,7 +81,7 @@ package boxesandworlds.game.objects.items.worldBox
 				var pGate:Gate;
 				for each(var obj:GameObject in _childWorld.objects) {
 					pGate = obj as Gate;
-					if (pGate != null && pGate.enterData.isOpen) gates.push(pGate);
+					if (pGate != null && pGate.enterData.canTeleport) gates.push(pGate);
 				}
 				var dis:Number = int.MAX_VALUE;
 				var ray:Ray;
@@ -149,30 +149,32 @@ package boxesandworlds.game.objects.items.worldBox
 		public function findEdge(worldBox:WorldBox):void {
 			_ray = Ray.fromSegment(body.position, worldBox.body.position);
 			_result = game.physics.world.rayCast(_ray, true);
-			var localRayPoint:Vec2 = body.worldPointToLocal(_ray.at(_result.distance));
-			
-			var dis:Number = int.MAX_VALUE;
-			if (Math.abs(localRayPoint.x - data.width / 2) < dis) {
-				dis = Math.abs(localRayPoint.x - data.width / 2);
-				_connectedEdge = EnterData.RIGHT;
-				_connectedEdgePoint = Vec2.weak(data.width / 2);
+			if(_result != null){
+				var localRayPoint:Vec2 = body.worldPointToLocal(_ray.at(_result.distance));
+				
+				var dis:Number = int.MAX_VALUE;
+				if (Math.abs(localRayPoint.x - data.width / 2) < dis) {
+					dis = Math.abs(localRayPoint.x - data.width / 2);
+					_connectedEdge = EnterData.RIGHT;
+					_connectedEdgePoint = Vec2.weak(data.width / 2);
+				}
+				if (Math.abs(-localRayPoint.x - data.width / 2) < dis) {
+					dis = Math.abs(-localRayPoint.x - data.width / 2);
+					_connectedEdge = EnterData.LEFT;
+					_connectedEdgePoint = Vec2.weak(-data.width / 2);
+				}
+				if (Math.abs(localRayPoint.y - data.height / 2) < dis) {
+					dis = Math.abs(localRayPoint.y - data.width / 2);
+					_connectedEdge = EnterData.BOTTOM;
+					_connectedEdgePoint = Vec2.weak(0, data.height / 2);
+				}
+				if (Math.abs(-localRayPoint.y - data.height / 2) < dis) {
+					dis = Math.abs(-localRayPoint.y - data.width / 2);
+					_connectedEdge = EnterData.TOP;
+					_connectedEdgePoint = Vec2.weak(0, -data.height / 2);
+				}
+				_view.showConnectedEdge();
 			}
-			if (Math.abs(-localRayPoint.x - data.width / 2) < dis) {
-				dis = Math.abs(-localRayPoint.x - data.width / 2);
-				_connectedEdge = EnterData.LEFT;
-				_connectedEdgePoint = Vec2.weak(-data.width / 2);
-			}
-			if (Math.abs(localRayPoint.y - data.height / 2) < dis) {
-				dis = Math.abs(localRayPoint.y - data.width / 2);
-				_connectedEdge = EnterData.BOTTOM;
-				_connectedEdgePoint = Vec2.weak(0, data.height / 2);
-			}
-			if (Math.abs(-localRayPoint.y - data.height / 2) < dis) {
-				dis = Math.abs(-localRayPoint.y - data.width / 2);
-				_connectedEdge = EnterData.TOP;
-				_connectedEdgePoint = Vec2.weak(0, -data.height / 2);
-			}
-			_view.showConnectedEdge();
 		}
 		
 		public function getPointByEdge(edge:String):Vec2 {

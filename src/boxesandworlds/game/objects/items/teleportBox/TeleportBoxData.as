@@ -1,6 +1,7 @@
 package boxesandworlds.game.objects.items.teleportBox 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.objects.GameObjectData;
 	import boxesandworlds.game.objects.items.ItemData;
 	import nape.phys.BodyType;
@@ -15,22 +16,25 @@ package boxesandworlds.game.objects.items.teleportBox
 			super(game);
 		}
 		
-		override public function init(params:Object):void 
+		public static function attributes():Object
 		{
-			super.init(params);
-			type = "Box";
-			bodyType = BodyType.DYNAMIC;
-			width = 40;
-			height = 40;
-			container = game.gui.container;
-			bodyShapeType = GameObjectData.BOX_SHAPE;
-			elasticity = 0.4;
-			dynamicFriction = 1;
-			staticFriction = 2;
-			density = 10;
-			canTeleport = true;
-			needButtonToTeleport = true;
-			super.parse(params);
+			var obj:Object = ItemData.attributes();
+			Attribute.pushAttribute(obj, "type", "TeleportBox", Attribute.STRING, false);
+			Attribute.pushAttribute(obj, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING, false);
+			Attribute.pushAttribute(obj, "bodyType", BodyType.DYNAMIC, Attribute.STRING, true, true, [BodyType.STATIC, BodyType.DYNAMIC, BodyType.KINEMATIC]);
+			Attribute.pushAttribute(obj, "width", 40, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "height", 40, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "density", 10, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "elasticity", 0.4, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "dynamicFriction", 1, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "staticFriction", 2, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "canTeleport", true, Attribute.BOOL);
+			Attribute.pushAttribute(obj, "needButtonToTeleport", true, Attribute.BOOL);
+			return obj;
+		}
+		
+		override protected function getAttributes():Object {
+			return attributes();
 		}
 	}
 

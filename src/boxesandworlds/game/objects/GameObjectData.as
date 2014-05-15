@@ -1,8 +1,11 @@
 package boxesandworlds.game.objects 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.data.Attribute;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
 	import nape.geom.Vec2;
 	import nape.phys.BodyType;
 	/**
@@ -23,6 +26,7 @@ package boxesandworlds.game.objects
 		private var _shapePoints:Array;
 		private var _width:Number;
 		private var _height:Number;
+		private var _containerId:uint;
 		private var _container:Sprite;
 		private var _id:uint;
 		private var _type:String;
@@ -47,26 +51,41 @@ package boxesandworlds.game.objects
 			this.game = game;
 		}
 		
-		public function init(params:Object):void 
+		public static function attributes():Object
 		{
-			_canTeleport = false;
-			_start = new Vec2();
-			_startAngle = 0;
-			_startLV = new Vec2();
-			_elasticity = 0;
-			_dynamicFriction = 1;
-			_staticFriction = 2;
-			_density = 1;
-			_offsetX = OFFSET_X;
-			_offsetY = OFFSET_Y;
-			_isDestroyPhysic = false;
-			_needButtonToTeleport = false;
+			var obj:Object = { };
+			Attribute.pushAttribute(obj, "id", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "containerId", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "start", Vec2.weak(), Attribute.VEC2);
+			Attribute.pushAttribute(obj, "startAngle", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "startLV", Vec2.weak(), Attribute.VEC2);
+			Attribute.pushAttribute(obj, "elasticity", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "dynamicFriction", 1, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "staticFriction", 2, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "density", 1, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "offsetX", OFFSET_X, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "offsetY", OFFSET_Y, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "isDestroyPhysic", false, Attribute.BOOL, false);
+			Attribute.pushAttribute(obj, "needButtonToTeleport", false, Attribute.BOOL);
+			Attribute.pushAttribute(obj, "canTeleport", false, Attribute.BOOL);
+			return obj;
 		}
 		
-		protected function parse(params:Object):void {
+		public function init(params:Object):void 
+		{
+			var obj:Object = getAttributes();
+			for each(var attribute:Attribute in obj) {
+				this[attribute.name] = attribute.value;
+			}
+			
 			for (var key:String in params) {
 				this[key] = params[key];
 			}
+			container = game.gui.container;
+		}
+		
+		protected function getAttributes():Object {
+			return attributes();
 		}
 		
 		public function get bodyShapeType():String {return _bodyShapeType;}
@@ -113,6 +132,8 @@ package boxesandworlds.game.objects
 		public function set canTeleport(value:Boolean):void {_canTeleport = value;}
 		public function get needButtonToTeleport():Boolean {return _needButtonToTeleport;}
 		public function set needButtonToTeleport(value:Boolean):void {_needButtonToTeleport = value;}
+		public function get containerId():uint {return _containerId;}
+		public function set containerId(value:uint):void {_containerId = value;}
 	}
 
 }

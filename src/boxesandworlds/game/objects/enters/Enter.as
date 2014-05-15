@@ -18,7 +18,8 @@ package boxesandworlds.game.objects.enters
 		private var _view:EnterView;
 		private var _properties:EnterData;
 		
-		private var _previosAvailability:Boolean;
+		private var _previosOpenAvailability:Boolean;
+		private var _previosTeleportAvailability:Boolean;
 		
 		public function Enter(game:Game) 
 		{
@@ -33,23 +34,34 @@ package boxesandworlds.game.objects.enters
 		{
 			super.step();
 			
-			_previosAvailability = _properties.isOpen;
-			_properties.isOpen = checkAvailability();
+			_previosOpenAvailability = _properties.isOpen;
+			_properties.isOpen = checkOpenAvailability();
 			
-			if (_properties.isOpen != _previosAvailability) {
+			if (_properties.isOpen != _previosOpenAvailability) {
 				if (_properties.isOpen) open();
 				else close();
 			}
+			
+			_previosTeleportAvailability = _properties.canTeleport;
+			_properties.canTeleport = checkTeleportAvailability();
 			_view.step();
 		}
 		
-		public function checkAvailability():Boolean {
+		protected function checkOpenAvailability():Boolean {
 			if (world == null) return false;
 			if (world.worldBox == null) return false;
 			var w:World = world.getConnectedWorldByEdge(enterData.edge);
 			if (w != null) {
 				if (w.getEnterByEdge(w.getEdgeByWorld(world)) == null) return false;
 			}
+			return true;
+		}
+		
+		protected function checkTeleportAvailability():Boolean {
+			if (world == null) return false;
+			if (world.worldBox == null) return false;
+			var w:World = world.getConnectedWorldByEdge(enterData.edge);
+			if (w != null) return false;
 			return true;
 		}
 		

@@ -29,17 +29,19 @@ package boxesandworlds.game.objects.items
 		
 		private function teleportWithEnter():void 
 		{
-			var enter:Enter;
+			var pEnter:Enter;
 			var dis:Number = int.MAX_VALUE;
+			var enter:Enter;
 			for each(var obj:GameObject in world.objects) {
-				if (obj is Enter && (obj as Enter).enterData.canTeleport && Vec2.distance(body.position, obj.body.position) < dis) {
-					dis = Vec2.distance(body.position, obj.body.position);
-					enter = obj as Enter;
+				enter = obj as Enter;
+				if (enter != null && enter.enterData.canTeleport && Vec2.distance(body.position, enter.body.position) < dis) {
+					dis = Vec2.distance(body.position, enter.body.position);
+					pEnter = enter;
 				}
 			}
-			if (world.worldBox != null && enter != null) {
-				var params:Object = { teleported: this, from:enter };
-				teleportTo(enter.findTarget(), params);
+			if (world.worldBox != null && pEnter != null) {
+				var params:Object = { teleported: this, from:pEnter };
+				teleportTo(pEnter.findTarget(), params);
 			} else trace("я вывалился, а куда не знаю", data.type, data.id);
 		}
 		
