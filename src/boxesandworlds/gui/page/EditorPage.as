@@ -112,7 +112,7 @@ package boxesandworlds.gui.page {
 		}
 		
 		private function addNewItemHandler(e:EditorEventNewItem):void {
-			var item:EditorItem = new EditorItem(EditorItemsEnum.EDITOR_ITEMS_ID[e.id]);
+			var item:EditorItem = new EditorItem(e.id);
 			_items.push(item);
 		}
 		

@@ -30,11 +30,11 @@ package boxesandworlds.editor {
 			addChild(_ui);
 			
 			var content:Sprite = new Sprite();
-			var len:int = EditorItemsEnum.EDITOR_ITEMS_PREVIEW_UI_CLASS.length;
+			var len:uint = EditorItemsEnum.EDITOR_ITEMS_UI_PREVIEW_CLASS.length;
 			_items = new Vector.<EditorItemPreview>();
 			_items.length = len;
-			for (var i:uint = 0; i < len; ++i) {
-				var item:EditorItemPreview = new EditorItemPreview(EditorItemsEnum.EDITOR_ITEMS_ID[i]);
+			for (var i:int = 0; i < len; ++i) {
+				var item:EditorItemPreview = new EditorItemPreview(i);
 				_items[i] = item;
 				item.x = 10 + 10 * (i % 5) + 55 * (i % 5);
 				item.y = 10 + 10 * (int(i / 5)) + 55 * (int(i / 5));
@@ -71,7 +71,7 @@ package boxesandworlds.editor {
 		}
 		
 		private function itemDownHandler(e:MouseEvent):void {
-			var item:EditorItemPreview = e.target as EditorItemPreview;
+			var item:EditorItemPreview = e.currentTarget as EditorItemPreview;
 			if (item != null) {
 				dispatchEvent(new EditorEventNewItem(EditorEventNewItem.NEW_ITEM, item.id));
 			}

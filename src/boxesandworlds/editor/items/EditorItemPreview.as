@@ -1,5 +1,8 @@
 package boxesandworlds.editor.items {
 	import com.greensock.TweenMax;
+	import editor.EditorItemPreview001UI;
+	import editor.EditorItemPreview002UI;
+	import editor.EditorItemPreview003UI;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	
@@ -35,7 +38,7 @@ package boxesandworlds.editor.items {
 		
 		// protected
 		protected function setup():void {
-			_ui = new EditorItemsEnum.EDITOR_ITEMS_PREVIEW_UI_CLASS[_id];
+			_ui = new EditorItemsEnum.EDITOR_ITEMS_UI_PREVIEW_CLASS[_id]();
 			addChild(_ui);
 			
 			_mcHint = new Sprite();

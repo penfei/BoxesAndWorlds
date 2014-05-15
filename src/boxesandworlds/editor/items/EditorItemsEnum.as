@@ -11,9 +11,7 @@ package boxesandworlds.editor.items {
 	 */
 	public class EditorItemsEnum {
 		
-		static public const EDITOR_ITEMS_ID:Array = [1, 2, 3];
-		
-		static public const EDITOR_ITEMS_PREVIEW_UI_CLASS:Array = [
+		static public const EDITOR_ITEMS_UI_PREVIEW_CLASS:Array = [
 			EditorItemPreview001UI,
 			EditorItemPreview002UI,
 			EditorItemPreview003UI
