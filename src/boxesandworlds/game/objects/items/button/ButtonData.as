@@ -17,22 +17,22 @@ package boxesandworlds.game.objects.items.button
 			super(game);
 		}
 		
-		public static function attributes():Object
+		public static function attributes():Vector.<Attribute>
 		{
-			var obj:Object = ItemData.attributes();
-			Attribute.pushAttribute(obj, "type", "Button", Attribute.STRING, false);
-			Attribute.pushAttribute(obj, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING, false);
-			Attribute.pushAttribute(obj, "bodyType", BodyType.DYNAMIC, Attribute.STRING, true, true, [BodyType.STATIC, BodyType.DYNAMIC, BodyType.KINEMATIC]);
-			Attribute.pushAttribute(obj, "width", 40, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "height", 40, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "density", 6, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "elasticity", 0, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "dynamicFriction", 0.3, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "staticFriction", 0.3, Attribute.NUMBER);
-			return obj;
+			var arr:Vector.<Attribute> = ItemData.attributes();
+			Attribute.pushAttribute(arr, "type", "Button", Attribute.STRING, false);
+			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING, false);
+			Attribute.pushAttribute(arr, "bodyType", BodyType.DYNAMIC, Attribute.STRING, true, true, [BodyType.STATIC, BodyType.DYNAMIC, BodyType.KINEMATIC]);
+			Attribute.pushAttribute(arr, "width", 40, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "height", 40, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "density", 6, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "elasticity", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "dynamicFriction", 0.3, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "staticFriction", 0.3, Attribute.NUMBER);
+			return arr;
 		}
 		
-		override protected function getAttributes():Object {
+		override protected function getAttributes():Vector.<Attribute> {
 			return attributes();
 		}
 		

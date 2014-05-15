@@ -29,9 +29,15 @@ package boxesandworlds.game.data
 			this.enumValues = enumValues;
 		}
 		
-		public static function pushAttribute(obj:Object, name:String, value:*, type:String, redactor:Boolean = true, enum:Boolean = false, enumValues:Array = null):void 
+		public static function pushAttribute(arr:Vector.<Attribute>, name:String, value:*, type:String, redactor:Boolean = true, enum:Boolean = false, enumValues:Array = null):void 
 		{
-			obj[name] = new Attribute(name, value, type, redactor, enum, enumValues);
+			for (var i:uint = 0; i < arr.length; i++ ) {
+				if (arr[i].name == name) {
+					arr.splice(i, 1, new Attribute(name, value, type, redactor, enum, enumValues));
+					return;
+				}
+			}
+			arr.push(new Attribute(name, value, type, redactor, enum, enumValues));
 		}
 	}
 

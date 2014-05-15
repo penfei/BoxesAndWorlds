@@ -23,16 +23,16 @@ package boxesandworlds.game.objects.worldstructrure
 			super(game);
 		}
 		
-		public static function attributes():Object
+		public static function attributes():Vector.<Attribute>
 		{
-			var obj:Object = GameObjectData.attributes();
-			Attribute.pushAttribute(obj, "type", "WorldStructure", Attribute.STRING, false);
-			Attribute.pushAttribute(obj, "physicsBitmapDataUrl", "", Attribute.URL);
-			Attribute.pushAttribute(obj, "granularity", Vec2.weak(4, 4), Attribute.VEC2);
-			Attribute.pushAttribute(obj, "quality", 2, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "bodyType", BodyType.STATIC, Attribute.STRING, false);
-			Attribute.pushAttribute(obj, "simplification", 1.5, Attribute.NUMBER);
-			return obj;
+			var arr:Vector.<Attribute> = GameObjectData.attributes();
+			Attribute.pushAttribute(arr, "type", "WorldStructure", Attribute.STRING, false);
+			Attribute.pushAttribute(arr, "physicsBitmapDataUrl", "", Attribute.URL);
+			Attribute.pushAttribute(arr, "granularity", Vec2.weak(4, 4), Attribute.VEC2);
+			Attribute.pushAttribute(arr, "quality", 2, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "bodyType", BodyType.STATIC, Attribute.STRING, false);
+			Attribute.pushAttribute(arr, "simplification", 1.5, Attribute.NUMBER);
+			return arr;
 		}
 		
 		override public function init(params:Object):void 
@@ -42,7 +42,7 @@ package boxesandworlds.game.objects.worldstructrure
 			height = _physicsBitmapData.height;
 		}
 		
-		override protected function getAttributes():Object {
+		override protected function getAttributes():Vector.<Attribute> {
 			return attributes();
 		}
 		
@@ -56,9 +56,6 @@ package boxesandworlds.game.objects.worldstructrure
 		public function set simplification(value:Number):void {_simplification = value;}
 		public function get physicsBitmapDataUrl():String {return _physicsBitmapDataUrl;}
 		public function set physicsBitmapDataUrl(value:String):void {_physicsBitmapDataUrl = value;}
-		
-		
-		
 	}
 
 }

@@ -51,24 +51,24 @@ package boxesandworlds.game.objects
 			this.game = game;
 		}
 		
-		public static function attributes():Object
+		public static function attributes():Vector.<Attribute>
 		{
-			var obj:Object = { };
-			Attribute.pushAttribute(obj, "id", 0, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "containerId", 0, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "start", Vec2.weak(), Attribute.VEC2);
-			Attribute.pushAttribute(obj, "startAngle", 0, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "startLV", Vec2.weak(), Attribute.VEC2);
-			Attribute.pushAttribute(obj, "elasticity", 0, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "dynamicFriction", 1, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "staticFriction", 2, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "density", 1, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "offsetX", OFFSET_X, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "offsetY", OFFSET_Y, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "isDestroyPhysic", false, Attribute.BOOL, false);
-			Attribute.pushAttribute(obj, "needButtonToTeleport", false, Attribute.BOOL);
-			Attribute.pushAttribute(obj, "canTeleport", false, Attribute.BOOL);
-			return obj;
+			var arr:Vector.<Attribute> = new Vector.<Attribute>();
+			Attribute.pushAttribute(arr, "id", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "containerId", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "start", Vec2.weak(), Attribute.VEC2);
+			Attribute.pushAttribute(arr, "startAngle", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "startLV", Vec2.weak(), Attribute.VEC2);
+			Attribute.pushAttribute(arr, "elasticity", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "dynamicFriction", 1, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "staticFriction", 2, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "density", 1, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "offsetX", OFFSET_X, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "offsetY", OFFSET_Y, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "isDestroyPhysic", false, Attribute.BOOL, false);
+			Attribute.pushAttribute(arr, "needButtonToTeleport", false, Attribute.BOOL);
+			Attribute.pushAttribute(arr, "canTeleport", false, Attribute.BOOL);
+			return arr;
 		}
 		
 		public function init(params:Object):void 
@@ -84,7 +84,7 @@ package boxesandworlds.game.objects
 			container = game.gui.container;
 		}
 		
-		protected function getAttributes():Object {
+		protected function getAttributes():Vector.<Attribute> {
 			return attributes();
 		}
 		

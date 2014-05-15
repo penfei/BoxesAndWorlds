@@ -23,15 +23,15 @@ package boxesandworlds.game.objects.enters
 			super(game);
 		}
 		
-		public static function attributes():Object
+		public static function attributes():Vector.<Attribute>
 		{
-			var obj:Object = GameObjectData.attributes();
-			Attribute.pushAttribute(obj, "isOpen", true, Attribute.BOOL);
-			Attribute.pushAttribute(obj, "edge", LEFT, Attribute.STRING, true, true, [LEFT, RIGHT, TOP, BOTTOM]);
-			return obj;
+			var arr:Vector.<Attribute> = GameObjectData.attributes();
+			Attribute.pushAttribute(arr, "isOpen", true, Attribute.BOOL);
+			Attribute.pushAttribute(arr, "edge", LEFT, Attribute.STRING, true, true, [LEFT, RIGHT, TOP, BOTTOM]);
+			return arr;
 		}
 		
-		override protected function getAttributes():Object {
+		override protected function getAttributes():Vector.<Attribute> {
 			return attributes();
 		}
 		

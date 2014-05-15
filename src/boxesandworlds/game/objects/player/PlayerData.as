@@ -27,34 +27,34 @@ package boxesandworlds.game.objects.player
 			super(game);
 		}
 		
-		public static function attributes():Object
+		public static function attributes():Vector.<Attribute>
 		{
-			var obj:Object = GameObjectData.attributes();
-			Attribute.pushAttribute(obj, "type", "Player", Attribute.STRING);
-			Attribute.pushAttribute(obj, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING);
-			Attribute.pushAttribute(obj, "bodyType", BodyType.DYNAMIC, Attribute.STRING);
-			Attribute.pushAttribute(obj, "width", 66, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "height", 120, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "density", 12, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "elasticity", 0, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "dynamicFriction", 0, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "staticFriction", 0, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "offsetX", 1, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "offsetY", 5, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "speed", 300, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "jumpPower", -35000, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "isMoveLeft", false, Attribute.BOOL);
-			Attribute.pushAttribute(obj, "isMoveDown", false, Attribute.BOOL);
-			Attribute.pushAttribute(obj, "isMoveUp", false, Attribute.BOOL);
-			Attribute.pushAttribute(obj, "isJump", true, Attribute.BOOL);
-			Attribute.pushAttribute(obj, "isOnEarth", false, Attribute.BOOL);
-			Attribute.pushAttribute(obj, "isRight", true, Attribute.BOOL);
-			Attribute.pushAttribute(obj, "itemAreaIndentX", 30, Attribute.NUMBER);
-			Attribute.pushAttribute(obj, "itemAreaIndentY", 30, Attribute.NUMBER);
-			return obj;
+			var arr:Vector.<Attribute> = GameObjectData.attributes();
+			Attribute.pushAttribute(arr, "type", "Player", Attribute.STRING);
+			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING);
+			Attribute.pushAttribute(arr, "bodyType", BodyType.DYNAMIC, Attribute.STRING);
+			Attribute.pushAttribute(arr, "width", 66, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "height", 120, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "density", 12, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "elasticity", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "dynamicFriction", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "staticFriction", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "offsetX", 1, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "offsetY", 5, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "speed", 300, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "jumpPower", -35000, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "isMoveLeft", false, Attribute.BOOL);
+			Attribute.pushAttribute(arr, "isMoveDown", false, Attribute.BOOL);
+			Attribute.pushAttribute(arr, "isMoveUp", false, Attribute.BOOL);
+			Attribute.pushAttribute(arr, "isJump", true, Attribute.BOOL);
+			Attribute.pushAttribute(arr, "isOnEarth", false, Attribute.BOOL);
+			Attribute.pushAttribute(arr, "isRight", true, Attribute.BOOL);
+			Attribute.pushAttribute(arr, "itemAreaIndentX", 30, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "itemAreaIndentY", 30, Attribute.NUMBER);
+			return arr;
 		}
 		
-		override protected function getAttributes():Object {
+		override protected function getAttributes():Vector.<Attribute> {
 			return attributes();
 		}
 		

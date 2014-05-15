@@ -16,14 +16,14 @@ package boxesandworlds.game.objects.items
 			super(game);
 		}
 		
-		public static function attributes():Object
+		public static function attributes():Vector.<Attribute>
 		{
-			var obj:Object = GameObjectData.attributes();
-			Attribute.pushAttribute(obj, "canAdded", true, Attribute.BOOL);
-			return obj;
+			var arr:Vector.<Attribute> = GameObjectData.attributes();
+			Attribute.pushAttribute(arr, "canAdded", true, Attribute.BOOL);
+			return arr;
 		}
 		
-		override protected function getAttributes():Object {
+		override protected function getAttributes():Vector.<Attribute> {
 			return attributes();
 		}
 		
