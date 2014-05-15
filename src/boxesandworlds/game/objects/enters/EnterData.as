@@ -1,6 +1,7 @@
 package boxesandworlds.game.objects.enters 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.objects.GameObjectData;
 	import nape.phys.BodyType;
 	/**
@@ -22,12 +23,16 @@ package boxesandworlds.game.objects.enters
 			super(game);
 		}
 		
-		override public function init(params:Object):void 
+		public static function attributes():Object
 		{
-			super.init(params);
-			_isOpen = false;
-			_edge = LEFT;
-			super.parse(params);
+			var obj:Object = GameObjectData.attributes();
+			Attribute.pushAttribute(obj, "isOpen", true, Attribute.BOOL);
+			Attribute.pushAttribute(obj, "edge", LEFT, Attribute.STRING, true, true, [LEFT, RIGHT, TOP, BOTTOM]);
+			return obj;
+		}
+		
+		override protected function getAttributes():Object {
+			return attributes();
 		}
 		
 		public function get isOpen():Boolean {return _isOpen;}

@@ -1,5 +1,6 @@
 package boxesandworlds.game.controller 
 {
+	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoor;
 	import boxesandworlds.game.objects.enters.EnterData;
 	import boxesandworlds.game.objects.enters.gate.Gate;
 	import boxesandworlds.game.objects.items.box.Box;
@@ -96,9 +97,13 @@ package boxesandworlds.game.controller
 			gate.init( { start:new Vec2(1030, 635), width:60, height:150} );
 			world2.addGameObject(gate);
 			
-			gate = new Gate(game);
-			gate.init( { start:new Vec2(1335, 27), width:220, height:55, edge:EnterData.TOP} );
-			world2.addGameObject(gate);
+			//gate = new Gate(game);
+			//gate.init( { start:new Vec2(1335, 27), width:220, height:55, edge:EnterData.TOP} );
+			//world2.addGameObject(gate);
+			
+			var edgeDoor:EdgeDoor = new EdgeDoor(game);
+			edgeDoor.init( { start:new Vec2(1335, 27), width:220, height:55, edge:EnterData.TOP} );
+			world2.addGameObject(edgeDoor);
 			
 			gate = new Gate(game);
 			gate.init( { start:new Vec2(2770, 663), width:60, height:155, edge:EnterData.RIGHT} );

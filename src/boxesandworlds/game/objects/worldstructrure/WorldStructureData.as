@@ -1,6 +1,7 @@
 package boxesandworlds.game.objects.worldstructrure 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.objects.GameObjectData;
 	import flash.display.BitmapData;
 	import nape.geom.Vec2;
@@ -11,6 +12,7 @@ package boxesandworlds.game.objects.worldstructrure
 	 */
 	public class WorldStructureData extends GameObjectData
 	{
+		private var _physicsBitmapDataUrl:String;
 		private var _physicsBitmapData:BitmapData;
 		private var _granularity:Vec2;
 		private var _quality:int;
@@ -21,20 +23,29 @@ package boxesandworlds.game.objects.worldstructrure
 			super(game);
 		}
 		
+		public static function attributes():Object
+		{
+			var obj:Object = GameObjectData.attributes();
+			Attribute.pushAttribute(obj, "type", "WorldStructure", Attribute.STRING, false);
+			Attribute.pushAttribute(obj, "physicsBitmapDataUrl", "", Attribute.URL);
+			Attribute.pushAttribute(obj, "granularity", Vec2.weak(4, 4), Attribute.VEC2);
+			Attribute.pushAttribute(obj, "quality", 2, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "bodyType", BodyType.STATIC, Attribute.STRING, false);
+			Attribute.pushAttribute(obj, "simplification", 1.5, Attribute.NUMBER);
+			return obj;
+		}
+		
 		override public function init(params:Object):void 
 		{
 			super.init(params);
-			type = "WorldStructure";
-			_physicsBitmapData = params.physicsBitmapData;
-			_granularity = Vec2.weak(4, 4);
-			_quality = 2;
-			_simplification = 1.5;
-			bodyType = BodyType.STATIC;
-			container = game.gui.container;
 			width = _physicsBitmapData.width;
 			height = _physicsBitmapData.height;
-			super.parse(params);
 		}
+		
+		override protected function getAttributes():Object {
+			return attributes();
+		}
+		
 		public function get physicsBitmapData():BitmapData {return _physicsBitmapData;}
 		public function set physicsBitmapData(value:BitmapData):void {_physicsBitmapData = value;}
 		public function get granularity():Vec2 {return _granularity;}
@@ -43,6 +54,8 @@ package boxesandworlds.game.objects.worldstructrure
 		public function set quality(value:int):void {_quality = value;}
 		public function get simplification():Number {return _simplification;}
 		public function set simplification(value:Number):void {_simplification = value;}
+		public function get physicsBitmapDataUrl():String {return _physicsBitmapDataUrl;}
+		public function set physicsBitmapDataUrl(value:String):void {_physicsBitmapDataUrl = value;}
 		
 		
 		

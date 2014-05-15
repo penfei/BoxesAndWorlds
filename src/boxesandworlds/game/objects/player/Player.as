@@ -98,7 +98,7 @@ package boxesandworlds.game.objects.player
 					pEnter = enter;
 				}
 			}
-			if (world.worldBox != null && pEnter != null) {
+			if (pEnter != null) {
 				var params:Object = { teleported: this, from:pEnter };
 				teleportTo(pEnter.findTarget(), params);
 			} else trace("я вывалился, а куда не знаю");
@@ -204,7 +204,7 @@ package boxesandworlds.game.objects.player
 		
 		public function resetItem():void 
 		{
-			if (_item != null) {
+			if (hasItem) {
 				var pos:Vec2 = new Vec2(body.position.x - (_properties.width + _item.itemData.width + 10) / 2, body.position.y);
 				if (_properties.isRight) {
 					pos.x = body.position.x + (_properties.width + _item.itemData.width + 10) / 2
@@ -226,7 +226,7 @@ package boxesandworlds.game.objects.player
 		
 		private function addItem(pItem:Item):void 
 		{
-			if (pItem != null) {
+			if (!hasItem) {
 				_item = pItem;
 				_item.addToPlayer();
 			}

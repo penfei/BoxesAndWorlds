@@ -1,6 +1,7 @@
 package boxesandworlds.game.objects.items 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.objects.GameObjectData;
 	/**
 	 * ...
@@ -15,10 +16,15 @@ package boxesandworlds.game.objects.items
 			super(game);
 		}
 		
-		override public function init(params:Object):void 
+		public static function attributes():Object
 		{
-			_canAdded = true;
-			super.init(params);
+			var obj:Object = GameObjectData.attributes();
+			Attribute.pushAttribute(obj, "canAdded", true, Attribute.BOOL);
+			return obj;
+		}
+		
+		override protected function getAttributes():Object {
+			return attributes();
 		}
 		
 		public function get canAdded():Boolean {return _canAdded;}

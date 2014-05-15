@@ -1,6 +1,7 @@
 package boxesandworlds.game.objects.player 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.objects.GameObjectData;
 	import nape.phys.BodyType;
 	/**
@@ -26,32 +27,35 @@ package boxesandworlds.game.objects.player
 			super(game);
 		}
 		
-		override public function init(params:Object):void 
+		public static function attributes():Object
 		{
-			super.init(params);
-			type = "Player";
-			width = 66;
-			height = 120;
-			bodyType = BodyType.DYNAMIC;
-			bodyShapeType = GameObjectData.BOX_SHAPE;
-			container = game.gui.container;
-			density = 12;
-			dynamicFriction = 0;
-			staticFriction = 0;
-			elasticity = 0.0;
-			offsetX = 1;
-			offsetY = 5;
-			_speed = 300;
-			_jumpPower = -35000;
-			_isMoveLeft = false;
-			_isMoveDown = false;
-			_isMoveUp = false;
-			_isJump = true;
-			_isOnEarth = false;
-			_itemAreaIndentX = 30;
-			_itemAreaIndentY = 30;
-			_isRight = true;
-			super.parse(params);
+			var obj:Object = GameObjectData.attributes();
+			Attribute.pushAttribute(obj, "type", "Player", Attribute.STRING);
+			Attribute.pushAttribute(obj, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING);
+			Attribute.pushAttribute(obj, "bodyType", BodyType.DYNAMIC, Attribute.STRING);
+			Attribute.pushAttribute(obj, "width", 66, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "height", 120, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "density", 12, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "elasticity", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "dynamicFriction", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "staticFriction", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "offsetX", 1, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "offsetY", 5, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "speed", 300, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "jumpPower", -35000, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "isMoveLeft", false, Attribute.BOOL);
+			Attribute.pushAttribute(obj, "isMoveDown", false, Attribute.BOOL);
+			Attribute.pushAttribute(obj, "isMoveUp", false, Attribute.BOOL);
+			Attribute.pushAttribute(obj, "isJump", true, Attribute.BOOL);
+			Attribute.pushAttribute(obj, "isOnEarth", false, Attribute.BOOL);
+			Attribute.pushAttribute(obj, "isRight", true, Attribute.BOOL);
+			Attribute.pushAttribute(obj, "itemAreaIndentX", 30, Attribute.NUMBER);
+			Attribute.pushAttribute(obj, "itemAreaIndentY", 30, Attribute.NUMBER);
+			return obj;
+		}
+		
+		override protected function getAttributes():Object {
+			return attributes();
 		}
 		
 		public function get isMoveRight():Boolean {return _isMoveRight;}

@@ -47,7 +47,7 @@ package boxesandworlds.game.objects.enters
 			_view.step();
 		}
 		
-		public function checkOpenAvailability():Boolean {
+		protected function checkOpenAvailability():Boolean {
 			if (world == null) return false;
 			if (world.worldBox == null) return false;
 			var w:World = world.getConnectedWorldByEdge(enterData.edge);
@@ -57,7 +57,7 @@ package boxesandworlds.game.objects.enters
 			return true;
 		}
 		
-		public function checkTeleportAvailability():Boolean {
+		protected function checkTeleportAvailability():Boolean {
 			if (world == null) return false;
 			if (world.worldBox == null) return false;
 			var w:World = world.getConnectedWorldByEdge(enterData.edge);
