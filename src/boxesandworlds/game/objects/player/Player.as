@@ -226,7 +226,7 @@ package boxesandworlds.game.objects.player
 		
 		private function addItem(pItem:Item):void 
 		{
-			if (!hasItem) {
+			if (pItem != null) {
 				_item = pItem;
 				_item.addToPlayer();
 			}
