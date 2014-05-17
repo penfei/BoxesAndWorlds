@@ -1,9 +1,12 @@
 package boxesandworlds.game.controller 
 {
+	import boxesandworlds.game.objects.door.Door;
 	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoor;
 	import boxesandworlds.game.objects.enters.EnterData;
 	import boxesandworlds.game.objects.enters.gate.Gate;
 	import boxesandworlds.game.objects.items.box.Box;
+	import boxesandworlds.game.objects.items.button.Button;
+	import boxesandworlds.game.objects.items.key.Key;
 	import boxesandworlds.game.objects.items.teleportBox.TeleportBox;
 	import boxesandworlds.game.objects.items.worldBox.WorldBox;
 	import boxesandworlds.game.objects.player.Player;
@@ -88,6 +91,18 @@ package boxesandworlds.game.controller
 			worldBox = new WorldBox(game);
 			worldBox.init( { start:new Vec2(500, 100), childWorldId: 3 } );
 			world1.addGameObject(worldBox);
+			
+			var door:Door = new Door(game);
+			door.init( { start:new Vec2(700, 300), id:3 } );
+			world1.addGameObject(door);
+			
+			var key:Key = new Key(game);
+			key.init( { start:new Vec2(400, 300), openedId:3 } );
+			world1.addGameObject(key);
+			
+			var button:Button = new Button(game);
+			button.init( { start:new Vec2(400, 720), openedId:3 } );
+			world1.addGameObject(button);
 			
 			//worldBox = new WorldBox(game);
 			//worldBox.init( { start:new Vec2(550, 100), childWorldId: 4 } );

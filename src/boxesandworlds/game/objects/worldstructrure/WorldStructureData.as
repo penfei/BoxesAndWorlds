@@ -23,6 +23,17 @@ package boxesandworlds.game.objects.worldstructrure
 			super(game);
 		}
 		
+		public function get physicsBitmapData():BitmapData {return _physicsBitmapData;}
+		public function set physicsBitmapData(value:BitmapData):void {_physicsBitmapData = value;}
+		public function get granularity():Vec2 {return _granularity;}
+		public function set granularity(value:Vec2):void {_granularity = value;}
+		public function get quality():int {return _quality;}
+		public function set quality(value:int):void {_quality = value;}
+		public function get simplification():Number {return _simplification;}
+		public function set simplification(value:Number):void {_simplification = value;}
+		public function get physicsBitmapDataUrl():String {return _physicsBitmapDataUrl;}
+		public function set physicsBitmapDataUrl(value:String):void {_physicsBitmapDataUrl = value;}
+		
 		public static function attributes():Vector.<Attribute>
 		{
 			var arr:Vector.<Attribute> = GameObjectData.attributes();
@@ -45,17 +56,6 @@ package boxesandworlds.game.objects.worldstructrure
 		override protected function getAttributes():Vector.<Attribute> {
 			return attributes();
 		}
-		
-		public function get physicsBitmapData():BitmapData {return _physicsBitmapData;}
-		public function set physicsBitmapData(value:BitmapData):void {_physicsBitmapData = value;}
-		public function get granularity():Vec2 {return _granularity;}
-		public function set granularity(value:Vec2):void {_granularity = value;}
-		public function get quality():int {return _quality;}
-		public function set quality(value:int):void {_quality = value;}
-		public function get simplification():Number {return _simplification;}
-		public function set simplification(value:Number):void {_simplification = value;}
-		public function get physicsBitmapDataUrl():String {return _physicsBitmapDataUrl;}
-		public function set physicsBitmapDataUrl(value:String):void {_physicsBitmapDataUrl = value;}
 	}
 
 }

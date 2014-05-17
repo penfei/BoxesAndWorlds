@@ -1,8 +1,11 @@
 package boxesandworlds.game.objects.items.button 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.objects.door.Door;
+	import boxesandworlds.game.objects.GameObject;
 	import boxesandworlds.game.objects.items.Item;
 	import boxesandworlds.game.objects.items.ItemData;
+	import boxesandworlds.game.world.World;
 	/**
 	 * ...
 	 * @author Sah
@@ -11,6 +14,9 @@ package boxesandworlds.game.objects.items.button
 	{
 		private var _view:ButtonView;
 		private var _properties:ButtonData;
+		private var _openedDoor:Door;
+		
+		private var _openedContacts:uint;
 		
 		public function Button(game:Game) 
 		{
@@ -26,9 +32,11 @@ package boxesandworlds.game.objects.items.button
 			_properties = data as ButtonData;
 			_properties.init(params);
 			
-			_view = new ButtonView(game, this, params.ui);
+			_view = new ButtonView(game, this);
 			itemView = _view;
 			view = _view;
+			
+			_openedContacts = 0;
 			
 			super.init();
 			
@@ -36,14 +44,30 @@ package boxesandworlds.game.objects.items.button
 			body.cbTypes.add(game.physics.buttonType);
 		}
 		
-		override public function destroy():void {
-			super.destroy();
-			if (_view) {
-				_view.destroy();
-				_view = null;
+		override public function postInit():void 
+		{
+			super.postInit();
+			
+			if (_properties.openedId != 0) {
+				for each(var world:World in game.objects.worlds) {
+					for each(var obj:GameObject in world.objects) {
+						if (obj.data.id == _properties.openedId) {
+							_openedDoor = obj as Door;
+						}
+					}
+				}
 			}
 		}
 		
+		public function openDoor():void {
+			_openedContacts++;
+			if (_openedContacts > 0) _openedDoor.temporarilyOpen();
+		}
+		
+		public function closeDoor():void {
+			_openedContacts--;
+			if (_openedContacts == 0) _openedDoor.temporarilyClose();
+		}
 	}
 
 }

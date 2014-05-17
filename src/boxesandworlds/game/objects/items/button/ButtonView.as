@@ -12,18 +12,16 @@ package boxesandworlds.game.objects.items.button
 		private var _ui:Sprite;
 		private var _button:Button;
 		
-		public function ButtonView(game:Game, button:Button, ui:Sprite) 
+		public function ButtonView(game:Game, button:Button) 
 		{
 			_button = button;
-			_ui = ui;
 			super(game, button);
 		}
 		
 		override public function init():void {
-			_ui.x = 0;
-			_ui.y = 0;
-			
-			cacheAsBitmap = true;
+			_ui = new Sprite();
+			_ui.graphics.beginFill(0xF3FF50);
+			_ui.graphics.drawRect( -obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height);
 			addChild(_ui);
 		}
 		

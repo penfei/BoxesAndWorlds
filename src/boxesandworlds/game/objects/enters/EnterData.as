@@ -23,6 +23,11 @@ package boxesandworlds.game.objects.enters
 			super(game);
 		}
 		
+		public function get isOpen():Boolean {return _isOpen;}
+		public function set isOpen(value:Boolean):void {_isOpen = value;}
+		public function get edge():String {return _edge;}
+		public function set edge(value:String):void {_edge = value;}
+		
 		public static function attributes():Vector.<Attribute>
 		{
 			var arr:Vector.<Attribute> = GameObjectData.attributes();
@@ -34,11 +39,6 @@ package boxesandworlds.game.objects.enters
 		override protected function getAttributes():Vector.<Attribute> {
 			return attributes();
 		}
-		
-		public function get isOpen():Boolean {return _isOpen;}
-		public function set isOpen(value:Boolean):void {_isOpen = value;}
-		public function get edge():String {return _edge;}
-		public function set edge(value:String):void {_edge = value;}
 	}
 
 }

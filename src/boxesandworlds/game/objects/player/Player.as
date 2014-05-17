@@ -1,10 +1,12 @@
 package boxesandworlds.game.objects.player 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.objects.door.Door;
 	import boxesandworlds.game.objects.enters.Enter;
 	import boxesandworlds.game.objects.enters.gate.Gate;
 	import boxesandworlds.game.objects.GameObject;
 	import boxesandworlds.game.objects.items.Item;
+	import boxesandworlds.game.objects.items.key.Key;
 	import nape.geom.AABB;
 	import nape.geom.Vec2;
 	import nape.phys.BodyList;
@@ -20,6 +22,7 @@ package boxesandworlds.game.objects.player
 		private var _item:Item;
 		private var _itemArea:AABB;
 		private var _potencialTeleportTarget:GameObject;
+		private var _bodyListInItemArea:BodyList;
 		
 		public function Player(game:Game) 
 		{
@@ -53,10 +56,9 @@ package boxesandworlds.game.objects.player
 			super.initPhysics();
 			
 			body.cbTypes.add(game.physics.meType);
-			body.cbTypes.add(game.physics.movableType);
 			body.cbTypes.add(game.physics.collisionType);
 			body.shapes.at(0).filter.collisionGroup = 0x0100;
-			body.shapes.at(0).filter.collisionMask = ~0x0010;
+			body.shapes.at(0).filter.collisionMask = ~0x1010;
 			body.allowRotation = false;
 		}
 		override public function destroy():void 
@@ -74,6 +76,8 @@ package boxesandworlds.game.objects.player
 			if (_properties.isMoveRight && !_properties.isMoveLeft) goRight();
 			if ((!_properties.isMoveLeft && !_properties.isMoveRight) || (_properties.isMoveLeft && _properties.isMoveRight)) stopMotion();
 			
+			_bodyListInItemArea = getBodiesInItemArea();
+			searchDoor();
 			searchPotencialTeleport();
 			if (hasItem) {
 				_item.body.position.set(body.position);
@@ -232,17 +236,33 @@ package boxesandworlds.game.objects.player
 			}
 		}
 		
+		private function searchDoor():void 
+		{
+			if (hasItem && _item is Key) {
+				var door:Door;
+				var key:Key = _item as Key;
+				for (var i:int = 0; i < _bodyListInItemArea.length; i++) {
+					door = _bodyListInItemArea.at(i).userData.obj as Door;
+					if (door != null && key.keyData.openedId == door.data.id) {
+						door.open();
+						resetItem();
+						key.destroy();
+						return;
+					}
+				}
+			}
+		}
+		
 		private function searchPotencialTeleport():void 
 		{
 			_potencialTeleportTarget = null;
-			var bodyList:BodyList = getBodiesInItemArea();
 			var dis:Number = int.MAX_VALUE;
 			var teleport:GameObject;
 			var potencialTeleport:GameObject;
 			
-			for (var i:int = 0; i < bodyList.length; i++) {
-				var d:Number = Vec2.distance(body.position, bodyList.at(i).position);
-				teleport = bodyList.at(i).userData.obj as GameObject;
+			for (var i:int = 0; i < _bodyListInItemArea.length; i++) {
+				var d:Number = Vec2.distance(body.position, _bodyListInItemArea.at(i).position);
+				teleport = _bodyListInItemArea.at(i).userData.obj as GameObject;
 				if (teleport != null) {
 					var t:GameObject = teleport.findTarget();
 					if (t != null && teleport.data.needButtonToTeleport && teleport != _item && d < dis) {
