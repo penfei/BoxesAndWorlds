@@ -1,5 +1,4 @@
-package 
-{
+package {
 	import boxesandworlds.controller.Core;
 	import boxesandworlds.controller.DataManager;
 	import boxesandworlds.controller.UIManager;
@@ -17,12 +16,11 @@ package
 	 * @author Sah
 	 */
 	[SWF(width = "1200", height = "800", frameRate = "30")]
-	public class Main extends Sprite 
-	{
+	public class Main extends Sprite {
+		
 		private var _canvas:View;
 		
-		public function Main():void 
-		{
+		public function Main():void {
 			if (stage) {
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 				stage.align = StageAlign.TOP_LEFT;
@@ -32,8 +30,7 @@ package
 			}
 		}
 		
-		public function init(params:Object):void 
-		{
+		public function init(params:Object):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
 			//SWFProfiler.init(stage, this);
@@ -41,25 +38,23 @@ package
 			initCore(params)
 		}
 		
-		public function initCore(params:Object = null):void {			
+		public function initCore(params:Object = null):void {
 			_canvas = new View;
 			addChild(_canvas);
 			
 			Core.data = new DataManager(params);
 			Core.ui = new UIManager(_canvas);
-			Core.instance.stage = stage;
+			Core.stage = stage;
 			Core.data.addEventListener(Event.COMPLETE, initCompleteHandler);
 			Core.init();
 		}
 		
-		private function initCompleteHandler(e:Event):void 
-		{
+		private function initCompleteHandler(e:Event):void {
 			Core.ui.init();
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
-		private function rightMouseDownHandler(e:MouseEvent):void 
-		{
+		private function rightMouseDownHandler(e:MouseEvent):void {
 			
 		}
 		

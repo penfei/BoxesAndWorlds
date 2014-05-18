@@ -21,7 +21,7 @@ package boxesandworlds.game.levels.tutorial
 		override public function init():void {
 			super.init();
 			
-			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, game.physics.buttonType, game.physics.movableType, buttonContactHandler));
+			//game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, game.physics.buttonType, game.physics.movableType, buttonContactHandler));
 		}
 		
 		override public function start():void 

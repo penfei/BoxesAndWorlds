@@ -1,8 +1,7 @@
 package boxesandworlds.editor.items {
+	import boxesandworlds.game.data.Attribute;
 	import com.greensock.TweenMax;
-	import editor.EditorItemPreview001UI;
-	import editor.EditorItemPreview002UI;
-	import editor.EditorItemPreview003UI;
+	import editor.EditorItemPreviewUI;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	
@@ -13,19 +12,24 @@ package boxesandworlds.editor.items {
 	public class EditorItemPreview extends Sprite {
 		
 		// ui
-		private var _ui:MovieClip;
+		//private var _ui:MovieClip;
+		private var _ui:EditorItemPreviewUI;
 		private var _mcHint:Sprite;
 		
 		// vars
-		private var _id:int;
+		private var _id:String;
+		private var _attributes:Vector.<Attribute>;
 		
-		public function EditorItemPreview(id:int) {
+		public function EditorItemPreview(id:String, attributes:Vector.<Attribute>) {
 			_id = id;
+			_attributes = attributes;
 			setup();
 		}
 		
 		// get
-		public function get id():int { return _id; }
+		public function get id():String { return _id; }
+		
+		public function get attributes():Vector.<Attribute> { return _attributes; }
 		
 		// public
 		public function showHint():void {
@@ -38,7 +42,10 @@ package boxesandworlds.editor.items {
 		
 		// protected
 		protected function setup():void {
-			_ui = new EditorItemsEnum.EDITOR_ITEMS_UI_PREVIEW_CLASS[_id]();
+			//_ui = new EditorItemsEnum.EDITOR_ITEMS_UI_PREVIEW_CLASS[_id]();
+			_ui = new EditorItemPreviewUI;
+			_ui.label.text = String(_id);
+			_ui.label.mouseEnabled = false;
 			addChild(_ui);
 			
 			_mcHint = new Sprite();

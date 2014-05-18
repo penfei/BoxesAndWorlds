@@ -2,7 +2,6 @@ package boxesandworlds.game.objects
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.world.World;
-	import flash.display.Sprite;
 	import nape.dynamics.Arbiter;
 	import nape.dynamics.InteractionFilter;
 	import nape.geom.Ray;
@@ -67,6 +66,7 @@ package boxesandworlds.game.objects
 		public function destroy():void {
 			destroyPhysic();
 			destroyView();
+			_world.removeGameObject(this);
 		}
 		
 		public function destroyPhysic():void {

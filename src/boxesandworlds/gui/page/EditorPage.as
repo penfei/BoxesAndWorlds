@@ -1,17 +1,29 @@
 package boxesandworlds.gui.page {
 	import boxesandworlds.controller.Core;
 	import boxesandworlds.controller.UIManager;
-	import boxesandworlds.editor.EditorAreaItems;
+	import boxesandworlds.editor.area.EditorAreaAttributes;
+	import boxesandworlds.editor.area.EditorAreaItems;
+	import boxesandworlds.editor.area.EditorAreaWorld;
+	import boxesandworlds.editor.area.EditorAreaWorlds;
 	import boxesandworlds.editor.EditorPopup;
 	import boxesandworlds.editor.events.EditorEventNewItem;
-	import boxesandworlds.editor.items.EditorItem;
-	import boxesandworlds.editor.items.EditorItemsEnum;
+	import boxesandworlds.editor.events.EditorEventWorld;
+	import boxesandworlds.editor.utils.EditorUtils;
+	import boxesandworlds.game.data.Attribute;
+	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoorData;
+	import boxesandworlds.game.objects.enters.gate.GateData;
+	import boxesandworlds.game.objects.items.box.BoxData;
+	import boxesandworlds.game.objects.items.button.ButtonData;
+	import boxesandworlds.game.objects.items.teleportBox.TeleportBoxData;
+	import boxesandworlds.game.objects.items.worldBox.WorldBoxData;
+	import boxesandworlds.game.objects.worldstructrure.WorldStructureData;
 	import com.greensock.easing.Expo;
 	import com.greensock.easing.Linear;
 	import com.greensock.TweenMax;
 	import editor.EditorPageUI;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	
 	/**
 	 * ...
 	 * @author Jarkony
@@ -21,9 +33,13 @@ package boxesandworlds.gui.page {
 		// ui
 		private var _ui:EditorPageUI;
 		private var _popup:EditorPopup;
+		private var _areaWorld:EditorAreaWorld;
+		private var _areaWorlds:EditorAreaWorlds;
 		private var _areaItems:EditorAreaItems;
-		private var _items:Vector.<EditorItem>;
-		private var _currentItem:EditorItem;
+		private var _areaAttributes:EditorAreaAttributes;
+		
+		// vars
+		private var _library:Array = [WorldStructureData, BoxData, TeleportBoxData, WorldBoxData, ButtonData, GateData, EdgeDoorData];
 		
 		public function EditorPage() {
 			super(UIManager.EDITOR_PAGE_ID);
@@ -49,11 +65,21 @@ package boxesandworlds.gui.page {
 			_ui.btnClear.addEventListener(MouseEvent.CLICK, btnClearClickHandler);
 			_ui.btnExit.addEventListener(MouseEvent.CLICK, btnExitClickHandler);
 			
-			_areaItems = new EditorAreaItems();
+			_areaWorld = new EditorAreaWorld();
+			_ui.areaWorld.addChild(_areaWorld);
+			
+			_areaWorlds = new EditorAreaWorlds(_ui.btnAddWorld, _ui.btnRemoveWorld, _ui.btnSortWorlds);
+			_ui.areaWorlds.addChild(_areaWorlds);
+			_areaWorlds.addEventListener(EditorEventWorld.ADD_WORLD, addWorldHandler);
+			_areaWorlds.addEventListener(EditorEventWorld.REMOVE_WORLD, removeWorldHandler);
+			_areaWorlds.addEventListener(EditorEventWorld.SELECT_WORLD, selectWorldHandler);
+			
+			_areaItems = new EditorAreaItems(_library);
 			_ui.areaItems.addChild(_areaItems);
 			_areaItems.addEventListener(EditorEventNewItem.NEW_ITEM, addNewItemHandler);
 			
-			_items = new Vector.<EditorItem>();
+			_areaAttributes = new EditorAreaAttributes();
+			_ui.areaAttributes.addChild(_areaAttributes);
 			
 			//setupTempPositions();
 		}
@@ -112,8 +138,19 @@ package boxesandworlds.gui.page {
 		}
 		
 		private function addNewItemHandler(e:EditorEventNewItem):void {
-			var item:EditorItem = new EditorItem(e.id);
-			_items.push(item);
+			_areaWorld.addItem(e.id, e.attributes);
+		}
+		
+		private function addWorldHandler(e:EditorEventWorld):void {
+			_areaWorld.addWorld(e.id);
+		}
+		
+		private function removeWorldHandler(e:EditorEventWorld):void {
+			_areaWorld.removeWorld(e.id, e.addId);
+		}
+		
+		private function selectWorldHandler(e:EditorEventWorld):void {
+			_areaWorld.selectWorld(e.id);
 		}
 		
 	}
