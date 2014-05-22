@@ -19,6 +19,8 @@ package boxesandworlds.game.data
 		public var isEnum:Boolean;
 		public var enumValues:Array;
 		
+		private var _defaultValue:*;
+		
 		public function Attribute(name:String, value:*, type:String, showInRedactor:Boolean = true, isEnum:Boolean = false, enumValues:Array = null) 
 		{
 			this.name = name;
@@ -27,6 +29,7 @@ package boxesandworlds.game.data
 			this.showInRedactor = showInRedactor;
 			this.isEnum = isEnum;
 			this.enumValues = enumValues;
+			_defaultValue = value;
 		}
 		
 		public static function pushAttribute(arr:Vector.<Attribute>, name:String, value:*, type:String, redactor:Boolean = true, enum:Boolean = false, enumValues:Array = null):void 
@@ -39,6 +42,9 @@ package boxesandworlds.game.data
 			}
 			arr.push(new Attribute(name, value, type, redactor, enum, enumValues));
 		}
+		
+		public function get defaultValue():* { return _defaultValue; }
+		public function get isChanged():Boolean {return _defaultValue != value;}
 	}
 
 }
