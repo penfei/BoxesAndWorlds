@@ -6,10 +6,10 @@ package boxesandworlds.gui.page {
 	import boxesandworlds.editor.area.EditorAreaWorld;
 	import boxesandworlds.editor.area.EditorAreaWorlds;
 	import boxesandworlds.editor.EditorPopup;
+	import boxesandworlds.editor.events.EditorEventAttributes;
 	import boxesandworlds.editor.events.EditorEventNewItem;
 	import boxesandworlds.editor.events.EditorEventWorld;
-	import boxesandworlds.editor.utils.EditorUtils;
-	import boxesandworlds.game.data.Attribute;
+	import boxesandworlds.editor.items.EditorItem;
 	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoorData;
 	import boxesandworlds.game.objects.enters.gate.GateData;
 	import boxesandworlds.game.objects.items.box.BoxData;
@@ -20,6 +20,7 @@ package boxesandworlds.gui.page {
 	import com.greensock.easing.Expo;
 	import com.greensock.easing.Linear;
 	import com.greensock.TweenMax;
+	import editor.EditorItemUI;
 	import editor.EditorPageUI;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -66,6 +67,8 @@ package boxesandworlds.gui.page {
 			_ui.btnExit.addEventListener(MouseEvent.CLICK, btnExitClickHandler);
 			
 			_areaWorld = new EditorAreaWorld();
+			_areaWorld.addEventListener(EditorEventAttributes.SHOW_ATTRIBUTES, showAttributesHandler);
+			_areaWorld.addEventListener(EditorEventAttributes.HIDE_ATTRIBUTES, hideAttributesHandler);
 			_ui.areaWorld.addChild(_areaWorld);
 			
 			_areaWorlds = new EditorAreaWorlds(_ui.btnAddWorld, _ui.btnRemoveWorld, _ui.btnSortWorlds);
@@ -77,6 +80,8 @@ package boxesandworlds.gui.page {
 			_areaItems = new EditorAreaItems(_library);
 			_ui.areaItems.addChild(_areaItems);
 			_areaItems.addEventListener(EditorEventNewItem.NEW_ITEM, addNewItemHandler);
+			
+			Core.stage.addEventListener(MouseEvent.CLICK, stageClickHandler);
 			
 			_areaAttributes = new EditorAreaAttributes();
 			_ui.areaAttributes.addChild(_areaAttributes);
@@ -151,6 +156,22 @@ package boxesandworlds.gui.page {
 		
 		private function selectWorldHandler(e:EditorEventWorld):void {
 			_areaWorld.selectWorld(e.id);
+		}
+		
+		private function showAttributesHandler(e:EditorEventAttributes):void {
+			_areaAttributes.showAttributes(e.item);
+		}
+		
+		private function hideAttributesHandler(e:EditorEventAttributes):void {
+			_areaAttributes.hideAttributes();
+			_areaWorld.unselectItem();
+		}
+		
+		private function stageClickHandler(e:MouseEvent):void {
+			if (e.target.parent != null && e.target.parent as EditorPageUI != null) {
+				_areaAttributes.hideAttributes();
+				_areaWorld.unselectItem();
+			}
 		}
 		
 	}

@@ -18,12 +18,14 @@ package boxesandworlds.editor.items {
 		
 		// vars
 		private var _id:String;
+		private var _uniqueId:int;
+		private var _attributes:Vector.<Attribute>;
 		private var _isShowedWarning:Boolean;
 		private var _isSelectable:Boolean;
-		private var _attributes:Vector.<Attribute>;
 		
-		public function EditorItem(id:String, attributes:Vector.<Attribute>) {
+		public function EditorItem(id:String, uniqueId:int, attributes:Vector.<Attribute>) {
 			_id = id;
+			_uniqueId = uniqueId;
 			_attributes = attributes;
 			setup();
 		}
@@ -31,15 +33,36 @@ package boxesandworlds.editor.items {
 		// get
 		public function get id():String { return _id; }
 		
-		public function get isShowedWarning():Boolean { return _isShowedWarning; }
+		public function get uniqueId():int { return _uniqueId; }
 		
 		public function get mcAttributes():Vector.<EditorAttribute> { return _mcAttributes; }
+		
+		public function get isShowedWarning():Boolean { return _isShowedWarning; }
 		
 		public function get isSelectable():Boolean { return _isSelectable; }
 		
 		// public
 		public function destroy():void {
-			
+			if (_mcAttributes != null) {
+				var mcAttribute:EditorAttribute;
+				for (var i:uint = 0, len:uint = _mcAttributes.length; i < len; ++i) {
+					mcAttribute = _mcAttributes[i];
+					if (mcAttribute != null) {
+						mcAttribute.destroy();
+						if (mcAttribute.parent != null) {
+							mcAttribute.parent.removeChild(mcAttribute);
+						}
+						mcAttribute = null;
+					}
+				}
+				_mcAttributes = null;
+			}
+			if (_ui != null) {
+				if (_ui.parent != null) {
+					_ui.parent.removeChild(_ui);
+				}
+				_ui = null;
+			}
 		}
 		
 		public function showWarning():void {
@@ -78,11 +101,11 @@ package boxesandworlds.editor.items {
 			_mcAttributes = new Vector.<EditorAttribute>();
 			_mcAttributes.length = len;
 			var type:String = "";
-			for (var i:uint = 0; i < len; ++i) {
+			for (var i:int = 0; i < len; ++i) {
 				if (!_attributes[i].isEnum) {
 					type = _attributes[i].type;
 				}
-				var attribute:EditorAttribute = new EditorAttribute(_attributes[i].isEnum, type, _attributes[i].value);
+				var attribute:EditorAttribute = new EditorAttribute(i, _attributes[i].name, _attributes[i].isEnum, type, _attributes[i].value, _attributes[i].enumValues);
 				_mcAttributes[i] = attribute;
 			}
 		}
