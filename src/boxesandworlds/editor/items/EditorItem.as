@@ -1,4 +1,5 @@
 package boxesandworlds.editor.items {
+	import boxesandworlds.editor.utils.EditorUtils;
 	import boxesandworlds.game.data.Attribute;
 	import com.greensock.TweenMax;
 	import editor.EditorItemUI;
@@ -84,8 +85,16 @@ package boxesandworlds.editor.items {
 		// protected
 		protected function setup():void {
 			//_ui = new EditorItemsEnum.EDITOR_ITEMS_UI_CLASS[_id]();
+			var itemName:String = "";
+			for (var j:uint = 0, lenj:uint = _attributes.length; j < lenj; ++j) {
+				if (_attributes[j].name == "type") {
+					itemName = EditorUtils.getItemName(String(_attributes[j].value));
+					break;
+				}
+			}
+			
 			_ui = new EditorItemUI;
-			_ui.label.text = String(_id);
+			_ui.label.text = itemName;
 			_ui.label.mouseEnabled = false;
 			addChild(_ui);
 			
@@ -99,14 +108,15 @@ package boxesandworlds.editor.items {
 			
 			var len:uint = _attributes.length;
 			_mcAttributes = new Vector.<EditorAttribute>();
-			_mcAttributes.length = len;
 			var type:String = "";
 			for (var i:int = 0; i < len; ++i) {
-				if (!_attributes[i].isEnum) {
-					type = _attributes[i].type;
+				if (_attributes[i].showInRedactor) {
+					if (!_attributes[i].isEnum) {
+						type = _attributes[i].type;
+					}
+					var attribute:EditorAttribute = new EditorAttribute(i, _attributes[i].name, _attributes[i].isEnum, type, _attributes[i].value, _attributes[i].enumValues);
+					_mcAttributes.push(attribute);
 				}
-				var attribute:EditorAttribute = new EditorAttribute(i, _attributes[i].name, _attributes[i].isEnum, type, _attributes[i].value, _attributes[i].enumValues);
-				_mcAttributes[i] = attribute;
 			}
 		}
 		

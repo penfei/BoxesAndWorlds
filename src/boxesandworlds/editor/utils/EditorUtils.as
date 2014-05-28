@@ -22,6 +22,23 @@ package boxesandworlds.editor.utils {
 			return id;
 		}
 		
+		static public function getItemName(name:String):String {
+			var realName:String = "";
+			var isPrevUpper:Boolean = false;
+			for (var i:uint = 0, len:uint = name.length; i < len; ++i) {
+				var c:String = name.charAt(i);
+				if (c == c.toUpperCase() && i != 0 && !isPrevUpper) {
+					realName += " ";
+					realName += c;
+					isPrevUpper = true;
+				}else {
+					realName += c;
+					isPrevUpper = false;
+				}
+			}
+			return realName;
+		}
+		
 	}
 
 }

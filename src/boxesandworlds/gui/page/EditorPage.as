@@ -9,7 +9,6 @@ package boxesandworlds.gui.page {
 	import boxesandworlds.editor.events.EditorEventAttributes;
 	import boxesandworlds.editor.events.EditorEventNewItem;
 	import boxesandworlds.editor.events.EditorEventWorld;
-	import boxesandworlds.editor.items.EditorItem;
 	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoorData;
 	import boxesandworlds.game.objects.enters.gate.GateData;
 	import boxesandworlds.game.objects.items.box.BoxData;
@@ -20,7 +19,6 @@ package boxesandworlds.gui.page {
 	import com.greensock.easing.Expo;
 	import com.greensock.easing.Linear;
 	import com.greensock.TweenMax;
-	import editor.EditorItemUI;
 	import editor.EditorPageUI;
 	import flash.events.Event;
 	import flash.events.MouseEvent;

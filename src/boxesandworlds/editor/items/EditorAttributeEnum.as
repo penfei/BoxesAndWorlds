@@ -1,10 +1,9 @@
 package boxesandworlds.editor.items {
-	import boxesandworlds.editor.events.EditorEventAttributes;
 	import boxesandworlds.editor.events.EditorEventSetUpAttribute;
-	import boxesandworlds.game.data.Attribute;
 	import com.greensock.TweenMax;
 	import editor.EditorAttributeBoolUI;
 	import editor.EditorAttributeEnumUI;
+	import editor.EditorAttributeEnumValueUI;
 	import editor.EditorAttributeNumberUI;
 	import editor.EditorAttributeStringUI;
 	import editor.EditorAttributeUrlUI;
@@ -46,29 +45,10 @@ package boxesandworlds.editor.items {
 			_items = new Vector.<MovieClip>();
 			_items.length = len;
 			var index:int = -1;
-			switch(_type) {
-				case Attribute.BOOL:
-					index = 0;
-					break;
-					
-				case Attribute.NUMBER:
-					index = 1;
-					break;
-					
-				case Attribute.STRING:
-					index = 2;
-					break;
-					
-				case Attribute.URL:
-					index = 3;
-					break;
-					
-				case Attribute.VEC2:
-					index = 4;
-					break;
-			}
+			trace(_type + ": " + _enumValues);
 			for (var i:uint = 0; i < len; ++i) {
-				var item:MovieClip = new CLIPS[i]();
+				var item:EditorAttributeEnumValueUI = new EditorAttributeEnumValueUI;
+				item.labelName.text = String(_enumValues[i]);
 				_items[i] = item;
 				if (i == 0) {
 					_ui.mcHeader.addChild(item);

@@ -1,7 +1,6 @@
 package boxesandworlds.editor.items {
 	import boxesandworlds.game.data.Attribute;
 	import editor.EditorAttributeBoolUI;
-	import editor.EditorAttributeEnumUI;
 	import editor.EditorAttributeNumberUI;
 	import editor.EditorAttributeStringUI;
 	import editor.EditorAttributeUrlUI;
@@ -13,6 +12,7 @@ package boxesandworlds.editor.items {
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
 	import flash.text.TextFieldType;
+	import nape.geom.Vec2;
 	
 	/**
 	 * ...
@@ -99,16 +99,13 @@ package boxesandworlds.editor.items {
 					case Attribute.VEC2:
 						_ui = new EditorAttributeVec2UI;
 						_ui.labelName.text = _name;
-						var keys:Array = [];
-						var values:Array = [];
-						for each(var key:String in _value) {
-							keys.push(key);
-							values.push(_value[key]);
+						_ui.mcValue.key1.text = "x:";
+						_ui.mcValue.key2.text = "y:";
+						var value:Vec2 = _value as Vec2;
+						if (value != null) {
+							_ui.mcValue.value1.text = String(value.x);
+							_ui.mcValue.value2.text = String(value.y);
 						}
-						_ui.mcValue.key1.text = String(keys[0]) + ":";
-						_ui.mcValue.value1.text = String(values[0]);
-						_ui.mcValue.key2.text = String(keys[1]) + ":";
-						_ui.mcValue.value2.text = String(values[1]);
 						_ui.mcValue.value1.type = TextFieldType.INPUT;
 						_ui.mcValue.value1.selectable = true;
 						_ui.mcValue.value2.type = TextFieldType.INPUT;

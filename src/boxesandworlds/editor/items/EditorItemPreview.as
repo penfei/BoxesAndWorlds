@@ -1,8 +1,8 @@
 package boxesandworlds.editor.items {
+	import boxesandworlds.editor.utils.EditorUtils;
 	import boxesandworlds.game.data.Attribute;
 	import com.greensock.TweenMax;
 	import editor.EditorItemPreviewUI;
-	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	
 	/**
@@ -43,8 +43,16 @@ package boxesandworlds.editor.items {
 		// protected
 		protected function setup():void {
 			//_ui = new EditorItemsEnum.EDITOR_ITEMS_UI_PREVIEW_CLASS[_id]();
+			var itemName:String = "";
+			for (var i:uint = 0, len:uint = _attributes.length; i < len; ++i) {
+				if (_attributes[i].name == "type") {
+					itemName = EditorUtils.getItemName(String(_attributes[i].value));
+					break;
+				}
+			}
+			
 			_ui = new EditorItemPreviewUI;
-			_ui.label.text = String(_id);
+			_ui.label.text = itemName;
 			_ui.label.mouseEnabled = false;
 			addChild(_ui);
 			

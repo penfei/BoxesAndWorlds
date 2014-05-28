@@ -3,7 +3,6 @@ package boxesandworlds.editor.area {
 	import boxesandworlds.editor.controls.EditorVerticalScroller;
 	import boxesandworlds.editor.events.EditorEventNewItem;
 	import boxesandworlds.editor.items.EditorItemPreview;
-	import boxesandworlds.editor.items.EditorItemsEnum;
 	import boxesandworlds.editor.utils.EditorUtils;
 	import boxesandworlds.game.data.Attribute;
 	import editor.EditorAreaItemsUI;
@@ -39,21 +38,6 @@ package boxesandworlds.editor.area {
 			var len:uint = _library.length;
 			_items = new Vector.<EditorItemPreview>();
 			_items.length = len;
-			
-			//var obj:Object = { };
-			//var att:Vector.<Attribute>;
-			//for (var i:uint = 0; i < _library.length; i++) {
-				//trace("class: " + EditorUtils.getItemId(String(_library[i])));
-				//att = _library[i].attributes();
-				//for (var j:uint = 0; j < att.length; j++) {
-					//trace("name: " + att[j].name +", type: "+att[j].type+", value: " + att[j].value);
-				//}
-				/*obj = _library[i].attributes();
-				for(var key:String in obj) {
-					trace((obj[key] as Attribute).name);
-				}*/
-				//trace("====================");
-			//}
 			
 			var attributes:Vector.<Attribute>;
 			for (var i:int = 0; i < len; ++i) {
