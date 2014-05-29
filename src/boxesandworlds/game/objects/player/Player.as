@@ -70,7 +70,6 @@ package boxesandworlds.game.objects.player
 		{
 			super.step();
 			_properties.isOnEarth = isOnEarth();
-			
 			if (_properties.isMoveUp && _properties.isJump && canJump()) jump();
 			if (_properties.isMoveLeft && !_properties.isMoveRight) goLeft();
 			if (_properties.isMoveRight && !_properties.isMoveLeft) goRight();
@@ -261,9 +260,9 @@ package boxesandworlds.game.objects.player
 			var potencialTeleport:GameObject;
 			
 			for (var i:int = 0; i < _bodyListInItemArea.length; i++) {
-				var d:Number = Vec2.distance(body.position, _bodyListInItemArea.at(i).position);
 				teleport = _bodyListInItemArea.at(i).userData.obj as GameObject;
 				if (teleport != null) {
+					var d:Number = Vec2.distance(body.position, teleport.getTeleportPosition());
 					var t:GameObject = teleport.findTarget();
 					if (t != null && teleport.data.needButtonToTeleport && teleport != _item && d < dis) {
 						dis = d;

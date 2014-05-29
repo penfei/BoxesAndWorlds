@@ -56,6 +56,7 @@ package boxesandworlds.game.objects
 			var arr:Vector.<Attribute> = new Vector.<Attribute>();
 			Attribute.pushAttribute(arr, "id", 0, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "containerId", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "teleportId", 0, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "start", Vec2.weak(), Attribute.VEC2);
 			Attribute.pushAttribute(arr, "startAngle", 0, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "startLV", Vec2.weak(), Attribute.VEC2);

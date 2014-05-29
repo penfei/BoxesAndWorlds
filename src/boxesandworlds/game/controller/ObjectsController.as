@@ -81,8 +81,8 @@ package boxesandworlds.game.controller
 			world1.addGameObject(box);
 			
 			box = new TeleportBox(game);
-			box.init( { start:new Vec2(1200, 100), teleportId: 1, id: 2 } );
-			world2.addGameObject(box);
+			box.init( { start:new Vec2(2300, 100), teleportId: 1, id: 2 } );
+			world3.addGameObject(box);
 			
 			var worldBox:WorldBox = new WorldBox(game);
 			worldBox.init( { start:new Vec2(550, 100), childWorldId: 2 } );
