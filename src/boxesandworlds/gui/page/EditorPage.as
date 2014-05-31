@@ -22,6 +22,8 @@ package boxesandworlds.gui.page {
 	import editor.EditorPageUI;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.net.FileReference;
+	import flash.utils.ByteArray;
 	
 	/**
 	 * ...
@@ -130,7 +132,28 @@ package boxesandworlds.gui.page {
 		
 		private function popupSaveLevelHandler(e:Event):void {
 			hidePopup();
+			saveXML();
 		}
+		
+		private function saveXML():void {
+			var xml:XML;
+			xml = <xml>
+				<test>test data</test>
+				<test>test2 data</test>
+				<item>айтим</item>
+			</xml>;
+			
+			var ba:ByteArray = new ByteArray();
+			ba.writeUTFBytes(xml);
+			var fr:FileReference = new FileReference();
+			fr.addEventListener(Event.SELECT, _onRefSelect);
+			fr.addEventListener(Event.CANCEL, _onRefCancel);
+			fr.save(ba, "JarkonyXML.xml");
+			
+			trace("save xml");
+		}
+		private function _onRefSelect(e:Event):void { trace('select'); }
+		private function _onRefCancel(e:Event):void { trace('cancel'); }
 		
 		private function popupClearLevelHandler(e:Event):void {
 			hidePopup();
