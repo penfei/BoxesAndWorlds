@@ -28,6 +28,9 @@ package boxesandworlds.game.objects.enters
 		
 		override public function init(params:Object = null):void {
 			super.init();
+			
+			if (_properties.isOpen) open();
+			else close();
 		}
 		
 		override public function step():void 

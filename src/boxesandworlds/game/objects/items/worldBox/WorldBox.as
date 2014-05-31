@@ -32,6 +32,7 @@ package boxesandworlds.game.objects.items.worldBox
 		private var _ray:Ray;
 		private var _result:RayResult;
 		private var _connectedEdgePoint:Vec2;
+		private var _teleportPoint:Vec2;
 		
 		public function WorldBox(game:Game) 
 		{
@@ -89,17 +90,24 @@ package boxesandworlds.game.objects.items.worldBox
 				var p:Vec2;
 				var d:Number;
 				pGate = null;
+				_teleportPoint = null;
 				for each(var gate:Gate in gates) {
-					p = getPointByEdge(gate.enterData.edge);
-					d =  Vec2.distance(body.localPointToWorld(p), game.objects.me.body.position);
+					p = body.localPointToWorld(getPointByEdge(gate.enterData.edge));
+					d =  Vec2.distance(p, game.objects.me.body.position);
 					if(d < dis){
 						dis = d;
 						pGate = gate;
+						_teleportPoint = p;
 					}
 				}
 				return pGate;
 			}
 			return null;
+		}
+		
+		override public function getTeleportPosition():Vec2 {
+			if (_teleportPoint != null) return _teleportPoint;
+			return Vec2.weak();
 		}
 		
 		override public function getTeleportTargetPosition(params:Object = null):Vec2 {

@@ -341,6 +341,10 @@ package boxesandworlds.game.objects
 			return _body.position;
 		}
 		
+		public function getTeleportPosition():Vec2 { 
+			return _body.position;
+		}
+		
 		private function getAngleRayCast(original:Vec2, vector:Vec2):Number {
 			var angle:Number = 0;
 			_ray = Ray.fromSegment(original, vector);

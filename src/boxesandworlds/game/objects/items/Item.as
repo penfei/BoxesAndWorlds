@@ -4,6 +4,7 @@ package boxesandworlds.game.objects.items
 	import boxesandworlds.game.objects.enters.Enter;
 	import boxesandworlds.game.objects.GameObject;
 	import nape.geom.Vec2;
+	import nape.phys.BodyType;
 	/**
 	 * ...
 	 * @author Sah
@@ -16,6 +17,12 @@ package boxesandworlds.game.objects.items
 		public function Item(game:Game) 
 		{
 			super(game);
+		}
+		
+		override public function init(params:Object = null):void {
+			super.init();
+			
+			if (_properties.bodyType == BodyType.STATIC) _properties.canAdded = false;
 		}
 		
 		override public function step():void 
@@ -59,6 +66,8 @@ package boxesandworlds.game.objects.items
 			body.shapes.at(0).filter.collisionMask = 0;
 			body.allowRotation = false;
 			body.angularVel = 0;
+			if (body.rotation >= 0) body.rotation = uint((body.rotation + 0.7854) / 1.5708) * 1.5708;
+			else body.rotation = uint((Math.abs(body.rotation) + 0.7854) / 1.5708) * -1.5708;
 		}
 		
 		public function removeFromPlayer(position:Vec2):void 
