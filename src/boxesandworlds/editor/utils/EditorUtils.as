@@ -5,8 +5,10 @@ package boxesandworlds.editor.utils {
 	 */
 	public class EditorUtils {
 		
+		// const
 		static public const WORLD_WITDH:uint = 800;
 		static public const WORLD_HEIGHT:uint = 800;
+		static public const XML_NAME:String = "BaW.xml";
 		
 		static public function getItemId(item:String):String {
 			var wasSpace:Boolean = false;

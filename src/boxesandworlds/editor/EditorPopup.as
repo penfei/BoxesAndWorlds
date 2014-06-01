@@ -34,7 +34,7 @@ package boxesandworlds.editor {
 					break;
 					
 				case EDITOR_CLEAR_LEVEL:
-					_ui.label.text = "очистить весь уровень?".toUpperCase();
+					_ui.label.text = "очистить весь мир?".toUpperCase();
 					break;
 					
 				case EDITOR_EXIT:

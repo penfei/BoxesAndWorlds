@@ -16,6 +16,9 @@ package boxesandworlds.editor.area {
 	 */
 	public class EditorAreaItems extends Sprite {
 		
+		// const
+		private const ITEMS_IN_ROW:uint = 4;
+		
 		// ui
 		private var _ui:EditorAreaItemsUI;
 		private var _items:Vector.<EditorItemPreview>;
@@ -43,8 +46,8 @@ package boxesandworlds.editor.area {
 			for (var i:int = 0; i < len; ++i) {
 				var item:EditorItemPreview = new EditorItemPreview(EditorUtils.getItemId(String(_library[i])), _library[i].attributes());
 				_items[i] = item;
-				item.x = 10 + 10 * (i % 5) + 55 * (i % 5);
-				item.y = 10 + 10 * (int(i / 5)) + 55 * (int(i / 5));
+				item.x = 10 + 10 * (i % ITEMS_IN_ROW) + 55 * (i % ITEMS_IN_ROW);
+				item.y = 10 + 10 * (int(i / ITEMS_IN_ROW)) + 55 * (int(i / ITEMS_IN_ROW));
 				item.buttonMode = true;
 				item.addEventListener(MouseEvent.ROLL_OVER, itemOverHandler);
 				item.addEventListener(MouseEvent.ROLL_OUT, itemOutHandler);

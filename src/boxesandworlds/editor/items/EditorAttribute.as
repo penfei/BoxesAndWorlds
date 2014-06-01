@@ -24,7 +24,7 @@ package boxesandworlds.editor.items {
 		private var _ui:MovieClip;
 		
 		// vars
-		private var _name:String;
+		private var _nameAttribute:String;
 		private var _isEnum:Boolean;
 		private var _type:String;
 		private var _value:*;
@@ -35,7 +35,7 @@ package boxesandworlds.editor.items {
 		
 		public function EditorAttribute(id:int, name:String, isEnum:Boolean, type:String = "", value:* = null, enumValues:Array = null) {
 			_id = id;
-			_name = name;
+			_nameAttribute = name;
 			_isEnum = isEnum;
 			_type = type;
 			_value = value;
@@ -45,6 +45,37 @@ package boxesandworlds.editor.items {
 		
 		// get
 		public function get id():int { return _id; }
+		
+		public function get nameAttribute():String { return _nameAttribute; }
+		
+		public function get isEnum():Boolean { return _isEnum; }
+		
+		public function get type():String { return _type; }
+		
+		public function get valueXML():String { 
+			var value:String = "value='";
+			if (_isEnum) {
+				value += _ui.value;
+			}else {
+				switch(_type) {
+					case Attribute.BOOL:
+						value += String(_ui.mcValue.mcCheck.visible);
+						break;
+						
+					case Attribute.NUMBER:
+					case Attribute.STRING:
+					case Attribute.URL:
+						value += _ui.mcValue.label.text;
+						break;
+						
+					case Attribute.VEC2:
+						value = "x='" + _ui.mcValue.value1.text + "' y='" + _ui.mcValue.value2.text;
+						break;
+				}
+			}
+			value += "'";
+			return value; 
+		}
 		
 		// public
 		public function destroy():void {
@@ -64,7 +95,7 @@ package boxesandworlds.editor.items {
 				switch(_type) {
 					case Attribute.BOOL:
 						_ui = new EditorAttributeBoolUI;
-						_ui.labelName.text = _name;
+						_ui.labelName.text = _nameAttribute;
 						_ui.mcValue.buttonMode = true;
 						_ui.mcValue.addEventListener(MouseEvent.CLICK, mcValueBoolClickHandler);
 						_ui.mcValue.mcCheck.visible = _value;
@@ -72,7 +103,7 @@ package boxesandworlds.editor.items {
 						
 					case Attribute.NUMBER:
 						_ui = new EditorAttributeNumberUI;
-						_ui.labelName.text = _name;
+						_ui.labelName.text = _nameAttribute;
 						_ui.mcValue.label.type = TextFieldType.INPUT;
 						_ui.mcValue.label.selectable = true;
 						_ui.mcValue.label.text = String(_value);
@@ -80,7 +111,7 @@ package boxesandworlds.editor.items {
 						
 					case Attribute.STRING:
 						_ui = new EditorAttributeStringUI;
-						_ui.labelName.text = _name;
+						_ui.labelName.text = _nameAttribute;
 						_ui.mcValue.label.type = TextFieldType.INPUT;
 						_ui.mcValue.label.selectable = true;
 						_ui.mcValue.label.text = String(_value);
@@ -88,7 +119,7 @@ package boxesandworlds.editor.items {
 						
 					case Attribute.URL:
 						_ui = new EditorAttributeUrlUI;
-						_ui.labelName.text = _name;
+						_ui.labelName.text = _nameAttribute;
 						_ui.mcValue.label.type = TextFieldType.INPUT;
 						_ui.mcValue.label.selectable = true;
 						_ui.mcChoiceUrl.buttonMode = true;
@@ -98,7 +129,7 @@ package boxesandworlds.editor.items {
 						
 					case Attribute.VEC2:
 						_ui = new EditorAttributeVec2UI;
-						_ui.labelName.text = _name;
+						_ui.labelName.text = _nameAttribute;
 						_ui.mcValue.key1.text = "x:";
 						_ui.mcValue.key2.text = "y:";
 						var value:Vec2 = _value as Vec2;

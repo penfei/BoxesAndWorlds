@@ -18,6 +18,7 @@ package boxesandworlds.editor.items {
 		private var _mcAttributes:Vector.<EditorAttribute>;
 		
 		// vars
+		private var _nameItem:String;
 		private var _id:String;
 		private var _uniqueId:int;
 		private var _attributes:Vector.<Attribute>;
@@ -32,6 +33,8 @@ package boxesandworlds.editor.items {
 		}
 		
 		// get
+		public function get nameItem():String { return _nameItem; }
+		
 		public function get id():String { return _id; }
 		
 		public function get uniqueId():int { return _uniqueId; }
@@ -85,16 +88,19 @@ package boxesandworlds.editor.items {
 		// protected
 		protected function setup():void {
 			//_ui = new EditorItemsEnum.EDITOR_ITEMS_UI_CLASS[_id]();
-			var itemName:String = "";
+			var nameEditor:String = "";
 			for (var j:uint = 0, lenj:uint = _attributes.length; j < lenj; ++j) {
 				if (_attributes[j].name == "type") {
-					itemName = EditorUtils.getItemName(String(_attributes[j].value));
-					break;
+					_nameItem = String(_attributes[j].value);
+					nameEditor = EditorUtils.getItemName(String(_attributes[j].value));
+				}
+				if (_attributes[j].name == "id") {
+					_attributes[j].value = _uniqueId;
 				}
 			}
 			
 			_ui = new EditorItemUI;
-			_ui.label.text = itemName;
+			_ui.label.text = nameEditor;
 			_ui.label.mouseEnabled = false;
 			addChild(_ui);
 			
@@ -111,9 +117,7 @@ package boxesandworlds.editor.items {
 			var type:String = "";
 			for (var i:int = 0; i < len; ++i) {
 				if (_attributes[i].showInRedactor) {
-					if (!_attributes[i].isEnum) {
-						type = _attributes[i].type;
-					}
+					type = _attributes[i].type;
 					var attribute:EditorAttribute = new EditorAttribute(i, _attributes[i].name, _attributes[i].isEnum, type, _attributes[i].value, _attributes[i].enumValues);
 					_mcAttributes.push(attribute);
 				}

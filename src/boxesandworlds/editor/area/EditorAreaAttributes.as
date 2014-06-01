@@ -1,13 +1,11 @@
 package boxesandworlds.editor.area {
 	import boxesandworlds.controller.Core;
 	import boxesandworlds.editor.controls.EditorVerticalScroller;
-	import boxesandworlds.editor.events.EditorEventAttributes;
 	import boxesandworlds.editor.events.EditorEventSetUpAttribute;
 	import boxesandworlds.editor.items.EditorAttribute;
 	import boxesandworlds.editor.items.EditorItem;
 	import editor.EditorAreaAttributesUI;
 	import editor.EditorScrollAttributesUI;
-	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	
 	/**

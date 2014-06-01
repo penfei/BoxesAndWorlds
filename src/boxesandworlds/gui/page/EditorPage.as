@@ -8,7 +8,9 @@ package boxesandworlds.gui.page {
 	import boxesandworlds.editor.EditorPopup;
 	import boxesandworlds.editor.events.EditorEventAttributes;
 	import boxesandworlds.editor.events.EditorEventNewItem;
+	import boxesandworlds.editor.events.EditorEventPlayer;
 	import boxesandworlds.editor.events.EditorEventWorld;
+	import boxesandworlds.editor.utils.EditorUtils;
 	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoorData;
 	import boxesandworlds.game.objects.enters.gate.GateData;
 	import boxesandworlds.game.objects.items.box.BoxData;
@@ -41,6 +43,7 @@ package boxesandworlds.gui.page {
 		
 		// vars
 		private var _library:Array = [WorldStructureData, BoxData, TeleportBoxData, WorldBoxData, ButtonData, GateData, EdgeDoorData];
+		private var _isSetupPlayer:Boolean;
 		
 		public function EditorPage() {
 			super(UIManager.EDITOR_PAGE_ID);
@@ -69,6 +72,7 @@ package boxesandworlds.gui.page {
 			_areaWorld = new EditorAreaWorld();
 			_areaWorld.addEventListener(EditorEventAttributes.SHOW_ATTRIBUTES, showAttributesHandler);
 			_areaWorld.addEventListener(EditorEventAttributes.HIDE_ATTRIBUTES, hideAttributesHandler);
+			_areaWorld.addEventListener(EditorEventPlayer.PLAYER_NOT_SETUP, playerNotSetupHandler);
 			_ui.areaWorld.addChild(_areaWorld);
 			
 			_areaWorlds = new EditorAreaWorlds(_ui.btnAddWorld, _ui.btnRemoveWorld, _ui.btnSortWorlds);
@@ -81,12 +85,18 @@ package boxesandworlds.gui.page {
 			_ui.areaItems.addChild(_areaItems);
 			_areaItems.addEventListener(EditorEventNewItem.NEW_ITEM, addNewItemHandler);
 			
+			_ui.player.buttonMode = true;
+			_ui.player.addEventListener(MouseEvent.MOUSE_DOWN, playerDownHandler);
+			_ui.player.addEventListener(MouseEvent.ROLL_OVER, playerOverHandler);
+			_ui.player.addEventListener(MouseEvent.ROLL_OUT, playerOutHandler);
+			_isSetupPlayer = false;
+			
 			Core.stage.addEventListener(MouseEvent.CLICK, stageClickHandler);
 			
 			_areaAttributes = new EditorAreaAttributes();
 			_ui.areaAttributes.addChild(_areaAttributes);
 			
-			//setupTempPositions();
+			setupTempPositions();
 		}
 		
 		/* функция для калькулятора Бори */
@@ -108,6 +118,14 @@ package boxesandworlds.gui.page {
 			_ui.mouseChildren = _ui.mouseEnabled = true;
 			_popup.mouseChildren = _popup.mouseEnabled = false;
 			TweenMax.to(_popup, .4, { y: _ui.y + (_ui.height - _popup.height) / 2 + 50, alpha:0, ease:Linear.easeNone } );
+		}
+		
+		protected function saveXML():void {
+			var xml:XML = _areaWorld.getXML();
+			var ba:ByteArray = new ByteArray();
+			ba.writeUTFBytes(xml);
+			var fr:FileReference = new FileReference();
+			fr.save(ba, EditorUtils.XML_NAME);
 		}
 		
 		// handlers
@@ -135,28 +153,9 @@ package boxesandworlds.gui.page {
 			saveXML();
 		}
 		
-		private function saveXML():void {
-			var xml:XML;
-			xml = <xml>
-				<test>test data</test>
-				<test>test2 data</test>
-				<item>айтим</item>
-			</xml>;
-			
-			var ba:ByteArray = new ByteArray();
-			ba.writeUTFBytes(xml);
-			var fr:FileReference = new FileReference();
-			fr.addEventListener(Event.SELECT, _onRefSelect);
-			fr.addEventListener(Event.CANCEL, _onRefCancel);
-			fr.save(ba, "JarkonyXML.xml");
-			
-			trace("save xml");
-		}
-		private function _onRefSelect(e:Event):void { trace('select'); }
-		private function _onRefCancel(e:Event):void { trace('cancel'); }
-		
 		private function popupClearLevelHandler(e:Event):void {
 			hidePopup();
+			_areaWorld.removeAllItems();
 		}
 		
 		private function popupExitHandler(e:Event):void {
@@ -186,6 +185,29 @@ package boxesandworlds.gui.page {
 		private function hideAttributesHandler(e:EditorEventAttributes):void {
 			_areaAttributes.hideAttributes();
 			_areaWorld.unselectItem();
+		}
+		
+		private function playerDownHandler(e:MouseEvent):void {
+			_areaWorld.addPlayer();
+			_ui.player.mc.alpha = 0;
+			_isSetupPlayer = true;
+		}
+		
+		private function playerNotSetupHandler(e:EditorEventPlayer):void {
+			_ui.player.mc.alpha = 1;
+			_isSetupPlayer = false;
+		}
+		
+		private function playerOverHandler(e:MouseEvent):void {
+			if (_isSetupPlayer) {
+				TweenMax.to(_ui.player.mc, .2, { alpha:.3 } );
+			}
+		}
+		
+		private function playerOutHandler(e:MouseEvent):void {
+			if (_isSetupPlayer) {
+				TweenMax.to(_ui.player.mc, .2, { alpha:0 } );
+			}
 		}
 		
 		private function stageClickHandler(e:MouseEvent):void {

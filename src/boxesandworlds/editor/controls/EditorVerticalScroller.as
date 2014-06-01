@@ -1,12 +1,10 @@
 package boxesandworlds.editor.controls {
+	import com.greensock.easing.Expo;
 	import com.greensock.TweenMax;
-	import com.greensock.easing.*;
 	import flash.display.DisplayObjectContainer;
-	import flash.events.Event;
-	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.events.EventDispatcher;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	/**

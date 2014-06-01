@@ -36,6 +36,9 @@ package boxesandworlds.editor.items {
 			setup();
 		}
 		
+		// get
+		public function get value():String { return _currentItem.labelName.text; }
+		
 		// protected
 		protected function setup():void {
 			_ui = new EditorAttributeEnumUI;
@@ -45,7 +48,6 @@ package boxesandworlds.editor.items {
 			_items = new Vector.<MovieClip>();
 			_items.length = len;
 			var index:int = -1;
-			trace(_type + ": " + _enumValues);
 			for (var i:uint = 0; i < len; ++i) {
 				var item:EditorAttributeEnumValueUI = new EditorAttributeEnumValueUI;
 				item.labelName.text = String(_enumValues[i]);
@@ -59,6 +61,7 @@ package boxesandworlds.editor.items {
 				item.addEventListener(MouseEvent.CLICK, itemClickHandler);
 			}
 			_currentItem = _items[0];
+			updateColors();
 			
 			_ui.mcMask.height = 25 * len;
 			_ui.mcContent.y = -(25 * len);
@@ -67,7 +70,14 @@ package boxesandworlds.editor.items {
 		protected function showHideEnum():void {
 			var posY:Number = _isOpened ? 25 : -(25 * _items.length);
 			TweenMax.to(_ui.mcContent, .4, { y: posY } );
+			updateColors();
 			dispatchEvent(new EditorEventSetUpAttribute(EditorEventSetUpAttribute.SET_UP_ATTRIBUTE_ENUM, _id, true));
+		}
+		
+		protected function updateColors():void {
+			for (var i:uint = 0, len:uint = _items.length; i < len; ++i) {
+				_items[i].mc.visible = _isOpened;
+			}
 		}
 		
 		// handlers
