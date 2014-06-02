@@ -9,6 +9,7 @@ package boxesandworlds.editor.items {
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
+	import nape.geom.Vec2;
 	
 	/**
 	 * ...
@@ -25,6 +26,7 @@ package boxesandworlds.editor.items {
 		
 		// vars
 		private var _id:int;
+		private var _startPosition:Vec2;
 		
 		public function EditorWorld(id:int) {
 			_id = id;
@@ -40,7 +42,7 @@ package boxesandworlds.editor.items {
 		
 		// public
 		public function destroy():void {
-			
+			Core.stage.removeEventListener(MouseEvent.MOUSE_UP, savePositionStartInAttributeHandler);
 		}
 		
 		public function addItem(id:String, uniqueItemId:int, attributes:Vector.<Attribute>):void {
@@ -89,6 +91,21 @@ package boxesandworlds.editor.items {
 			item = null;
 		}
 		
+		public function setupPositionItem(valueX:Number, valueY:Number):void {
+			_currentItem.x = valueX;
+			_currentItem.y = valueY;
+			if (_currentItem.x < 0) {
+				_currentItem.x = 0;
+			}else if (_currentItem.x + _currentItem.width > EditorUtils.WORLD_WITDH) {
+				_currentItem.x = EditorUtils.WORLD_WITDH - _currentItem.width;
+			}
+			if (_currentItem.y < 0) {
+				_currentItem.y = 0;
+			}else if (_currentItem.y + _currentItem.height > EditorUtils.WORLD_HEIGHT) {
+				_currentItem.y = EditorUtils.WORLD_HEIGHT - _currentItem.height;
+			}
+		}
+		
 		// protected
 		protected function setup():void {
 			_containerItems = new Sprite();
@@ -102,6 +119,10 @@ package boxesandworlds.editor.items {
 			_label.text = String(_id);
 			_label.mouseEnabled = false;
 			addChild(_label);
+			
+			_startPosition = new Vec2();
+			
+			Core.stage.addEventListener(MouseEvent.MOUSE_UP, savePositionStartInAttributeHandler);
 		}
 		
 		protected function setupMovebleItem(item:EditorItem, isAdd:Boolean = false):void {
@@ -151,6 +172,14 @@ package boxesandworlds.editor.items {
 			}
 		}
 		
+		protected function savePositionStartInAttribute():void {
+			if (_currentItem != null) {
+				_startPosition.x = _currentItem.x;
+				_startPosition.y = _currentItem.y;
+				_currentItem.setupAttribute("start", _startPosition);
+			}
+		}
+		
 		// handlers
 		private function itemDownHandler(e:MouseEvent):void {
 			var item:EditorItem = e.currentTarget as EditorItem;
@@ -183,6 +212,7 @@ package boxesandworlds.editor.items {
 			}else if (_currentItem.isShowedWarning) {
 				_currentItem.hideWarning();
 			}
+			savePositionStartInAttribute();
 		}
 		
 		private function playerDownHandler(e:MouseEvent):void {
@@ -207,6 +237,10 @@ package boxesandworlds.editor.items {
 			}else if (_player.isShowedWarning) {
 				_player.hideWarning();
 			}
+		}
+		
+		private function savePositionStartInAttributeHandler(e:MouseEvent):void {
+			savePositionStartInAttribute();
 		}
 		
 	}

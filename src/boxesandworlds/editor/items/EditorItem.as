@@ -85,6 +85,15 @@ package boxesandworlds.editor.items {
 			TweenMax.to(_ui.mcSelect, .3, { alpha:alpha } );
 		}
 		
+		public function setupAttribute(name:String, value:*):void {
+			for (var i:uint = 0, len:uint = _mcAttributes.length; i < len; ++i) {
+				if (_mcAttributes[i].nameAttribute == name) {
+					_mcAttributes[i].setupValue(value);
+					break;
+				}
+			}
+		}
+		
 		// protected
 		protected function setup():void {
 			//_ui = new EditorItemsEnum.EDITOR_ITEMS_UI_CLASS[_id]();

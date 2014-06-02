@@ -7,6 +7,7 @@ package boxesandworlds.gui.page {
 	import boxesandworlds.editor.area.EditorAreaWorlds;
 	import boxesandworlds.editor.EditorPopup;
 	import boxesandworlds.editor.events.EditorEventAttributes;
+	import boxesandworlds.editor.events.EditorEventChangeAttributeStart;
 	import boxesandworlds.editor.events.EditorEventNewItem;
 	import boxesandworlds.editor.events.EditorEventPlayer;
 	import boxesandworlds.editor.events.EditorEventWorld;
@@ -94,9 +95,10 @@ package boxesandworlds.gui.page {
 			Core.stage.addEventListener(MouseEvent.CLICK, stageClickHandler);
 			
 			_areaAttributes = new EditorAreaAttributes();
+			_areaAttributes.addEventListener(EditorEventChangeAttributeStart.CHANGE_ATTRIBUTE_START, changeAttributeStartHandler);
 			_ui.areaAttributes.addChild(_areaAttributes);
 			
-			setupTempPositions();
+			//setupTempPositions();
 		}
 		
 		/* функция для калькулятора Бори */
@@ -215,6 +217,10 @@ package boxesandworlds.gui.page {
 				_areaAttributes.hideAttributes();
 				_areaWorld.unselectItem();
 			}
+		}
+		
+		private function changeAttributeStartHandler(e:EditorEventChangeAttributeStart):void {
+			_areaWorld.setupPositionItem(e.valueX, e.valueY);
 		}
 		
 	}

@@ -97,6 +97,10 @@ package boxesandworlds.editor.area {
 			_currentWorld.addPlayer();
 		}
 		
+		public function setupPositionItem(valueX:Number, valueY:Number):void {
+			_currentWorld.setupPositionItem(valueX, valueY);
+		}
+		
 		public function getXML():XML {
 			var xml:XML = <xml></xml>;
 			xml.appendChild(XML(getPlayerXML()));
@@ -116,7 +120,7 @@ package boxesandworlds.editor.area {
 			var xml:String = "<player";
 			for (var i:uint = 0, len:uint = _worlds.length; i < len; ++i) {
 				if (_worlds[i].player != null) {
-					xml += " id='" + String(_worlds[i].id) + "' x='" + String(_worlds[i].player.x) + "' y='" + String(_worlds[i].player.y) + "'";
+					xml += " worldId='" + String(_worlds[i].id) + "' x='" + String(_worlds[i].player.x) + "' y='" + String(_worlds[i].player.y) + "'";
 					break;
 				}
 			}
