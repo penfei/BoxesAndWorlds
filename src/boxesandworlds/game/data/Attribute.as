@@ -17,11 +17,12 @@ package boxesandworlds.game.data
 		public var type:String;
 		public var showInRedactor:Boolean;
 		public var isEnum:Boolean;
+		public var isArray:Boolean;
 		public var enumValues:Array;
 		
 		private var _defaultValue:*;
 		
-		public function Attribute(name:String, value:*, type:String, showInRedactor:Boolean = true, isEnum:Boolean = false, enumValues:Array = null) 
+		public function Attribute(name:String, value:*, type:String, showInRedactor:Boolean = true, isEnum:Boolean = false, enumValues:Array = null, isArray:Boolean = false) 
 		{
 			this.name = name;
 			this.value = value;
@@ -30,13 +31,14 @@ package boxesandworlds.game.data
 			this.isEnum = isEnum;
 			this.enumValues = enumValues;
 			_defaultValue = value;
+			this.isArray = isArray;
 		}
 		
-		public static function pushAttribute(arr:Vector.<Attribute>, name:String, value:*, type:String, redactor:Boolean = true, enum:Boolean = false, enumValues:Array = null):void 
+		public static function pushAttribute(arr:Vector.<Attribute>, name:String, value:*, type:String, redactor:Boolean = true, enum:Boolean = false, enumValues:Array = null, isArray:Boolean = false):void 
 		{
 			for (var i:uint = 0; i < arr.length; i++ ) {
 				if (arr[i].name == name) {
-					arr.splice(i, 1, new Attribute(name, value, type, redactor, enum, enumValues));
+					arr.splice(i, 1, new Attribute(name, value, type, redactor, enum, enumValues, isArray));
 					return;
 				}
 			}

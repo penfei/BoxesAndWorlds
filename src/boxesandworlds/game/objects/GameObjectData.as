@@ -26,7 +26,8 @@ package boxesandworlds.game.objects
 		private var _shapePoints:Array;
 		private var _width:Number;
 		private var _height:Number;
-		private var _containerId:uint;
+		private var _viewURLs:Array;
+		private var _containerIds:Array;
 		private var _container:Sprite;
 		private var _id:uint;
 		private var _type:String;
@@ -55,7 +56,8 @@ package boxesandworlds.game.objects
 		{
 			var arr:Vector.<Attribute> = new Vector.<Attribute>();
 			Attribute.pushAttribute(arr, "id", 0, Attribute.NUMBER);
-			Attribute.pushAttribute(arr, "containerId", 0, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "viewURLs", [], Attribute.URL, true, false, null, true);
+			Attribute.pushAttribute(arr, "containerIds", [], Attribute.NUMBER, true, false, null, true);
 			Attribute.pushAttribute(arr, "teleportId", 0, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "start", Vec2.weak(), Attribute.VEC2);
 			Attribute.pushAttribute(arr, "startAngle", 0, Attribute.NUMBER);
@@ -133,8 +135,10 @@ package boxesandworlds.game.objects
 		public function set canTeleport(value:Boolean):void {_canTeleport = value;}
 		public function get needButtonToTeleport():Boolean {return _needButtonToTeleport;}
 		public function set needButtonToTeleport(value:Boolean):void {_needButtonToTeleport = value;}
-		public function get containerId():uint {return _containerId;}
-		public function set containerId(value:uint):void {_containerId = value;}
+		public function get containerIds():Array {return _containerIds;}
+		public function set containerIds(value:Array):void { _containerIds = value; }
+		public function get viewURLs():Array {return _viewURLs;}
+		public function set viewURLs(value:Array):void {_viewURLs = value;}
 	}
 
 }
