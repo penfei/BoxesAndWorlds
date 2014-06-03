@@ -42,7 +42,7 @@ package boxesandworlds.game.data
 					return;
 				}
 			}
-			arr.push(new Attribute(name, value, type, redactor, enum, enumValues));
+			arr.push(new Attribute(name, value, type, redactor, enum, enumValues, isArray));
 		}
 		
 		public function get defaultValue():* { return _defaultValue; }
