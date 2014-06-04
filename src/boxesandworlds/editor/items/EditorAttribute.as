@@ -32,15 +32,17 @@ package boxesandworlds.editor.items {
 		private var _value:*;
 		private var _enumValues:Array;
 		
+		private var _defaultValue:*;
 		private var _id:int;
 		private var _file:FileReference;
 		
-		public function EditorAttribute(id:int, name:String, isEnum:Boolean, type:String = "", value:* = null, enumValues:Array = null) {
+		public function EditorAttribute(id:int, name:String, isEnum:Boolean, type:String = "", value:* = null, defaultValue:* = null, enumValues:Array = null) {
 			_id = id;
 			_nameAttribute = name;
 			_isEnum = isEnum;
 			_type = type;
 			_value = value;
+			_defaultValue = defaultValue;
 			_enumValues = enumValues;
 			setup();
 		}
@@ -79,6 +81,30 @@ package boxesandworlds.editor.items {
 			return value; 
 		}
 		
+		public function get isChanged():Boolean { 
+			var isChanged:Boolean;
+			if (isEnum) {
+				isChanged = String(_defaultValue) != EditorAttributeEnum(_ui).value;
+			}else {
+				switch(_type) {
+					case Attribute.BOOL:
+						isChanged = Boolean(_defaultValue) != _ui.mcValue.mcCheck.visible;
+						break;
+						
+					case Attribute.NUMBER:
+					case Attribute.STRING:
+					case Attribute.URL:
+						isChanged = String(_value) != _ui.mcValue.label.text;
+						break;
+						
+					case Attribute.VEC2:
+						isChanged = String(Vec2(_defaultValue).x) != _ui.mcValue.value1.text || String(Vec2(_defaultValue).y) != _ui.mcValue.value2.text;
+						break;
+				}
+			}
+			return isChanged;
+		}
+		
 		// public
 		public function destroy():void {
 			if (_ui != null) {
@@ -114,7 +140,7 @@ package boxesandworlds.editor.items {
 		// protected
 		protected function setup():void {
 			if (_isEnum) {
-				_ui = new EditorAttributeEnum(_type, _enumValues, _id);
+				_ui = new EditorAttributeEnum(_type, _enumValues, String(_defaultValue), _id);
 			}else {
 				switch(_type) {
 					case Attribute.BOOL:

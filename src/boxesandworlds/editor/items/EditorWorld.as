@@ -174,8 +174,8 @@ package boxesandworlds.editor.items {
 		
 		protected function savePositionStartInAttribute():void {
 			if (_currentItem != null) {
-				_startPosition.x = _currentItem.x;
-				_startPosition.y = _currentItem.y;
+				_startPosition.x = _currentItem.x - EditorUtils.WORLD_WITDH / 2;
+				_startPosition.y = _currentItem.y - EditorUtils.WORLD_HEIGHT / 2;
 				_currentItem.setupAttribute("start", _startPosition);
 			}
 		}

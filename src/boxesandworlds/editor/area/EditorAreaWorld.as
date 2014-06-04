@@ -101,8 +101,7 @@ package boxesandworlds.editor.area {
 			_currentWorld.setupPositionItem(valueX, valueY);
 		}
 		
-		public function getXML():XML {
-			var xml:XML = <xml></xml>;
+		public function getWorldsAndPlayerXML(xml:XML):XML {
 			xml.appendChild(XML(getPlayerXML()));
 			for (var i:uint = 0, len:uint = _worlds.length; i < len; ++i) {
 				xml.appendChild(XML(getWorldXML(_worlds[i])));
@@ -140,7 +139,9 @@ package boxesandworlds.editor.area {
 		protected function getItemXML(item:EditorItem):String {
 			var xml:String = "<" + item.nameItem + ">";
 			for (var i:uint = 0, len:uint = item.mcAttributes.length; i < len; ++i) {
-				xml += getAttributeXML(item.mcAttributes[i]);
+				if (item.mcAttributes[i].isChanged) {
+					xml += getAttributeXML(item.mcAttributes[i]);
+				}
 			}
 			xml += "</" + item.nameItem + ">";
 			return xml;

@@ -26,12 +26,14 @@ package boxesandworlds.editor.items {
 		// vars
 		private var _type:String;
 		private var _enumValues:Array;
+		private var _defaultValue:String;
 		private var _id:int;
 		private var _isOpened:Boolean = false;
 		
-		public function EditorAttributeEnum(type:String, enumValues:Array, id:int) {
+		public function EditorAttributeEnum(type:String, enumValues:Array, defaultValue:String, id:int) {
 			_type = type;
 			_enumValues = enumValues;
+			_defaultValue = defaultValue;
 			_id = id;
 			setup();
 		}
@@ -63,6 +65,17 @@ package boxesandworlds.editor.items {
 			_currentItem = _items[0];
 			updateColors();
 			
+			if (_items[0].labelName.text != _defaultValue) {
+				var tmp:String = _items[0].labelName.text;
+				_items[0].labelName.text = _defaultValue;
+				for (var j:uint = 1, lenj:uint = _items.length; j < lenj; ++j) {
+					if (_items[j].labelName.text == _defaultValue) {
+						_items[j].labelName.text = tmp;
+						break;
+					}
+				}
+			}
+			
 			_ui.mcMask.height = 25 * len;
 			_ui.mcContent.y = -(25 * len);
 		}
@@ -80,17 +93,21 @@ package boxesandworlds.editor.items {
 			}
 		}
 		
+		protected function doClickItem(item:MovieClip):void {
+			_currentItem.y = item.y;
+			_ui.mcContent.addChild(_currentItem);
+			_currentItem = item;
+			item.y = 0;
+			_ui.mcHeader.addChild(_currentItem);
+			_isOpened = !_isOpened;
+			showHideEnum();
+		}
+		
 		// handlers
 		private function itemClickHandler(e:MouseEvent):void {
 			var item:MovieClip = e.currentTarget as MovieClip;
 			if (item != null) {
-				_currentItem.y = item.y;
-				_ui.mcContent.addChild(_currentItem);
-				_currentItem = item;
-				item.y = 0;
-				_ui.mcHeader.addChild(_currentItem);
-				_isOpened = !_isOpened;
-				showHideEnum();
+				doClickItem(item);
 			}
 		}
 		

@@ -127,7 +127,7 @@ package boxesandworlds.editor.items {
 			for (var i:int = 0; i < len; ++i) {
 				if (_attributes[i].showInRedactor) {
 					type = _attributes[i].type;
-					var attribute:EditorAttribute = new EditorAttribute(i, _attributes[i].name, _attributes[i].isEnum, type, _attributes[i].value, _attributes[i].enumValues);
+					var attribute:EditorAttribute = new EditorAttribute(i, _attributes[i].name, _attributes[i].isEnum, type, _attributes[i].value, _attributes[i].defaultValue, _attributes[i].enumValues);
 					_mcAttributes.push(attribute);
 				}
 			}

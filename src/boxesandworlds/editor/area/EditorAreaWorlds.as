@@ -51,13 +51,13 @@ package boxesandworlds.editor.area {
 			var len:uint = _worlds.length;
 			for (var i:uint = 0; i < len; ++i) {
 				_worlds[i].x = 25 + 10 * (i % 4) + 55 * (i % 4);
-				_worlds[i].y = 25 + 10 * (int(i / 4)) + 55 * (int(i / 4));
+				_worlds[i].y = 14 + 10 * (int(i / 4)) + 45 * (int(i / 4));
 				content.addChild(_worlds[i]);
 			}
 			if (len > 8) {
 				var s:Sprite = new Sprite();
 				s.graphics.beginFill(0x000000, 0);
-				s.graphics.drawRect(0, 0, 1, 70);
+				s.graphics.drawRect(0, 0, 1, 40);
 				s.graphics.endFill();
 				s.y = content.height;
 				content.addChildAt(s, 0);

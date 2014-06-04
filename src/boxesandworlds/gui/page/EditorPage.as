@@ -3,6 +3,7 @@ package boxesandworlds.gui.page {
 	import boxesandworlds.controller.UIManager;
 	import boxesandworlds.editor.area.EditorAreaAttributes;
 	import boxesandworlds.editor.area.EditorAreaItems;
+	import boxesandworlds.editor.area.EditorAreaScript;
 	import boxesandworlds.editor.area.EditorAreaWorld;
 	import boxesandworlds.editor.area.EditorAreaWorlds;
 	import boxesandworlds.editor.EditorPopup;
@@ -41,6 +42,7 @@ package boxesandworlds.gui.page {
 		private var _areaWorlds:EditorAreaWorlds;
 		private var _areaItems:EditorAreaItems;
 		private var _areaAttributes:EditorAreaAttributes;
+		private var _areaScript:EditorAreaScript;
 		
 		// vars
 		private var _library:Array = [WorldStructureData, BoxData, TeleportBoxData, WorldBoxData, ButtonData, GateData, EdgeDoorData];
@@ -98,6 +100,9 @@ package boxesandworlds.gui.page {
 			_areaAttributes.addEventListener(EditorEventChangeAttributeStart.CHANGE_ATTRIBUTE_START, changeAttributeStartHandler);
 			_ui.areaAttributes.addChild(_areaAttributes);
 			
+			_areaScript = new EditorAreaScript();
+			_ui.areaScript.addChild(_areaScript);
+			
 			//setupTempPositions();
 		}
 		
@@ -123,7 +128,10 @@ package boxesandworlds.gui.page {
 		}
 		
 		protected function saveXML():void {
-			var xml:XML = _areaWorld.getXML();
+			var xml:XML = <xml></xml>;
+			xml = _areaScript.getLevelScriptXML(xml);
+			xml = _areaWorld.getWorldsAndPlayerXML(xml);
+			
 			var ba:ByteArray = new ByteArray();
 			ba.writeUTFBytes(xml);
 			var fr:FileReference = new FileReference();
