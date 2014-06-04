@@ -86,10 +86,12 @@ package boxesandworlds.editor.items {
 		}
 		
 		public function setupAttribute(name:String, value:*):void {
-			for (var i:uint = 0, len:uint = _mcAttributes.length; i < len; ++i) {
-				if (_mcAttributes[i].nameAttribute == name) {
-					_mcAttributes[i].setupValue(value);
-					break;
+			if (_mcAttributes != null) {
+				for (var i:uint = 0, len:uint = _mcAttributes.length; i < len; ++i) {
+					if (_mcAttributes[i].nameAttribute == name) {
+						_mcAttributes[i].setupValue(value);
+						break;
+					}
 				}
 			}
 		}
