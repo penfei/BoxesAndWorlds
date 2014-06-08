@@ -13,3 +13,7 @@ BoxesAndWorlds.as3proj
 # information for Eclipse / Flash Builder.
 /obj
 /obj
+
+
+fonts/
+libs/

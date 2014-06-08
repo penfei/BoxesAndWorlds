@@ -54,8 +54,8 @@ package boxesandworlds.controller {
 			_canvas.parent.addChild(_miniPreloader);
 			hidePreloader();
 			
-			//showPage(MAIN_PAGE_ID);
-			showPage(EDITOR_PAGE_ID);
+			showPage(MAIN_PAGE_ID);
+			//showPage(EDITOR_PAGE_ID);
 			//showPage(GAME_PAGE_ID);			
 			resize();
 		}

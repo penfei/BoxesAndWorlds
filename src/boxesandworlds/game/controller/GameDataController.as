@@ -2,6 +2,8 @@ package boxesandworlds.game.controller
 {
 	import boxesandworlds.data.MusicData;
 	import boxesandworlds.game.levels.Level;
+	import boxesandworlds.game.levels.tutorial.TutorialLevel;
+	import flash.utils.getDefinitionByName;
 	/**
 	 * ...
 	 * @author Sah
@@ -14,10 +16,27 @@ package boxesandworlds.game.controller
 		private var _isPaused:Boolean;
 		private var _isDestroyed:Boolean;
 		
-		public function GameDataController(game:Game, params:Object) 
+		public function GameDataController(game:Game, params:XML) 
 		{
 			super(game);
-			_level = params.level;
+			
+			//_level = params.level;
+			if ( params.levelScript == null || params.levelScript.@scriptName == "" )
+			{
+				_level = Level;
+			}
+			else
+			{
+				try
+				{
+					_level = getDefinitionByName(params.levelScript.@scriptName) as Class;
+				}
+				catch (exception:Object)
+				{
+					_level = Level;
+				}
+			}
+			
 			_isDestroyed = true;
 		}
 		
