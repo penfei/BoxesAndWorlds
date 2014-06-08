@@ -1,4 +1,4 @@
-package utils.xml 
+package boxesandworlds.game.utils 
 {
 	/**
 	 * @author alexey

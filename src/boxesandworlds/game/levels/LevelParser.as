@@ -38,8 +38,8 @@ package boxesandworlds.game.levels
 		
 		public function parse():void {
 			//return;
-			var data:XML = _game.xmlLevelParams;
-			var xmlContent:Dictionary = _game.xmlLevelObjects;
+			var data:XML = _game.data.xmlLevelParams;
+			var xmlContent:Dictionary = _game.data.xmlLevelObjects;
 			
 			if (!_isParsed && data) 
 			{
