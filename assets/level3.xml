@@ -1,0 +1,62 @@
+<xml>
+  <levelScript scriptName=""/>
+  <player worldId="1" x="339" y="410"/>
+  <world id="1">
+    <WorldStructure>
+      <start x="-95" y="-369"/>
+      <physicsBitmapDataUrl value="TestLevel4.png"/>
+    </WorldStructure>
+    <Gate>
+      <start x="255" y="214"/>
+      <edge value="RIGHT"/>
+    </Gate>
+    <WorldBox>
+      <teleportId value="2"/>
+      <start x="97" y="114"/>
+    </WorldBox>
+    <TeleportBox>
+	<id value="10"/>
+      <teleportId value="11"/>
+      <start x="-301" y="133"/>
+    </TeleportBox>
+    <Box>
+      <start x="-338" y="-335"/>
+    </Box>
+    <Box>
+      <start x="-339" y="-222"/>
+    </Box>
+    <Button>
+      <start x="-182" y="112"/>
+      <openedId value="16"/>
+    </Button>
+    <Door>
+      <start x="174" y="-281"/>
+      <isOpen value="false"/>
+	<id value="16"/>
+    </Door>
+  </world>
+  <world id="2">
+    <WorldStructure>
+      <start x="-71" y="-359"/>
+      <physicsBitmapDataUrl value="TestLevel4.png"/>
+    </WorldStructure>
+    <Gate>
+      <start x="-322" y="178"/>
+    </Gate>
+    <WorldBox>
+      <teleportId value="1"/>
+      <start x="175" y="157"/>
+    </WorldBox>
+  </world>
+  <world id="3">
+    <WorldStructure>
+      <start x="-22" y="-340"/>
+      <physicsBitmapDataUrl value="TestLevel3.png"/>
+    </WorldStructure>
+    <TeleportBox>
+      <id value="11"/>
+      <teleportId value="10"/>
+      <start x="-163" y="28"/>
+    </TeleportBox>
+  </world>
+</xml>

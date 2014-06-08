@@ -21,6 +21,10 @@ package boxesandworlds.game.controller
 		static public const BACK:String = "BACK";
 		static public const GAME_COMPLETE:String = "GAME_COMPLETE";
 		
+		static public const WORLD_START_X_POSITION:uint = 400;
+		static public const WORLD_START_Y_POSITION:uint = 400;
+		static public const WORLD_X_OFFSET:uint = 1000;
+		
 		private var _data:GameDataController;
 		private var _level:Level;
 		private var _input:InputController;
@@ -47,6 +51,9 @@ package boxesandworlds.game.controller
 		public function get input():InputController {return _input;}
 		public function get objects():ObjectsController {return _objects;}
 		public function get sound():SoundController { return _sound; }
+		
+		public function get xmlLevelParams():XML { return _xmlLevelParams; }
+		public function get xmlLevelObjects():Dictionary { return _xmlLevelObjects; }
 		
 		public function init(params:Object):void {
 			_params = params;
@@ -142,10 +149,10 @@ package boxesandworlds.game.controller
 			_physics = new PhysicsController(this);
 			_physics.init();
 			
-			_level.init();
-			
 			_objects = new ObjectsController(this);
 			_objects.init()
+			
+			_level.init();
 			
 			_input = new InputController(this);
 			_input.init();

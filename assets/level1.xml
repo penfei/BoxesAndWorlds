@@ -1,6 +1,6 @@
 <xml>
   <levelScript scriptName="boxesandworlds.game.levels.tutorial.TutorialLevel"/>
-  <player worldId="0" x="152" y="292"/>
+  <player worldId="0" x="20" y="40"/>
   <world id="0">
     <WorldStructure>
       <viewURLs value="TestLevel.png"/>
