@@ -188,18 +188,6 @@ package boxesandworlds.game.levels
 				for each( world in _game.objects.worlds ) 
 					world.postInit();
 			}
-		}
-		
-		private function createButton(mc:DisplayObject, name:String):void 
-		{
-			var start:Vec2 = new Vec2(mc.x, mc.y);
-			var params:Object = { type:name.split("_")[0], id:Number(name.split("_")[1]), ui:mc, bodyType:BodyType.STATIC, start:start };
-			var obj:Button = new Button(_game);
-			add(obj, params);
-		}
-		
-		private function add(obj:GameObject, params:Object):void {
-			_parsedObjects.push({obj:obj, params:params});
 		}		
 	}
 
