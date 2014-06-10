@@ -150,10 +150,10 @@ package boxesandworlds.editor.area {
 		protected function getAttributeXML(attribute:EditorAttribute):String {
 			var xml:String = "<" + attribute.nameAttribute;
 			if (attribute.isArray) {
-				xml += ">";
+				xml += " type='" + attribute.type + "'>";
 				xml += attribute.valueXML;
 			}else {
-				xml += " " + attribute.valueXML + ">";
+				xml += " " + attribute.valueXML + " type='" + attribute.type + "'" + ">";
 			}
 			xml += "</" + attribute.nameAttribute + ">";
 			return xml;

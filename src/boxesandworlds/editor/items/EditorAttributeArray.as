@@ -42,7 +42,6 @@ package boxesandworlds.editor.items {
 			_value = value as Array;
 			_defaultValue = defaultValue;
 			_id = id;
-			trace(_defaultValue.length);
 			
 			//_type = Attribute.VEC2;
 			//_defaultValue = [new Vec2(1,2), new Vec2(123, 200)];

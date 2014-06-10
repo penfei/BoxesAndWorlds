@@ -47,9 +47,6 @@ package boxesandworlds.editor.items {
 			_value = value;
 			_defaultValue = defaultValue;
 			_enumValues = enumValues;
-			if (_isArray) {
-				//trace(_defaultValue.length);
-			}
 			setup();
 		}
 		
@@ -123,6 +120,9 @@ package boxesandworlds.editor.items {
 						isChanged = String(Vec2(_defaultValue).x) != EditorUtils.cutSideSpaces(_ui.mcValue.value1.text) || String(Vec2(_defaultValue).y) != EditorUtils.cutSideSpaces(_ui.mcValue.value2.text);
 						break;
 				}
+			}
+			if (_nameAttribute == "id") {
+				isChanged = true;
 			}
 			return isChanged;
 		}
