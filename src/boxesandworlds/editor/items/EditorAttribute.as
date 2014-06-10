@@ -1,5 +1,6 @@
 package boxesandworlds.editor.items {
 	import boxesandworlds.editor.events.EditorEventChangeAttributeStart;
+	import boxesandworlds.editor.utils.EditorUtils;
 	import boxesandworlds.game.data.Attribute;
 	import editor.EditorAttributeBoolUI;
 	import editor.EditorAttributeNumberUI;
@@ -28,6 +29,7 @@ package boxesandworlds.editor.items {
 		// vars
 		private var _nameAttribute:String;
 		private var _isEnum:Boolean;
+		private var _isArray:Boolean;
 		private var _type:String;
 		private var _value:*;
 		private var _enumValues:Array;
@@ -36,23 +38,37 @@ package boxesandworlds.editor.items {
 		private var _id:int;
 		private var _file:FileReference;
 		
-		public function EditorAttribute(id:int, name:String, isEnum:Boolean, type:String = "", value:* = null, defaultValue:* = null, enumValues:Array = null) {
+		public function EditorAttribute(id:int, name:String, isEnum:Boolean, isArray:Boolean, type:String = "", value:* = null, defaultValue:* = null, enumValues:Array = null) {
 			_id = id;
 			_nameAttribute = name;
 			_isEnum = isEnum;
+			_isArray = isArray;
 			_type = type;
 			_value = value;
 			_defaultValue = defaultValue;
 			_enumValues = enumValues;
+			if (_isArray) {
+				//trace(_defaultValue.length);
+			}
 			setup();
 		}
 		
 		// get
+		override public function get height():Number {
+			if (_isArray) {
+				return _ui.height;
+			}else {
+				return 25;
+			}
+		}
+		
 		public function get id():int { return _id; }
 		
 		public function get nameAttribute():String { return _nameAttribute; }
 		
 		public function get isEnum():Boolean { return _isEnum; }
+		
+		public function get isArray():Boolean { return _isArray; }
 		
 		public function get type():String { return _type; }
 		
@@ -60,6 +76,8 @@ package boxesandworlds.editor.items {
 			var value:String = "value='";
 			if (_isEnum) {
 				value += _ui.value;
+			}else if (_isArray) {
+				value = _ui.valueXML;
 			}else {
 				switch(_type) {
 					case Attribute.BOOL:
@@ -69,22 +87,26 @@ package boxesandworlds.editor.items {
 					case Attribute.NUMBER:
 					case Attribute.STRING:
 					case Attribute.URL:
-						value += _ui.mcValue.label.text;
+						value += EditorUtils.cutSideSpaces(_ui.mcValue.label.text);
 						break;
 						
 					case Attribute.VEC2:
-						value = "x='" + _ui.mcValue.value1.text + "' y='" + _ui.mcValue.value2.text;
+						value = "x='" + EditorUtils.cutSideSpaces(_ui.mcValue.value1.text) + "' y='" + EditorUtils.cutSideSpaces(_ui.mcValue.value2.text);
 						break;
 				}
 			}
-			value += "'";
+			if (!_isArray) {
+				value += "'";
+			}
 			return value; 
 		}
 		
 		public function get isChanged():Boolean { 
 			var isChanged:Boolean;
-			if (isEnum) {
+			if (_isEnum) {
 				isChanged = String(_defaultValue) != EditorAttributeEnum(_ui).value;
+			}else if (_isArray) {
+				isChanged = _ui.isChanged;
 			}else {
 				switch(_type) {
 					case Attribute.BOOL:
@@ -94,11 +116,11 @@ package boxesandworlds.editor.items {
 					case Attribute.NUMBER:
 					case Attribute.STRING:
 					case Attribute.URL:
-						isChanged = String(_value) != _ui.mcValue.label.text;
+						isChanged = String(_value) != EditorUtils.cutSideSpaces(_ui.mcValue.label.text);
 						break;
 						
 					case Attribute.VEC2:
-						isChanged = String(Vec2(_defaultValue).x) != _ui.mcValue.value1.text || String(Vec2(_defaultValue).y) != _ui.mcValue.value2.text;
+						isChanged = String(Vec2(_defaultValue).x) != EditorUtils.cutSideSpaces(_ui.mcValue.value1.text) || String(Vec2(_defaultValue).y) != EditorUtils.cutSideSpaces(_ui.mcValue.value2.text);
 						break;
 				}
 			}
@@ -124,14 +146,14 @@ package boxesandworlds.editor.items {
 				case Attribute.NUMBER:
 				case Attribute.STRING:
 				case Attribute.URL:
-					_ui.mcValue.label.text = String(value);
+					_ui.mcValue.label.text = EditorUtils.cutSideSpaces(String(value));
 					break;
 					
 				case Attribute.VEC2:
 					var result:Vec2 = value as Vec2;
 					if (result != null) {
-						_ui.mcValue.value1.text = String(result.x);
-						_ui.mcValue.value2.text = String(result.y);
+						_ui.mcValue.value1.text = EditorUtils.cutSideSpaces(String(result.x));
+						_ui.mcValue.value2.text = EditorUtils.cutSideSpaces(String(result.y));
 					}
 					break;
 			}
@@ -139,8 +161,14 @@ package boxesandworlds.editor.items {
 		
 		// protected
 		protected function setup():void {
+			if (!_isArray && (_type == Attribute.NUMBER || _type == Attribute.STRING || _type == Attribute.URL)) {
+				_defaultValue = EditorUtils.cutSideSpaces(String(_defaultValue));
+			}
+			
 			if (_isEnum) {
-				_ui = new EditorAttributeEnum(_type, _enumValues, String(_defaultValue), _id);
+				_ui = new EditorAttributeEnum(_type, _nameAttribute, _enumValues, String(_defaultValue), _id);
+			}else if (_isArray) {
+				_ui = new EditorAttributeArray(_type, _nameAttribute, _value, _defaultValue, _id);
 			}else {
 				switch(_type) {
 					case Attribute.BOOL:
@@ -157,6 +185,7 @@ package boxesandworlds.editor.items {
 						_ui.mcValue.label.type = TextFieldType.INPUT;
 						_ui.mcValue.label.selectable = true;
 						_ui.mcValue.label.text = String(_value);
+						_ui.mcValue.label.restrict = "0-9.";
 						break;
 						
 					case Attribute.STRING:
@@ -235,7 +264,7 @@ package boxesandworlds.editor.items {
 		}
 		
 		private function changeHandler(e:Event):void {
-			dispatchEvent(new EditorEventChangeAttributeStart(EditorEventChangeAttributeStart.CHANGE_ATTRIBUTE_START, Number(_ui.mcValue.value1.text), Number(_ui.mcValue.value2.text), true));
+			dispatchEvent(new EditorEventChangeAttributeStart(EditorEventChangeAttributeStart.CHANGE_ATTRIBUTE_START, Number(EditorUtils.cutSideSpaces(_ui.mcValue.value1.text)), Number(EditorUtils.cutSideSpaces(_ui.mcValue.value2.text)), true));
 		}
 		
 	}

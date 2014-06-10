@@ -198,6 +198,8 @@ package boxesandworlds.gui.page {
 		}
 		
 		private function playerDownHandler(e:MouseEvent):void {
+			_areaAttributes.hideAttributes();
+			_areaWorld.unselectItem();
 			_areaWorld.addPlayer();
 			_ui.player.mc.alpha = 0;
 			_isSetupPlayer = true;

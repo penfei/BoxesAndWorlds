@@ -41,6 +41,25 @@ package boxesandworlds.editor.utils {
 			return realName;
 		}
 		
+		static public function cutSideSpaces(str:String):String {
+			var index:int = -1;
+			for (var i:int = 0, len:uint = str.length; i < len; ++i) {
+				if (str.charAt(i) != " " && str.charAt(i) != "\t" && str.charAt(i) != "\r" && str.charAt(i) != "\n") {
+					index = i;
+					break;
+				}
+			}
+			str = str.substr(index);
+			for (var j:int = str.length - 1; j >= 0; --j) {
+				if (str.charAt(j) != " " && str.charAt(j) != "\t" && str.charAt(j) != "\r" && str.charAt(j) != "\n") {
+					index = j;
+					break;
+				}
+			}
+			str = str.substring(0, index + 1);
+			return str;
+		}
+		
 	}
 
 }

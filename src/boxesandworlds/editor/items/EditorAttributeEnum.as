@@ -1,5 +1,6 @@
 package boxesandworlds.editor.items {
 	import boxesandworlds.editor.events.EditorEventSetUpAttribute;
+	import boxesandworlds.editor.utils.EditorUtils;
 	import com.greensock.TweenMax;
 	import editor.EditorAttributeBoolUI;
 	import editor.EditorAttributeEnumUI;
@@ -25,13 +26,15 @@ package boxesandworlds.editor.items {
 		
 		// vars
 		private var _type:String;
+		private var _nameAttribute:String;
 		private var _enumValues:Array;
 		private var _defaultValue:String;
 		private var _id:int;
 		private var _isOpened:Boolean = false;
 		
-		public function EditorAttributeEnum(type:String, enumValues:Array, defaultValue:String, id:int) {
+		public function EditorAttributeEnum(type:String, nameAttribute:String, enumValues:Array, defaultValue:String, id:int) {
 			_type = type;
+			_nameAttribute = nameAttribute;
 			_enumValues = enumValues;
 			_defaultValue = defaultValue;
 			_id = id;
@@ -39,11 +42,13 @@ package boxesandworlds.editor.items {
 		}
 		
 		// get
-		public function get value():String { return _currentItem.labelName.text; }
+		public function get value():String { return EditorUtils.cutSideSpaces(_currentItem.labelName.text); }
 		
 		// protected
 		protected function setup():void {
 			_ui = new EditorAttributeEnumUI;
+			_ui.labelName.mouseEnabled = false;
+			_ui.labelName.text = _nameAttribute;
 			addChild(_ui);
 			
 			var len:uint = _enumValues.length;

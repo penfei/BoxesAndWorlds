@@ -35,7 +35,7 @@ package {
 			
 			//SWFProfiler.init(stage, this);
 			
-			initCore(params)
+			initCore(params);
 		}
 		
 		public function initCore(params:Object = null):void {

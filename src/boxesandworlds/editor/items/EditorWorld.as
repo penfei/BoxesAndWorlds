@@ -92,8 +92,8 @@ package boxesandworlds.editor.items {
 		}
 		
 		public function setupPositionItem(valueX:Number, valueY:Number):void {
-			_currentItem.x = valueX;
-			_currentItem.y = valueY;
+			_currentItem.x = valueX + EditorUtils.WORLD_WITDH / 2;
+			_currentItem.y = valueY + EditorUtils.WORLD_HEIGHT / 2;
 			if (_currentItem.x < 0) {
 				_currentItem.x = 0;
 			}else if (_currentItem.x + _currentItem.width > EditorUtils.WORLD_WITDH) {
@@ -216,6 +216,7 @@ package boxesandworlds.editor.items {
 		}
 		
 		private function playerDownHandler(e:MouseEvent):void {
+			dispatchEvent(new EditorEventAttributes(EditorEventAttributes.HIDE_ATTRIBUTES, null, true));
 			setupMoveblePlayer();
 		}
 		

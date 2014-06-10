@@ -148,9 +148,14 @@ package boxesandworlds.editor.area {
 		}
 		
 		protected function getAttributeXML(attribute:EditorAttribute):String {
-			var xml:String = "<" + attribute.nameAttribute + " ";
-			xml += attribute.valueXML;
-			xml += "></" + attribute.nameAttribute + ">";
+			var xml:String = "<" + attribute.nameAttribute;
+			if (attribute.isArray) {
+				xml += ">";
+				xml += attribute.valueXML;
+			}else {
+				xml += " " + attribute.valueXML + ">";
+			}
+			xml += "</" + attribute.nameAttribute + ">";
 			return xml;
 		}
 		
