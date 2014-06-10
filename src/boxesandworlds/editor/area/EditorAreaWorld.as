@@ -119,7 +119,7 @@ package boxesandworlds.editor.area {
 			var xml:String = "<player";
 			for (var i:uint = 0, len:uint = _worlds.length; i < len; ++i) {
 				if (_worlds[i].player != null) {
-					xml += " worldId='" + String(_worlds[i].id) + "' x='" + String(_worlds[i].player.x) + "' y='" + String(_worlds[i].player.y) + "'";
+					xml += " worldId='" + String(_worlds[i].id + 1) + "' x='" + String(_worlds[i].player.x) + "' y='" + String(_worlds[i].player.y) + "'";
 					break;
 				}
 			}
@@ -128,7 +128,7 @@ package boxesandworlds.editor.area {
 		}
 		
 		protected function getWorldXML(world:EditorWorld):String {
-			var xml:String = "<world id='" + String(world.id) + "'>";
+			var xml:String = "<world id='" + String( world.id + 1 ) + "'>";
 			for (var i:uint = 0, len:uint = world.items.length; i < len; ++i) {
 				xml += getItemXML(world.items[i]);
 			}

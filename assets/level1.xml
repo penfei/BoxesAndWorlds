@@ -1,0 +1,40 @@
+<xml>
+  <levelScript scriptName="boxesandworlds.game.levels.tutorial.TutorialLevel"/>
+  <player worldId="0" x="20" y="40"/>
+  <world id="0">
+    <WorldStructure>
+      <viewURLs value="TestLevel.png"/>
+      <start x="-318" y="-305"/>
+      <physicsBitmapDataUrl value="TestLevel.png"/>
+    </WorldStructure>
+    <Box>
+      <start x="71" y="-270"/>
+    </Box>
+    <TeleportBox>
+      <start x="179" y="-274"/>
+    </TeleportBox>
+    <WorldBox>
+      <start x="-80" y="45"/>
+    </WorldBox>
+    <Gate>
+      <start x="79" y="-14"/>
+    </Gate>
+    <EdgeDoor>
+      <start x="253" y="-27"/>
+    </EdgeDoor>
+  </world>
+  <world id="1">
+    <WorldStructure>
+      <viewURLs value="TestLevel2.png"/>
+      <start x="-326" y="-319"/>
+      <physicsBitmapDataUrl value="TestLevel2.png"/>
+    </WorldStructure>
+  </world>
+  <world id="2">
+    <WorldStructure>
+      <viewURLs value="TestLevel3.png"/>
+      <start x="-224" y="-265"/>
+      <physicsBitmapDataUrl value="TestLevel3.png"/>
+    </WorldStructure>
+  </world>
+</xml>

@@ -40,10 +40,12 @@ package boxesandworlds.game.controller
 		override public function init():void 
 		{
 			_me = new Player(game);
+			_worlds = new Vector.<World>;
+			return;
+			
 			//_me.init( { start:game.level.data.startHeroPostion } );
 			_me.init( { start:new Vec2(420, 200) } );
 			
-			_worlds = new Vector.<World>;
 			var world1:World = new World(game);
 			world1.init({id:1, axis:new Vec2(400, 400)});
 			_worlds.push(world1);

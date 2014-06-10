@@ -1,11 +1,8 @@
 package boxesandworlds.game.controller 
 {
-	import boxesandworlds.controller.Core;
-	import boxesandworlds.game.gui.Menu;
 	import boxesandworlds.game.levels.Level;
 	import boxesandworlds.gui.View;
 	import boxesandworlds.gui.ViewEvent;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	/**
 	 * ...
@@ -16,13 +13,17 @@ package boxesandworlds.game.controller
 		static public const BACK:String = "BACK";
 		static public const GAME_COMPLETE:String = "GAME_COMPLETE";
 		
+		static public const WORLD_START_X_POSITION:uint = 400;
+		static public const WORLD_START_Y_POSITION:uint = 400;
+		static public const WORLD_X_OFFSET:uint = 1000;
+		
 		private var _data:GameDataController;
 		private var _level:Level;
 		private var _input:InputController;
 		private var _physics:PhysicsController;
 		private var _gui:GuiController;
 		private var _objects:ObjectsController;
-		private var _sound:SoundController
+		private var _sound:SoundController;
 		
 		public function Game() 
 		{
@@ -37,19 +38,13 @@ package boxesandworlds.game.controller
 		public function get objects():ObjectsController {return _objects;}
 		public function get sound():SoundController { return _sound; }
 		
-		public function init(params:Object):void {
+		public function init(params:Object):void {			
 			_data = new GameDataController(this, params);
-			_level = _data.getLevel();
-			
-			_sound = new SoundController(this);
 		}
 		
-		override public function load():void {			
-			_sound.addEventListener(Event.COMPLETE, loadCompleteHandler);
-			_sound.load();
-			
-			_level.addEventListener(ViewEvent.LOAD_COMPLETE, loadCompleteHandler);
-			_level.load();
+		override public function load():void {
+			_data.addEventListener(Event.COMPLETE, xmlLoadCompleteHandler);
+			_data.load();
 		}
 		
 		public function start():void {
@@ -63,10 +58,10 @@ package boxesandworlds.game.controller
 			_physics = new PhysicsController(this);
 			_physics.init();
 			
-			_level.init();
-			
 			_objects = new ObjectsController(this);
 			_objects.init()
+			
+			_level.init();
 			
 			_input = new InputController(this);
 			_input.init();
@@ -118,6 +113,18 @@ package boxesandworlds.game.controller
 			}
 		}
 		
+		private function xmlLoadCompleteHandler(e:Event):void 
+		{
+			_level = _data.getLevel();
+
+			_sound = new SoundController(this);
+			_sound.addEventListener(Event.COMPLETE, loadCompleteHandler);
+			_sound.load();
+
+			_level.addEventListener(ViewEvent.LOAD_COMPLETE, loadCompleteHandler);
+			_level.load();
+		}
+		
 		private function loadCompleteHandler(e:Event):void {
 			if (_sound.isLoad && _level.isLoad) doLoadComplete();
 		}
@@ -135,5 +142,4 @@ package boxesandworlds.game.controller
 		}
 		
 	}
-
 }
