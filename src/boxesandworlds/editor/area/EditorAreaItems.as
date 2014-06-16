@@ -44,7 +44,7 @@ package boxesandworlds.editor.area {
 			
 			var attributes:Vector.<Attribute>;
 			for (var i:int = 0; i < len; ++i) {
-				var item:EditorItemPreview = new EditorItemPreview(EditorUtils.getItemId(String(_library[i])), _library[i].attributes());
+				var item:EditorItemPreview = new EditorItemPreview(_library[i].attributes());
 				_items[i] = item;
 				item.x = 10 + 10 * (i % ITEMS_IN_ROW) + 55 * (i % ITEMS_IN_ROW);
 				item.y = 10 + 10 * (int(i / ITEMS_IN_ROW)) + 55 * (int(i / ITEMS_IN_ROW));
@@ -84,7 +84,7 @@ package boxesandworlds.editor.area {
 		private function itemDownHandler(e:MouseEvent):void {
 			var item:EditorItemPreview = e.currentTarget as EditorItemPreview;
 			if (item != null) {
-				dispatchEvent(new EditorEventNewItem(EditorEventNewItem.NEW_ITEM, item.id, item.attributes));
+				dispatchEvent(new EditorEventNewItem(EditorEventNewItem.NEW_ITEM, item.attributes));
 			}
 		}
 		

@@ -16,7 +16,12 @@ package boxesandworlds.editor.area {
 			setup();
 		}
 		
-		// get
+		// set
+		public function set levelScript(levelScriptName:String):void {
+			_ui.label.text = levelScriptName;
+		}
+		
+		// public
 		public function getLevelScriptXML(xml:XML):XML {
 			xml.appendChild(XML("<levelScript scriptName='" + _ui.label.text + "'></levelScript>"));
 			return xml;

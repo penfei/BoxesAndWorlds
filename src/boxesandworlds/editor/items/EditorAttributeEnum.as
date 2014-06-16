@@ -42,7 +42,17 @@ package boxesandworlds.editor.items {
 		}
 		
 		// get
-		public function get value():String { return EditorUtils.cutSideSpaces(_currentItem.labelName.text); }
+		public function get value():String { 
+			return EditorUtils.cutSideSpaces(_currentItem.labelName.text); 
+		}
+		
+		public function get valueXML():String {
+			var value:String = "";
+			for (var i:int = 0, len:uint = _enumValues.length; i < len; ++i) {
+				value += "<value>" + EditorUtils.cutSideSpaces(String(_enumValues[i])) + "</value>";
+			}
+			return value;
+		}
 		
 		// protected
 		protected function setup():void {

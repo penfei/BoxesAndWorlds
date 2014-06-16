@@ -6,6 +6,7 @@ package boxesandworlds.gui.page {
 	import boxesandworlds.editor.area.EditorAreaScript;
 	import boxesandworlds.editor.area.EditorAreaWorld;
 	import boxesandworlds.editor.area.EditorAreaWorlds;
+	import boxesandworlds.editor.data.EditorLevelData;
 	import boxesandworlds.editor.EditorPopup;
 	import boxesandworlds.editor.events.EditorEventAttributes;
 	import boxesandworlds.editor.events.EditorEventChangeAttributeStart;
@@ -13,6 +14,7 @@ package boxesandworlds.gui.page {
 	import boxesandworlds.editor.events.EditorEventPlayer;
 	import boxesandworlds.editor.events.EditorEventWorld;
 	import boxesandworlds.editor.utils.EditorUtils;
+	import boxesandworlds.editor.data.EditorXMLLoader;
 	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoorData;
 	import boxesandworlds.game.objects.enters.gate.GateData;
 	import boxesandworlds.game.objects.items.box.BoxData;
@@ -47,6 +49,7 @@ package boxesandworlds.gui.page {
 		// vars
 		private var _library:Array = [WorldStructureData, BoxData, TeleportBoxData, WorldBoxData, ButtonData, GateData, EdgeDoorData];
 		private var _isSetupPlayer:Boolean;
+		private var _xmlLoader:EditorXMLLoader;
 		
 		public function EditorPage() {
 			super(UIManager.EDITOR_PAGE_ID);
@@ -67,7 +70,8 @@ package boxesandworlds.gui.page {
 			_popup.addEventListener(EditorPopup.EDITOR_CLEAR_LEVEL, popupClearLevelHandler);
 			_popup.addEventListener(EditorPopup.EDITOR_EXIT, popupExitHandler);
 			
-			_ui.btnSave.buttonMode = _ui.btnClear.buttonMode = _ui.btnExit.buttonMode = true;
+			_ui.btnLoad.buttonMode = _ui.btnSave.buttonMode = _ui.btnClear.buttonMode = _ui.btnExit.buttonMode = true;
+			//_ui.btnLoad.addEventListener(MouseEvent.CLICK, btnLoadClickHandler);
 			_ui.btnSave.addEventListener(MouseEvent.CLICK, btnSaveClickHandler);
 			_ui.btnClear.addEventListener(MouseEvent.CLICK, btnClearClickHandler);
 			_ui.btnExit.addEventListener(MouseEvent.CLICK, btnExitClickHandler);
@@ -109,7 +113,7 @@ package boxesandworlds.gui.page {
 		/* функция для калькулятора Бори */
 		protected function setupTempPositions():void {
 			var step:int = 100;
-			_ui.btnSave.y = _ui.btnExit.y = _ui.btnClear.y = _ui.btnClear.y - step;
+			_ui.btnLoad.y = _ui.btnSave.y = _ui.btnExit.y = _ui.btnClear.y = _ui.btnClear.y - step;
 			_ui.bgButtons.y -= step;
 		}
 		
@@ -139,6 +143,22 @@ package boxesandworlds.gui.page {
 		}
 		
 		// handlers
+		private function btnLoadClickHandler(e:MouseEvent):void {
+			if (_xmlLoader == null) {
+				_xmlLoader = new EditorXMLLoader();
+			}
+			_xmlLoader.addEventListener(EditorXMLLoader.XML_DATA_LOADED, xmlDataLoadedHandler);
+			_xmlLoader.openWindow();
+		}
+		
+		private function xmlDataLoadedHandler(e:Event):void {
+			_xmlLoader.removeEventListener(EditorXMLLoader.XML_DATA_LOADED, xmlDataLoadedHandler);
+			
+			var levelData:EditorLevelData = _xmlLoader.levelData;
+			_areaScript.levelScript = levelData.levelScriptData.levelScriptName;
+			_areaWorld.setupDataFromXML(levelData.playerData, levelData.worldsData);
+		}
+		
 		private function btnSaveClickHandler(e:MouseEvent):void {
 			_popup.setupType(EditorPopup.EDITOR_SAVE_LEVEL);
 			showPopup();
@@ -173,7 +193,7 @@ package boxesandworlds.gui.page {
 		}
 		
 		private function addNewItemHandler(e:EditorEventNewItem):void {
-			_areaWorld.addItem(e.id, e.attributes);
+			_areaWorld.addItem(e.attributes);
 		}
 		
 		private function addWorldHandler(e:EditorEventWorld):void {

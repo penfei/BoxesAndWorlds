@@ -1,4 +1,8 @@
 package boxesandworlds.editor.utils {
+	import boxesandworlds.editor.data.items.EditorAttributeData;
+	import boxesandworlds.editor.data.items.EditorItemData;
+	import boxesandworlds.game.data.Attribute;
+	import nape.geom.Vec2;
 	/**
 	 * ...
 	 * @author Jarkony
@@ -9,20 +13,6 @@ package boxesandworlds.editor.utils {
 		static public const WORLD_WITDH:uint = 800;
 		static public const WORLD_HEIGHT:uint = 800;
 		static public const XML_NAME:String = "BaW.xml";
-		
-		static public function getItemId(item:String):String {
-			var wasSpace:Boolean = false;
-			var id:String = "";
-			for (var i:uint, len:uint = item.length; i < len - 1; ++i) {
-				if (wasSpace) {
-					id += item.charAt(i);
-				}
-				if (item.charAt(i) == ' ') {
-					wasSpace = true;
-				}
-			}
-			return id;
-		}
 		
 		static public function getItemName(name:String):String {
 			var realName:String = "";
@@ -58,6 +48,37 @@ package boxesandworlds.editor.utils {
 			}
 			str = str.substring(0, index + 1);
 			return str;
+		}
+		
+		static public function createAttributesFromXML(itemData:EditorItemData):Vector.<Attribute> {
+			var attributesData:Vector.<EditorAttributeData> = itemData.attributesData;
+			var len:uint = attributesData.length;
+			var attributes:Vector.<Attribute> = new Vector.<Attribute>();
+			attributes.length = len;
+			for (var i:uint = 0; i < len; ++i) {
+				var attributeName:String = attributesData[i].attributeName;
+				var type:String = attributesData[i].type;
+				var isEnum:Boolean = attributesData[i].isEnum;
+				var isArray:Boolean = attributesData[i].isArray;
+				var value:*;
+				if (type == Attribute.VEC2 && !isArray) {
+					value = new Vec2(Number(attributesData[i].valueX), Number(attributesData[i].valueY));
+				}else {
+					if (isArray) {
+						value = attributesData[i].valuesArray;
+					}else {
+						value = attributesData[i].value;
+					}
+				}
+				var valuesEnum:Array;
+				if (isEnum) {
+					valuesEnum = attributesData[i].valuesEnum;
+				}
+				
+				var attribute:Attribute = new Attribute(attributeName, value, type, true, isEnum, valuesEnum, isArray);
+				attributes[i] = attribute;
+			}
+			return attributes;
 		}
 		
 	}
