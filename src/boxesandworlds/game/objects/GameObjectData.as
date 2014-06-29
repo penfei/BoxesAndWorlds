@@ -2,11 +2,7 @@ package boxesandworlds.game.objects
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.data.Attribute;
-	import flash.display.Bitmap;
 	import flash.display.Sprite;
-	import flash.geom.Point;
-	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
 	import nape.geom.Vec2;
 	import nape.phys.BodyType;
 	/**
@@ -27,9 +23,8 @@ package boxesandworlds.game.objects
 		private var _shapePoints:Array;
 		private var _width:Number;
 		private var _height:Number;
-		private var _viewURLs:Array;
+		private var _views:Array;
 		private var _containerIds:Array;
-		private var _container:Sprite;
 		private var _id:uint;
 		private var _type:String;
 		private var _startAngle:Number;
@@ -57,7 +52,7 @@ package boxesandworlds.game.objects
 		{
 			var arr:Vector.<Attribute> = new Vector.<Attribute>();
 			Attribute.pushAttribute(arr, "id", 0, Attribute.NUMBER);
-			Attribute.pushAttribute(arr, "viewURLs", [], Attribute.URL, 2, false, null, true);
+			Attribute.pushAttribute(arr, "views", [], Attribute.URL, 2, false, null, true);
 			Attribute.pushAttribute(arr, "containerIds", [], Attribute.NUMBER, 2, false, null, true);
 			Attribute.pushAttribute(arr, "teleportId", 0, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "start", Vec2.weak(), Attribute.VEC2);
@@ -89,7 +84,6 @@ package boxesandworlds.game.objects
 			for (var key:String in params) {
 				this[key] = params[key];
 			}
-			container = game.gui.container;
 		}
 		
 		protected function getAttributes():Vector.<Attribute> {
@@ -106,8 +100,6 @@ package boxesandworlds.game.objects
 		public function get height():Number {return _height;}
 		public function set width(value:Number):void {_width = value;}
 		public function set height(value:Number):void {_height = value;}
-		public function get container():Sprite {return _container;}
-		public function set container(value:Sprite):void {_container = value;}
 		public function get shapePoints():Array {return _shapePoints;}
 		public function set shapePoints(value:Array):void {_shapePoints = value;}
 		public function get id():uint {return _id;}
@@ -142,8 +134,8 @@ package boxesandworlds.game.objects
 		public function set needButtonToTeleport(value:Boolean):void {_needButtonToTeleport = value;}
 		public function get containerIds():Array {return _containerIds;}
 		public function set containerIds(value:Array):void { _containerIds = value; }
-		public function get viewURLs():Array {return _viewURLs;}
-		public function set viewURLs(value:Array):void {_viewURLs = value;}
+		public function get views():Array {return _views;}
+		public function set views(value:Array):void {_views = value;}
 	}
 
 }

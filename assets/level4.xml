@@ -5,10 +5,10 @@
     <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="1"/>
 	  <physicsBitmap type="URL" value="TestLevel4.png"/>
-       <viewURLs attributeName="viewURLs" type="URL" isArray="true">
+      <views attributeName="viewURLs" type="URL" isArray="true">
         <value>TestLevel2.png</value>
 		<value>TestLevel3.png</value>
-      </viewURLs>
+      </views>
       <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
         <value>2</value>
 		<value>3</value>

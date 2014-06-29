@@ -2,6 +2,7 @@ package boxesandworlds.game.objects.enters.edgeDoor
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.enters.EnterView;
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	/**
 	 * ...
@@ -23,7 +24,10 @@ package boxesandworlds.game.objects.enters.edgeDoor
 			_ui.graphics.beginFill(0x336600);
 			_ui.graphics.drawRect( -obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height);
 			_ui.alpha = 0.5;
-			addChild(_ui);
+			
+			obj.data.views.push(_ui);
+			obj.data.containerIds[0] = 0;
+			super.init();
 		}
 		
 		override public function step():void 

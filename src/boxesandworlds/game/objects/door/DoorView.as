@@ -2,6 +2,7 @@ package boxesandworlds.game.objects.door
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.GameObjectView;
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	/**
 	 * ...
@@ -20,7 +21,10 @@ package boxesandworlds.game.objects.door
 			_ui = new Sprite();
 			_ui.graphics.beginFill(0xF30230);
 			_ui.graphics.drawRect( -obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height);
-			addChild(_ui);
+			
+			obj.data.views.push(_ui);
+			obj.data.containerIds[0] = 0;
+			super.init();
 		}
 		
 		public function showOpen():void 

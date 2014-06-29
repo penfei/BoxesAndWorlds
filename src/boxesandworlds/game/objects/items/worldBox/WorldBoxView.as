@@ -2,11 +2,9 @@ package boxesandworlds.game.objects.items.worldBox
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.enters.Enter;
-	import boxesandworlds.game.objects.enters.EnterData;
 	import boxesandworlds.game.objects.items.ItemView;
 	import com.greensock.TweenLite;
 	import flash.display.Sprite;
-	import flash.geom.Point;
 	import flash.text.TextField;
 	import nape.geom.Vec2;
 	/**
@@ -32,7 +30,6 @@ package boxesandworlds.game.objects.items.worldBox
 			_ui.graphics.drawRect( -obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height);
 			_ui.graphics.beginFill(0xFF00FF);
 			_ui.graphics.drawRect(-obj.data.width / 6, -obj.data.height / 2, obj.data.width / 3, obj.data.height * 0.7);
-			addChild(_ui);
 			
 			_connectedEdgeContainer = new Sprite();
 			_connectedEdgeContainer.graphics.beginFill(0xdc23c0);
@@ -45,6 +42,10 @@ package boxesandworlds.game.objects.items.worldBox
 			_hintContainer.graphics.drawCircle(0, 0, 5);
 			_hintContainer.alpha = 0;
 			_ui.addChild(_hintContainer);
+			
+			obj.data.views.push(_ui);
+			obj.data.containerIds[0] = 0;
+			super.init();
 		}
 		
 		override public function showHintTeleport():void 
