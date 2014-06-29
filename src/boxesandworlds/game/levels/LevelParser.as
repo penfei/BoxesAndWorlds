@@ -1,5 +1,7 @@
 package boxesandworlds.game.levels
 {
+	import boxesandworlds.data.ObjectsLibrary;
+	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.objects.door.Door;
 	import boxesandworlds.game.objects.enters.EnterData;
 	import boxesandworlds.game.controller.Game;
@@ -12,6 +14,7 @@ package boxesandworlds.game.levels
 	import boxesandworlds.game.objects.items.teleportBox.TeleportBox;
 	import boxesandworlds.game.objects.items.worldBox.WorldBox;
 	import boxesandworlds.game.objects.worldstructrure.WorldStructure;
+	import boxesandworlds.game.utils.ContentUtils;
 	import boxesandworlds.game.world.World;
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
@@ -58,130 +61,45 @@ package boxesandworlds.game.levels
 				var world:World;
 				for each( var xmlWorld:XML in data.world )
 				{
-					if (xmlWorld != null && xmlWorld.@id != null )
-					{
-						var worldPosX:Number = Game.WORLD_START_X_POSITION + i * Game.WORLD_X_OFFSET;
-						var worldPosY:Number = Game.WORLD_START_Y_POSITION;
+					var worldPosX:Number = Game.WORLD_START_X_POSITION + i * Game.WORLD_X_OFFSET;
+					var worldPosY:Number = Game.WORLD_START_Y_POSITION;
 						
-						world = new World(_game);	
-						world.init( { id:xmlWorld.@id, axis:new Vec2(worldPosX, worldPosY) } );
+					world = new World(_game);	
+					world.init( { id:xmlWorld.@id, axis:new Vec2(worldPosX, worldPosY) } );
 					
-						if ( xmlWorld.@id == data.player.@worldId )
-							world.addGameObject(_game.objects.me);
+					if ( xmlWorld.@id == data.player.@worldId )
+						world.addGameObject(_game.objects.me);
 						
-						var worldStructureLoaded:Boolean = false;
-						if ( xmlWorld.WorldStructure != null )
-						{
-							if ( xmlWorld.WorldStructure.physicsBitmapDataUrl != null )
-							{
-								var physPath:String = xmlWorld.WorldStructure.physicsBitmapDataUrl.@value;
-								var bitmap:Bitmap = xmlContent[ physPath ];
-								if ( bitmap != null )
-								{
-									var structure:WorldStructure = new WorldStructure(_game);
-									structure.init( { physicsBitmapData:bitmap.bitmapData, 
-										start:new Vec2(world.data.axis.x - world.data.width / 2, world.data.axis.y - world.data.height / 2) } );
-									world.addStructureToWorld(structure);
-									worldStructureLoaded = true;
+							
+					for each( var child:XML in xmlWorld.children() )
+					{
+						var objectClass:Class = ObjectsLibrary.getObjectClassByType(child.name());
+						var object:GameObject = new objectClass(_game);
+						var params:Object = {start: new Vec2};
+						for each( var par:XML in child.children() ) {
+							if (par.@isArray == "true") {
+								var arr:Array = [];
+								for each( var parChild:XML in par.children() ) {
+									if (par.@type == Attribute.VEC2) arr.push(Vec2.weak(parChild.valueX, parChild.valueY));
+									else if (par.@type == Attribute.URL) arr.push(ContentUtils.copy(xmlContent[String(parChild)]));
+									else arr.push(parChild);
 								}
+								params[par.name()] = arr;
+							} else {
+								if (par.@type == Attribute.VEC2) params[par.name()] = Vec2.weak(par.@x, par.@y);
+								else if (par.@type == Attribute.URL) params[par.name()] = ContentUtils.copy(xmlContent[String(par.@value)]);
+								else params[par.name()] = par.@value;
 							}
 						}
-						
-						if ( !worldStructureLoaded )
-						{
-							trace( "WorldStructure not found in world " + xmlWorld.@id );
-							continue;
-						}
-						++i;
-						_game.objects.worlds.push( world );	
-						
-						var it:XML;
-						for each( it in xmlWorld.Box )
-						{
-							var box:Box = new Box(_game);
-							box.init( { start:new Vec2(worldPosX + Number(it.start.@x), worldPosY + Number(it.start.@y) )});
-							world.addGameObject(box);
-						}
-						
-						for each( it in xmlWorld.TeleportBox )
-						{
-							var teleportBox:TeleportBox = new TeleportBox(_game);
-							teleportBox.init( { start:new Vec2(worldPosX + Number(it.start.@x), worldPosY + Number(it.start.@y) ),
-										teleportId:int(it.teleportId.@value), id: int(it.id.@value) } );
-							world.addGameObject(teleportBox);
-						}
-						
-						for each( it in xmlWorld.WorldBox )
-						{
-							var worldBox:WorldBox = new WorldBox (_game);
-							worldBox.init( { start:new Vec2(worldPosX + Number(it.start.@x), worldPosY + Number(it.start.@y) ),
-										childWorldId:int(it.teleportId.@value) } );
-							world.addGameObject(worldBox);
-						}
-
-						var params:Object = { };
-						for each( it in xmlWorld.EdgeDoor )
-						{
-							var edgeDoor:EdgeDoor = new EdgeDoor(_game);
-							params = { };
-							params.start = new Vec2(worldPosX + Number(it.start.@x), worldPosY + Number(it.start.@y) );
 							
-							if ( it.hasOwnProperty("edge") )
-								params.edge = it.edge.@value;
-							else
-								params.edge = EnterData.LEFT;
-								
-							if ( it.hasOwnProperty("width") )
-								params.width = Number(it.width.@value);
-							if ( it.hasOwnProperty("height") )
-								params.height = Number(it.height.@value);
-								
-							edgeDoor.init( params );
-							world.addGameObject( edgeDoor );
-						}
-
-						for each( it in xmlWorld.Gate )
-						{
-							var gate:Gate = new Gate(_game);
-							params = { };
-							params.start = new Vec2(worldPosX + Number(it.start.@x), worldPosY + Number(it.start.@y) );
-							
-							if ( it.hasOwnProperty("edge") )
-								params.edge = it.edge.@value;
-							else
-								params.edge = EnterData.LEFT;
-							
-							if ( it.hasOwnProperty("width") )
-								params.width = Number(it.width.@value);
-							if ( it.hasOwnProperty("height") )
-								params.height = Number(it.height.@value);
-							
-							gate.init( params );
-							world.addGameObject( gate );
-						}
-						
-						for each( it in xmlWorld.Door )
-						{
-							var door:Door = new Door(_game);
-							door.init( { start:new Vec2(worldPosX + Number(it.start.@x), worldPosY + Number(it.start.@y) ),
-										id:int(it.id.@value) } );
-							world.addGameObject(door);
-						}
-						
-						for each( it in xmlWorld.Key )
-						{
-							var key:Key = new Key(_game);
-							key.init( { start:new Vec2(worldPosX + Number(it.start.@x), worldPosY + Number(it.start.@y) ),
-										openedId:int(it.openedId.@value) } );
-							world.addGameObject(key);
-						}
-						
-						for each( it in xmlWorld.Button )
-						{
-							var button:Button = new Button(_game);
-							button.init( { start:new Vec2(worldPosX + Number(it.start.@x), worldPosY + Number(it.start.@y) ),
-										openedId:int(it.openedId.@value) } );
-							world.addGameObject(button);
+						if (object is WorldStructure) {
+							params.start = Vec2.weak(world.data.axis.x - world.data.width / 2, world.data.axis.y - world.data.height / 2);
+							object.init(params);
+							world.addStructureToWorld(object as WorldStructure);
+						} else {
+							params.start = Vec2.weak(worldPosX + params.start.x, worldPosY + params.start.y); 
+							object.init(params);
+							world.addGameObject(object);
 						}
 					}
 				}

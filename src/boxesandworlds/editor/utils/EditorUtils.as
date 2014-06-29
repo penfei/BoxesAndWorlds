@@ -75,7 +75,7 @@ package boxesandworlds.editor.utils {
 					valuesEnum = attributesData[i].valuesEnum;
 				}
 				
-				var attribute:Attribute = new Attribute(attributeName, value, type, true, isEnum, valuesEnum, isArray);
+				var attribute:Attribute = new Attribute(attributeName, value, type, 1, isEnum, valuesEnum, isArray);
 				attributes[i] = attribute;
 			}
 			return attributes;

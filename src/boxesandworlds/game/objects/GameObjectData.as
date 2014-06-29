@@ -2,6 +2,7 @@ package boxesandworlds.game.objects
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.data.Attribute;
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
@@ -56,8 +57,8 @@ package boxesandworlds.game.objects
 		{
 			var arr:Vector.<Attribute> = new Vector.<Attribute>();
 			Attribute.pushAttribute(arr, "id", 0, Attribute.NUMBER);
-			Attribute.pushAttribute(arr, "viewURLs", [], Attribute.URL, true, false, null, true);
-			Attribute.pushAttribute(arr, "containerIds", [], Attribute.NUMBER, true, false, null, true);
+			Attribute.pushAttribute(arr, "viewURLs", [], Attribute.URL, 2, false, null, true);
+			Attribute.pushAttribute(arr, "containerIds", [], Attribute.NUMBER, 2, false, null, true);
 			Attribute.pushAttribute(arr, "teleportId", 0, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "start", Vec2.weak(), Attribute.VEC2);
 			Attribute.pushAttribute(arr, "startAngle", 0, Attribute.NUMBER);
@@ -68,7 +69,7 @@ package boxesandworlds.game.objects
 			Attribute.pushAttribute(arr, "density", 1, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "offsetX", OFFSET_X, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "offsetY", OFFSET_Y, Attribute.NUMBER);
-			Attribute.pushAttribute(arr, "isDestroyPhysic", false, Attribute.BOOL, false);
+			Attribute.pushAttribute(arr, "isDestroyPhysic", false, Attribute.BOOL, 0);
 			Attribute.pushAttribute(arr, "needButtonToTeleport", false, Attribute.BOOL);
 			Attribute.pushAttribute(arr, "canTeleport", false, Attribute.BOOL);
 			return arr;
@@ -78,7 +79,11 @@ package boxesandworlds.game.objects
 		{
 			var obj:Object = getAttributes();
 			for each(var attribute:Attribute in obj) {
-				this[attribute.name] = attribute.value;
+				if (attribute.type == Attribute.URL) {
+					if (attribute.isArray) this[attribute.name] = [];
+					else this[attribute.name] = null;
+				}
+				else this[attribute.name] = attribute.value;
 			}
 			
 			for (var key:String in params) {

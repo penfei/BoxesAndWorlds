@@ -51,7 +51,8 @@ package boxesandworlds.gui.page {
 			_ui.addChild(_game);
 			//var params:Object = { xmlLevelPath:"../assets/level1.xml" };
 			//var params:Object = { xmlLevelPath:"../assets/level2.xml" };
-			var params:Object = { xmlLevelPath:"../assets/level3.xml" };
+			//var params:Object = { xmlLevelPath:"../assets/level3.xml" };
+			var params:Object = { xmlLevelPath:"../assets/level4.xml" };
 			_game.init(params);
 		}
 		

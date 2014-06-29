@@ -1,5 +1,6 @@
 package boxesandworlds.game.controller 
 {
+	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.levels.Level;
 	import boxesandworlds.game.utils.XMLUtils;
 	import flash.events.Event;
@@ -98,12 +99,10 @@ package boxesandworlds.game.controller
 			_xmlLevelObjectsCountTotal = 0;
 			_xmlLevelObjectsCountLoaded = 0;
 			
-			var xmlUrlList:XMLList = XMLUtils.findNodesByName( _xmlLevelParams, "physicsBitmapDataUrl" );
-			xmlUrlList += XMLUtils.findNodesByName(_xmlLevelParams, "viewURLs");
+			var downloadList:Vector.<String> = XMLUtils.findNodesByType( _xmlLevelParams, Attribute.URL );
 			
-			for each( var it:XML in xmlUrlList )
+			for each( var path:String in downloadList )
 			{
-				var path:String = (it.@value).toString();
 				_xmlLevelObjects[ path ] = null;
 			}
 			

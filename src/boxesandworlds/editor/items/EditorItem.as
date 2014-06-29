@@ -110,7 +110,7 @@ package boxesandworlds.editor.items {
 			_mcAttributes = new Vector.<EditorAttribute>();
 			var type:String = "";
 			for (var i:int = 0; i < len; ++i) {
-				if (attributes[i].showInRedactor) {
+				if (attributes[i].redactorAction) {
 					type = attributes[i].type;
 					var attribute:EditorAttribute = new EditorAttribute(i, attributes[i].name, attributes[i].isEnum, attributes[i].isArray, type, attributes[i].value, attributes[i].defaultValue, attributes[i].enumValues);
 					_mcAttributes.push(attribute);

@@ -1,12 +1,14 @@
 package boxesandworlds.gui.page {
 	import boxesandworlds.controller.Core;
 	import boxesandworlds.controller.UIManager;
+	import boxesandworlds.data.ObjectsLibrary;
 	import boxesandworlds.editor.area.EditorAreaAttributes;
 	import boxesandworlds.editor.area.EditorAreaItems;
 	import boxesandworlds.editor.area.EditorAreaScript;
 	import boxesandworlds.editor.area.EditorAreaWorld;
 	import boxesandworlds.editor.area.EditorAreaWorlds;
 	import boxesandworlds.editor.data.EditorLevelData;
+	import boxesandworlds.editor.data.EditorXMLLoader;
 	import boxesandworlds.editor.EditorPopup;
 	import boxesandworlds.editor.events.EditorEventAttributes;
 	import boxesandworlds.editor.events.EditorEventChangeAttributeStart;
@@ -14,14 +16,6 @@ package boxesandworlds.gui.page {
 	import boxesandworlds.editor.events.EditorEventPlayer;
 	import boxesandworlds.editor.events.EditorEventWorld;
 	import boxesandworlds.editor.utils.EditorUtils;
-	import boxesandworlds.editor.data.EditorXMLLoader;
-	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoorData;
-	import boxesandworlds.game.objects.enters.gate.GateData;
-	import boxesandworlds.game.objects.items.box.BoxData;
-	import boxesandworlds.game.objects.items.button.ButtonData;
-	import boxesandworlds.game.objects.items.teleportBox.TeleportBoxData;
-	import boxesandworlds.game.objects.items.worldBox.WorldBoxData;
-	import boxesandworlds.game.objects.worldstructrure.WorldStructureData;
 	import com.greensock.easing.Expo;
 	import com.greensock.easing.Linear;
 	import com.greensock.TweenMax;
@@ -47,7 +41,6 @@ package boxesandworlds.gui.page {
 		private var _areaScript:EditorAreaScript;
 		
 		// vars
-		private var _library:Array = [WorldStructureData, BoxData, TeleportBoxData, WorldBoxData, ButtonData, GateData, EdgeDoorData];
 		private var _isSetupPlayer:Boolean;
 		private var _xmlLoader:EditorXMLLoader;
 		
@@ -88,7 +81,7 @@ package boxesandworlds.gui.page {
 			_areaWorlds.addEventListener(EditorEventWorld.REMOVE_WORLD, removeWorldHandler);
 			_areaWorlds.addEventListener(EditorEventWorld.SELECT_WORLD, selectWorldHandler);
 			
-			_areaItems = new EditorAreaItems(_library);
+			_areaItems = new EditorAreaItems(ObjectsLibrary.objectDatas);
 			_ui.areaItems.addChild(_areaItems);
 			_areaItems.addEventListener(EditorEventNewItem.NEW_ITEM, addNewItemHandler);
 			
