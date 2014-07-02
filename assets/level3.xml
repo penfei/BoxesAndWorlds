@@ -4,7 +4,15 @@
   <world id="1">
     <WorldStructure>
       <start x="-95" y="-369"/>
-      <physicsBitmapDataUrl value="TestLevel4.png"/>
+      <physicsBitmapDataUrl value="TestLevel4.png" type="URL"/>
+	  <viewURLs attributeName="viewURLs" type="URL" isArray="true">
+        <value>TestLevel2.png</value>
+		<value>TestLevel3.png</value>
+      </viewURLs>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>2</value>
+		<value>3</value>
+	  </containerIds>
     </WorldStructure>
     <Gate>
       <start x="255" y="214"/>
@@ -38,7 +46,13 @@
   <world id="2">
     <WorldStructure>
       <start x="-71" y="-359"/>
-      <physicsBitmapDataUrl value="TestLevel4.png"/>
+      <physicsBitmapDataUrl value="TestLevel4.png" type="URL"/>
+	  <viewURLs attributeName="viewURLs" type="URL" isArray="true">
+        <value>TestLevel2.png</value>
+      </viewURLs>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>2</value>
+	  </containerIds>
     </WorldStructure>
     <Gate>
       <start x="-322" y="178"/>
@@ -51,7 +65,13 @@
   <world id="3">
     <WorldStructure>
       <start x="-22" y="-340"/>
-      <physicsBitmapDataUrl value="TestLevel3.png"/>
+      <physicsBitmapDataUrl value="TestLevel3.png" type="URL"/>
+	  <viewURLs attributeName="viewURLs" type="URL" isArray="true">
+        <value>TestLevel2.png</value>
+      </viewURLs>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>2</value>
+	  </containerIds>
     </WorldStructure>
     <TeleportBox>
       <id value="11"/>

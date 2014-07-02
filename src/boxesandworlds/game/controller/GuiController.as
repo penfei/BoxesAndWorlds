@@ -19,6 +19,7 @@ package boxesandworlds.game.controller
 		private var _canvas:View;
 		private var _mainContainer:Sprite;
 		private var _menu:Menu;
+		private var _layers:Vector.<Sprite>;
 		
 		public function GuiController(game:Game) 
 		{
@@ -31,6 +32,7 @@ package boxesandworlds.game.controller
 		public function get stageWidth():Number { return _canvas.stage.stageWidth }
 		public function get stageHeight():Number { return _canvas.stage.stageHeight}
 		public function get debug():Debug {return _debug;}
+		public function get layers():Vector.<Sprite> {return _layers;}
 		
 		override public function init():void 
 		{
@@ -39,6 +41,9 @@ package boxesandworlds.game.controller
 			
 			_mainContainer = new Sprite();
 			_canvas.addChild(_mainContainer);
+			
+			_layers = game.level.getLayers();
+			for each(var layer:Sprite in _layers) _mainContainer.addChild(layer);
 			
 			_debug = new BitmapDebug(stageWidth, stageHeight, game.stage.color, true);
 			_debug.drawConstraints = true;

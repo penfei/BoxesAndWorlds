@@ -27,9 +27,9 @@ package boxesandworlds.game.objects.door
 		public static function attributes():Vector.<Attribute>
 		{
 			var arr:Vector.<Attribute> = GameObjectData.attributes();
-			Attribute.pushAttribute(arr, "type", "Door", Attribute.STRING, false);
-			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING, false);
-			Attribute.pushAttribute(arr, "bodyType", BodyType.STATIC, Attribute.STRING, false);
+			Attribute.pushAttribute(arr, "type", "Door", Attribute.STRING, 0);
+			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING, 0);
+			Attribute.pushAttribute(arr, "bodyType", BodyType.STATIC, Attribute.STRING, 0);
 			Attribute.pushAttribute(arr, "isOpen", false, Attribute.BOOL);
 			Attribute.pushAttribute(arr, "isTemporarilyOpen", false, Attribute.BOOL);
 			Attribute.pushAttribute(arr, "width", 40, Attribute.NUMBER);

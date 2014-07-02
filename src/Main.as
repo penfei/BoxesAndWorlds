@@ -2,6 +2,7 @@ package {
 	import boxesandworlds.controller.Core;
 	import boxesandworlds.controller.DataManager;
 	import boxesandworlds.controller.UIManager;
+	import boxesandworlds.data.ObjectsLibrary;
 	import boxesandworlds.gui.View;
 	import com.flashdynamix.utils.SWFProfiler;
 	import flash.display.Bitmap;
@@ -42,6 +43,7 @@ package {
 			_canvas = new View;
 			addChild(_canvas);
 			
+			ObjectsLibrary.init();
 			Core.data = new DataManager(params);
 			Core.ui = new UIManager(_canvas);
 			Core.stage = stage;

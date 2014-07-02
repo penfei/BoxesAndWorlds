@@ -1,5 +1,6 @@
 package boxesandworlds.editor.items {
 	import boxesandworlds.controller.Core;
+	import boxesandworlds.editor.data.items.EditorWorldData;
 	import boxesandworlds.editor.events.EditorEventAttributes;
 	import boxesandworlds.editor.events.EditorEventPlayer;
 	import boxesandworlds.editor.utils.EditorUtils;
@@ -42,13 +43,28 @@ package boxesandworlds.editor.items {
 		
 		// public
 		public function destroy():void {
-			Core.stage.removeEventListener(MouseEvent.MOUSE_UP, savePositionStartInAttributeHandler);
+			Core.stage.removeEventListener(MouseEvent.MOUSE_UP, itemUpHandler);
+			removeEventListener(Event.ENTER_FRAME, enterFrameMoveItemHandler);
+			if (_items != null) {
+				for (var i:uint = 0, len:uint = _items.length; i < len; ++i) {
+					var item:EditorItem = _items[i];
+					if (item != null) {
+						item.destroy();
+						if (item.parent != null) {
+							item.parent.removeChild(item);
+						}
+						item = null;
+					}
+				}
+				_items = null;
+			}
+			removePlayer();
 		}
 		
-		public function addItem(id:String, uniqueItemId:int, attributes:Vector.<Attribute>):void {
+		public function addItem(uniqueItemId:int, attributes:Vector.<Attribute>):void {
 			disableMoveItems();
 			
-			var item:EditorItem = new EditorItem(id, uniqueItemId, attributes);
+			var item:EditorItem = new EditorItem(uniqueItemId, attributes);
 			_items.push(item);
 			setupMovebleItem(item, true);
 		}
@@ -104,6 +120,24 @@ package boxesandworlds.editor.items {
 			}else if (_currentItem.y + _currentItem.height > EditorUtils.WORLD_HEIGHT) {
 				_currentItem.y = EditorUtils.WORLD_HEIGHT - _currentItem.height;
 			}
+		}
+		
+		public function setupDataFromXML(worldData:EditorWorldData):void {
+			_id = int(worldData.id);
+			_label.text = String(_id);
+			var len:uint = worldData.itemsData.length;
+			_items.length = len;
+			for (var i:uint = 0; i < len; ++i) {
+				var attributes:Vector.<Attribute> = EditorUtils.createAttributesFromXML(worldData.itemsData[i]);
+				
+				var item:EditorItem = new EditorItem(0, attributes);
+				item.x = 0;
+				item.y = 0;
+				_containerItems.addChild(item);
+				_items[i] = item;
+			}
+			
+			enableMoveItems();
 		}
 		
 		// protected
@@ -245,5 +279,4 @@ package boxesandworlds.editor.items {
 		}
 		
 	}
-
 }

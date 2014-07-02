@@ -12,23 +12,18 @@ package boxesandworlds.editor.items {
 	public class EditorItemPreview extends Sprite {
 		
 		// ui
-		//private var _ui:MovieClip;
 		private var _ui:EditorItemPreviewUI;
 		private var _mcHint:Sprite;
 		
 		// vars
-		private var _id:String;
 		private var _attributes:Vector.<Attribute>;
 		
-		public function EditorItemPreview(id:String, attributes:Vector.<Attribute>) {
-			_id = id;
+		public function EditorItemPreview(attributes:Vector.<Attribute>) {
 			_attributes = attributes;
 			setup();
 		}
 		
 		// get
-		public function get id():String { return _id; }
-		
 		public function get attributes():Vector.<Attribute> { return _attributes; }
 		
 		// public
@@ -42,7 +37,6 @@ package boxesandworlds.editor.items {
 		
 		// protected
 		protected function setup():void {
-			//_ui = new EditorItemsEnum.EDITOR_ITEMS_UI_PREVIEW_CLASS[_id]();
 			var itemName:String = "";
 			for (var i:uint = 0, len:uint = _attributes.length; i < len; ++i) {
 				if (_attributes[i].name == "type") {

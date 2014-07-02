@@ -22,13 +22,16 @@ package boxesandworlds.game.objects.items.teleportBox
 			_ui = new Sprite();
 			_ui.graphics.beginFill(0xFF0000);
 			_ui.graphics.drawRect( -obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height);
-			addChild(_ui);
 			
 			_hintContainer = new Sprite();
 			_hintContainer.graphics.beginFill(0xCC9900);
 			_hintContainer.graphics.drawCircle(0, 0, 5);
 			_hintContainer.alpha = 0;
 			_ui.addChild(_hintContainer);
+			
+			obj.data.views.push(_ui);
+			obj.data.containerIds[0] = 0;
+			super.init();
 		}
 		
 		override public function showHintTeleport():void 

@@ -16,34 +16,34 @@ package boxesandworlds.game.data
 		public var name:String;
 		public var value:*;
 		public var type:String;
-		public var showInRedactor:Boolean;
+		public var redactorAction:uint;
 		public var isEnum:Boolean;
 		public var isArray:Boolean;
 		public var enumValues:Array;
 		
 		private var _defaultValue:*;
 		
-		public function Attribute(name:String, value:*, type:String, showInRedactor:Boolean = true, isEnum:Boolean = false, enumValues:Array = null, isArray:Boolean = false) 
+		public function Attribute(name:String, value:*, type:String, redactorAction:uint = 1, isEnum:Boolean = false, enumValues:Array = null, isArray:Boolean = false) 
 		{
 			this.name = name;
 			this.value = value;
 			this.type = type;
-			this.showInRedactor = showInRedactor;
+			this.redactorAction = redactorAction;
 			this.isEnum = isEnum;
 			this.enumValues = enumValues;
 			this.isArray = isArray;
 			_defaultValue = copy();
 		}
 		
-		public static function pushAttribute(arr:Vector.<Attribute>, name:String, value:*, type:String, redactor:Boolean = true, enum:Boolean = false, enumValues:Array = null, isArray:Boolean = false):void 
+		public static function pushAttribute(arr:Vector.<Attribute>, name:String, value:*, type:String, redactorAction:uint = 1, enum:Boolean = false, enumValues:Array = null, isArray:Boolean = false):void 
 		{
 			for (var i:uint = 0; i < arr.length; i++ ) {
 				if (arr[i].name == name) {
-					arr.splice(i, 1, new Attribute(name, value, type, redactor, enum, enumValues, isArray));
+					arr.splice(i, 1, new Attribute(name, value, type, redactorAction, enum, enumValues, isArray));
 					return;
 				}
 			}
-			arr.push(new Attribute(name, value, type, redactor, enum, enumValues, isArray));
+			arr.push(new Attribute(name, value, type, redactorAction, enum, enumValues, isArray));
 		}
 		
 		public function copy():* {

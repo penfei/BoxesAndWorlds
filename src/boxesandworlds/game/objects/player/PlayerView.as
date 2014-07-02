@@ -3,6 +3,7 @@ package boxesandworlds.game.objects.player
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.GameObjectView;
 	import boxesandworlds.game.utils.MathUtils;
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -33,7 +34,10 @@ package boxesandworlds.game.objects.player
 			_uiWalk = new HeroWalkUI;
 			_uiJump = new HeroJumpUI;
 			_ui.addChild(_uiStay);
-			addChild(_ui);
+			
+			obj.data.views.push(_ui);
+			obj.data.containerIds[0] = 0;
+			super.init();
 		}
 		
 		override public function step():void {

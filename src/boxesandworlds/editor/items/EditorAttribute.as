@@ -69,10 +69,12 @@ package boxesandworlds.editor.items {
 		
 		public function get type():String { return _type; }
 		
+		public function get valueEnum():String { return _ui.value; }
+		
 		public function get valueXML():String { 
 			var value:String = "value='";
 			if (_isEnum) {
-				value += _ui.value;
+				value = _ui.valueXML;
 			}else if (_isArray) {
 				value = _ui.valueXML;
 			}else {
@@ -91,11 +93,9 @@ package boxesandworlds.editor.items {
 						value = "x='" + EditorUtils.cutSideSpaces(_ui.mcValue.value1.text) + "' y='" + EditorUtils.cutSideSpaces(_ui.mcValue.value2.text);
 						break;
 				}
-			}
-			if (!_isArray) {
 				value += "'";
 			}
-			return value; 
+			return value;
 		}
 		
 		public function get isChanged():Boolean { 

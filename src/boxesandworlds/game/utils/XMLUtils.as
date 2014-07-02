@@ -5,28 +5,33 @@ package boxesandworlds.game.utils
 	 */
 	public class XMLUtils 
 	{
-		static private var _nodesList:XMLList;
+		static private var _list:Vector.<String>;
 		
 		public function XMLUtils() 
 		{
 		}
 		
-		static public function findNodesByName( xml:XML, nodeName:String ):XMLList 
+		static public function findNodesByType( xml:XML, nodeType:String ):Vector.<String> 
 		{
-			_nodesList = new XMLList();
+			_list = new Vector.<String>();
 			
-			searching( xml, nodeName );
+			searching( xml, nodeType );
 			
-			return _nodesList;
+			return _list;
 		}
 		
-		static private function searching( xml:XML, nodeName:String ):void
+		static private function searching( xml:XML, nodeType:String ):void
 		{
-			if (xml.name() == nodeName)
-				_nodesList += xml;
+			if (xml.@type == nodeType) {
+				if (xml.@isArray == "true") {
+					for each( var child:XML in xml.children() ) 
+						_list.push(child);
+				} else 
+					_list.push(xml.@value);
+			}
 				
 			for each( var it:XML in xml.children() )
-				searching( it, nodeName );
+				searching( it, nodeType );
 		}
 	}
 

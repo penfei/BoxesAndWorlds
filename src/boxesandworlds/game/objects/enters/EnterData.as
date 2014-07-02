@@ -32,7 +32,7 @@ package boxesandworlds.game.objects.enters
 		{
 			var arr:Vector.<Attribute> = GameObjectData.attributes();
 			Attribute.pushAttribute(arr, "isOpen", true, Attribute.BOOL);
-			Attribute.pushAttribute(arr, "edge", LEFT, Attribute.STRING, true, true, [LEFT, RIGHT, TOP, BOTTOM]);
+			Attribute.pushAttribute(arr, "edge", LEFT, Attribute.STRING, 1, true, [LEFT, RIGHT, TOP, BOTTOM]);
 			return arr;
 		}
 		

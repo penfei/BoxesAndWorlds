@@ -4,6 +4,7 @@ package boxesandworlds.game.levels
 	import boxesandworlds.game.levels.LevelParser;
 	import boxesandworlds.gui.View;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -32,7 +33,21 @@ package boxesandworlds.game.levels
 		public function set view(value:LevelView):void {_view = value;}
 		public function get data():LevelData {return _data;}
 		public function set data(value:LevelData):void {_data = value;}
-		public function get isLoad():Boolean {return _isLoad;}
+		public function get isLoad():Boolean { return _isLoad; }
+		
+		static public function layers():Vector.<Sprite> {
+			var arr:Vector.<Sprite> = new Vector.<Sprite>();
+			
+			for (var i:uint = 0; i < 30; i++) {
+				arr.push(new Sprite);
+			}
+			
+			return arr;
+		}
+		
+		public function getLayers():Vector.<Sprite> {
+			return layers();
+		}
 		
 		public function init():void {
 			_parser.parse();

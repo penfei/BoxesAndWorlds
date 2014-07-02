@@ -3,6 +3,7 @@ package boxesandworlds.game.levels.tutorial
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.levels.Level;
 	import boxesandworlds.game.objects.items.button.Button;
+	import flash.display.Sprite;
 	import nape.callbacks.CbEvent;
 	import nape.callbacks.InteractionCallback;
 	import nape.callbacks.InteractionListener;
@@ -16,6 +17,14 @@ package boxesandworlds.game.levels.tutorial
 		public function TutorialLevel(game:Game) 
 		{
 			super(game);
+		}
+		
+		static public function layers():Vector.<Sprite> {
+			return Level.layers();
+		}
+		
+		override public function getLayers():Vector.<Sprite> {
+			return layers();
 		}
 		
 		override public function init():void {

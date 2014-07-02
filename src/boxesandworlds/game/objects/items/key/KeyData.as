@@ -24,9 +24,9 @@ package boxesandworlds.game.objects.items.key
 		public static function attributes():Vector.<Attribute>
 		{
 			var arr:Vector.<Attribute> = ItemData.attributes();
-			Attribute.pushAttribute(arr, "type", "Key", Attribute.STRING, false);
+			Attribute.pushAttribute(arr, "type", "Key", Attribute.STRING, 0);
 			Attribute.pushAttribute(arr, "openedId", 0, Attribute.NUMBER);
-			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING, false);
+			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING, 0);
 			Attribute.pushAttribute(arr, "bodyType", BodyType.DYNAMIC, Attribute.STRING);
 			Attribute.pushAttribute(arr, "width", 40, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "height", 40, Attribute.NUMBER);

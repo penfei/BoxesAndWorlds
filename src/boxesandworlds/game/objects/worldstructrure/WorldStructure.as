@@ -42,7 +42,7 @@ package boxesandworlds.game.objects.worldstructrure
 		}
 		
 		override protected function initPhysics():void {
-			var iso:BitmapDataIso = new BitmapDataIso(_properties.physicsBitmapData, 0x80);
+			var iso:BitmapDataIso = new BitmapDataIso(_properties.physicsBitmap.bitmapData, 0x80);
 			
 			body = new Body(_properties.bodyType, _properties.start);
 			

@@ -1,4 +1,6 @@
 package boxesandworlds.editor.area {
+	import boxesandworlds.editor.data.items.EditorPlayerData;
+	import boxesandworlds.editor.data.items.EditorWorldData;
 	import boxesandworlds.editor.events.EditorEventAttributes;
 	import boxesandworlds.editor.items.EditorAttribute;
 	import boxesandworlds.editor.items.EditorItem;
@@ -17,13 +19,29 @@ package boxesandworlds.editor.area {
 		private var _worlds:Vector.<EditorWorld>;
 		
 		// vars
-		private var _uniqueItemId:int = EditorAreaAttributes.UNIQUE_ID_UNSELECT_ITEM + 1;
+		private var _uniqueItemId:int;
 		
 		public function EditorAreaWorld() {
 			setup();
 		}
 		
 		// public
+		public function destroy():void {
+			if (_worlds != null) {
+				for (var i:uint = 0, len:uint = _worlds.length; i < len; ++i) {
+					var world:EditorWorld = _worlds[i];
+					if (world != null) {
+						world.destroy();
+						if (world.parent != null) {
+							world.parent.removeChild(world);
+						}
+						world = null;
+					}
+				}
+				_worlds = null;
+			}
+		}
+		
 		public function addWorld(id:int):void {
 			unselectItem();
 			if (_currentWorld != null && _currentWorld.parent != null) {
@@ -70,9 +88,9 @@ package boxesandworlds.editor.area {
 			}
 		}
 		
-		public function addItem(id:String, attributes:Vector.<Attribute>):void {
+		public function addItem(attributes:Vector.<Attribute>):void {
 			if (_currentWorld != null) {
-				_currentWorld.addItem(id, _uniqueItemId++, attributes);
+				_currentWorld.addItem(_uniqueItemId++, attributes);
 			}
 		}
 		
@@ -109,8 +127,24 @@ package boxesandworlds.editor.area {
 			return xml;
 		}
 		
+		public function setupDataFromXML(playerData:EditorPlayerData, worldsData:Vector.<EditorWorldData>):void {
+			destroy();
+			_uniqueItemId = EditorAreaAttributes.UNIQUE_ID_UNSELECT_ITEM + 1;
+			var len:uint = worldsData.length;
+			_worlds = new Vector.<EditorWorld>();
+			_worlds.length = len;
+			for (var i:int = 0; i < len; ++i) {
+				var world:EditorWorld = new EditorWorld(i);
+				world.setupDataFromXML(worldsData[i]);
+				_worlds[i] = world;
+			}
+			_currentWorld = _worlds[0];
+			addChild(_currentWorld);
+		}
+		
 		// protected
 		protected function setup():void {
+			_uniqueItemId = EditorAreaAttributes.UNIQUE_ID_UNSELECT_ITEM + 1;
 			_worlds = new Vector.<EditorWorld>();
 			addWorld(0);
 		}
@@ -137,7 +171,7 @@ package boxesandworlds.editor.area {
 		}
 		
 		protected function getItemXML(item:EditorItem):String {
-			var xml:String = "<" + item.nameItem + ">";
+			var xml:String = "<" + item.nameItem + " itemName='" + item.nameItem + "'" + ">";
 			for (var i:uint = 0, len:uint = item.mcAttributes.length; i < len; ++i) {
 				if (item.mcAttributes[i].isChanged) {
 					xml += getAttributeXML(item.mcAttributes[i]);
@@ -148,9 +182,9 @@ package boxesandworlds.editor.area {
 		}
 		
 		protected function getAttributeXML(attribute:EditorAttribute):String {
-			var xml:String = "<" + attribute.nameAttribute;
+			var xml:String = "<" + attribute.nameAttribute + " attributeName='" + attribute.nameAttribute + "'";
 			if (attribute.isArray) {
-				xml += " type='" + attribute.type + "'>";
+				xml += " type='" + attribute.type + "' isArray='true'>";
 				xml += attribute.valueXML;
 			}else {
 				xml += " " + attribute.valueXML + " type='" + attribute.type + "'" + ">";
@@ -160,5 +194,4 @@ package boxesandworlds.editor.area {
 		}
 		
 	}
-	
 }

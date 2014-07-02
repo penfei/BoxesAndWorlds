@@ -39,14 +39,14 @@ package boxesandworlds.editor.items {
 		public function EditorAttributeArray(type:String, nameAttribute:String, value:*, defaultValue:*, id:int) {
 			_type = type;
 			_nameAttribute = nameAttribute;
-			_value = value as Array;
+			var len:uint = value.length;
+			_value = [];
+			_value.length = len;
+			for (var i:uint = 0; i < len; ++i) {
+				_value[i] = value[i];
+			}
 			_defaultValue = defaultValue;
 			_id = id;
-			
-			//_type = Attribute.VEC2;
-			//_defaultValue = [new Vec2(1,2), new Vec2(123, 200)];
-			//_value = [new Vec2(1,2), new Vec2(123, 200)];
-			
 			setup();
 		}
 		

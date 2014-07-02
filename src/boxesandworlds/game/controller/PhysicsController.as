@@ -2,9 +2,12 @@ package boxesandworlds.game.controller
 {
 	import boxesandworlds.game.objects.door.Door;
 	import boxesandworlds.game.objects.GameObject;
+	import boxesandworlds.game.objects.GameObjectView;
 	import boxesandworlds.game.objects.items.button.Button;
 	import boxesandworlds.game.objects.items.key.Key;
 	import boxesandworlds.game.world.World;
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.utils.getTimer;
 	import nape.callbacks.CbEvent;
 	import nape.callbacks.CbType;
@@ -68,10 +71,12 @@ package boxesandworlds.game.controller
 				var body:Body = _world.bodies.at(i);
 				if (body.userData.obj) {
 					var graphic:* = body.userData.obj.view;
-					if (graphic) {
+					if (graphic is DisplayObject) {
 						graphic.x = body.position.x;
 						graphic.y = body.position.y;
 						graphic.rotation = body.rotation * 180 / Math.PI;
+					} else if (graphic is GameObjectView) {
+						(graphic as GameObjectView).updatePosition(body.position.x, body.position.y, body.rotation * 180 / Math.PI);
 					}
 				}
 			}			

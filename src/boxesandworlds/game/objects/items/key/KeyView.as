@@ -21,7 +21,10 @@ package boxesandworlds.game.objects.items.key
 			_ui.graphics.lineStyle(3, 0xF30230);
 			_ui.graphics.moveTo( -obj.data.width / 2, obj.data.height / 2);
 			_ui.graphics.lineTo( obj.data.width / 2, -obj.data.height / 2);
-			addChild(_ui);
+			
+			obj.data.views.push(_ui);
+			obj.data.containerIds[0] = 0;
+			super.init();
 		}
 	}
 

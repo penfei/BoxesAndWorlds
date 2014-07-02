@@ -22,14 +22,11 @@ package boxesandworlds.game.objects.items.button
 			_ui = new Sprite();
 			_ui.graphics.beginFill(0xF3FF50);
 			_ui.graphics.drawRect( -obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height);
-			addChild(_ui);
-		}
-		
-		public function destroy():void 
-		{
-			removeChildren();
-			_ui = null;
-		}		
+			
+			obj.data.views.push(_ui);
+			obj.data.containerIds[0] = 0;
+			super.init();
+		}	
 	}
 
 }

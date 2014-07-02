@@ -1,4 +1,5 @@
 package boxesandworlds.editor.items {
+	import boxesandworlds.editor.data.items.EditorItemData;
 	import boxesandworlds.editor.utils.EditorUtils;
 	import boxesandworlds.game.data.Attribute;
 	import com.greensock.TweenMax;
@@ -12,30 +13,23 @@ package boxesandworlds.editor.items {
 	public class EditorItem extends Sprite {
 		
 		// ui
-		//private var _ui:MovieClip;
 		private var _ui:EditorItemUI;
 		private var _mcWarning:Sprite;
 		private var _mcAttributes:Vector.<EditorAttribute>;
 		
 		// vars
 		private var _nameItem:String;
-		private var _id:String;
 		private var _uniqueId:int;
-		private var _attributes:Vector.<Attribute>;
 		private var _isShowedWarning:Boolean;
 		private var _isSelectable:Boolean;
 		
-		public function EditorItem(id:String, uniqueId:int, attributes:Vector.<Attribute>) {
-			_id = id;
+		public function EditorItem(uniqueId:int, attributes:Vector.<Attribute>) {
 			_uniqueId = uniqueId;
-			_attributes = attributes;
-			setup();
+			setup(attributes);
 		}
 		
 		// get
 		public function get nameItem():String { return _nameItem; }
-		
-		public function get id():String { return _id; }
 		
 		public function get uniqueId():int { return _uniqueId; }
 		
@@ -96,43 +90,53 @@ package boxesandworlds.editor.items {
 			}
 		}
 		
+		public function setupDataFromXML(itemData:EditorItemData):void {
+			
+		}
+		
 		// protected
-		protected function setup():void {
-			//_ui = new EditorItemsEnum.EDITOR_ITEMS_UI_CLASS[_id]();
+		protected function setup(attributes:Vector.<Attribute>):void {
 			var nameEditor:String = "";
-			for (var j:uint = 0, lenj:uint = _attributes.length; j < lenj; ++j) {
-				if (_attributes[j].name == "type") {
-					_nameItem = String(_attributes[j].value);
-					nameEditor = EditorUtils.getItemName(String(_attributes[j].value));
+			for (var j:uint = 0, lenj:uint = attributes.length; j < lenj; ++j) {
+				if (attributes[j].name == "type") {
+					_nameItem = String(attributes[j].value);
+					nameEditor = EditorUtils.getItemName(String(attributes[j].value));
 				}
-				if (_attributes[j].name == "id") {
-					_attributes[j].value = _uniqueId;
+				if (attributes[j].name == "id") {
+					attributes[j].value = _uniqueId;
 				}
 			}
 			
+			createUI(nameEditor);
+			createMCWarning();
+			
+			var len:uint = attributes.length;
+			_mcAttributes = new Vector.<EditorAttribute>();
+			var type:String = "";
+			for (var i:int = 0; i < len; ++i) {
+				if (attributes[i].redactorAction) {
+					type = attributes[i].type;
+					var attribute:EditorAttribute = new EditorAttribute(i, attributes[i].name, attributes[i].isEnum, attributes[i].isArray, type, attributes[i].value, attributes[i].defaultValue, attributes[i].enumValues);
+					_mcAttributes.push(attribute);
+				}
+			}
+		}
+		
+		protected function createUI(name:String = ""):void {
 			_ui = new EditorItemUI;
-			_ui.label.text = nameEditor;
+			_ui.label.text = name;
 			_ui.label.mouseEnabled = false;
 			addChild(_ui);
-			
+		}
+		
+		protected function createMCWarning():void {
 			_mcWarning = new Sprite();
 			_mcWarning.graphics.beginFill(0xff0000, .5);
-			_mcWarning.graphics.drawRect(0, 0, _ui.width, _ui.height);
+			_mcWarning.graphics.drawRect(2, 2, _ui.width - 8, _ui.height - 8);
 			_mcWarning.graphics.endFill();
 			_mcWarning.mouseChildren = _mcWarning.mouseEnabled = false;
 			_mcWarning.alpha = 0;
 			addChild(_mcWarning);
-			
-			var len:uint = _attributes.length;
-			_mcAttributes = new Vector.<EditorAttribute>();
-			var type:String = "";
-			for (var i:int = 0; i < len; ++i) {
-				if (_attributes[i].showInRedactor) {
-					type = _attributes[i].type;
-					var attribute:EditorAttribute = new EditorAttribute(i, _attributes[i].name, _attributes[i].isEnum, _attributes[i].isArray, type, _attributes[i].value, _attributes[i].defaultValue, _attributes[i].enumValues);
-					_mcAttributes.push(attribute);
-				}
-			}
 		}
 		
 	}

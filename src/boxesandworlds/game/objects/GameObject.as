@@ -75,7 +75,7 @@ package boxesandworlds.game.objects
 		}
 		
 		public function destroyView():void {
-			if(view.parent) data.container.removeChild(view);
+			view.destroy();
 		}
 		
 		
@@ -154,10 +154,7 @@ package boxesandworlds.game.objects
 				_view = new GameObjectView(game, this);
 			}
 			_view.init();
-			_view.x = _body.position.x;
-			_view.y = _body.position.y;
-			
-			_properties.container.addChild(_view);
+			_view.updatePosition(_body.position.x, _body.position.y, _body.rotation);
 		}
 		
 		public function postInit():void 
