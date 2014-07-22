@@ -1,4 +1,5 @@
 package {
+	import boxesandworlds.controller.ContentManager;
 	import boxesandworlds.controller.Core;
 	import boxesandworlds.controller.DataManager;
 	import boxesandworlds.controller.UIManager;
@@ -45,6 +46,7 @@ package {
 			
 			ObjectsLibrary.init();
 			Core.data = new DataManager(params);
+			Core.content = new ContentManager();
 			Core.ui = new UIManager(_canvas);
 			Core.stage = stage;
 			Core.data.addEventListener(Event.COMPLETE, initCompleteHandler);

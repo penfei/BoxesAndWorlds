@@ -8,6 +8,7 @@ package boxesandworlds.controller {
 		private static var _instance:Core;
 		private var _ui:UIManager;
 		private var _data:DataManager;
+		private var _content:ContentManager;
 		private var _stage:Stage;
 		
 		public function Core() {
@@ -22,8 +23,9 @@ package boxesandworlds.controller {
 		}
 		
 		public static function get data():DataManager { return instance._data; }
-
 		public static function set data(value:DataManager):void { instance._data = value; }
+		public static function get content():ContentManager { return instance._content; }
+		public static function set content(value:ContentManager):void { instance._content = value; }
 
 		public static function get ui():UIManager {
 			return instance._ui;
