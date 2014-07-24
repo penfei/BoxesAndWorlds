@@ -23,6 +23,10 @@ package boxesandworlds.editor.items {
 	 */
 	public class EditorAttribute extends Sprite {
 		
+		// const
+		static public const NAME_ATTRIBUTE_VIEWS:String = "views";
+		static public const NAME_ATTRIBUTE_CONTAINERS:String = "containerIds";
+		
 		// ui
 		private var _ui:MovieClip;
 		
@@ -157,6 +161,14 @@ package boxesandworlds.editor.items {
 					}
 					break;
 			}
+		}
+		
+		public function addFieldArray():void {
+			(_ui as EditorAttributeArray).addField();
+		}
+		
+		public function removeFieldArray(id:int):void {
+			(_ui as EditorAttributeArray).removeField(id);
 		}
 		
 		// protected

@@ -1,4 +1,6 @@
 package boxesandworlds.editor.items {
+	import boxesandworlds.editor.events.EditorEventChangeContainerItem;
+	import boxesandworlds.editor.events.EditorEventChangeViewItem;
 	import boxesandworlds.editor.items.items_array.EditorItemArray;
 	import boxesandworlds.editor.items.items_array.EditorItemArrayBool;
 	import boxesandworlds.editor.items.items_array.EditorItemArrayNumber;
@@ -73,6 +75,17 @@ package boxesandworlds.editor.items {
 			return isChanged;
 		}
 		
+		// public
+		public function addField():void {
+			doAddItem();
+			dispatchEvent(new Event(ATTRIBUTE_ARRAY_UPDATE, true));
+		}
+		
+		public function removeField(index:int):void {
+			doRemoveItem(index);
+			dispatchEvent(new Event(ATTRIBUTE_ARRAY_UPDATE, true));
+		}
+		
 		// protected
 		protected function setup():void {
 			var len:uint = _value.length;
@@ -97,6 +110,15 @@ package boxesandworlds.editor.items {
 			}
 			
 			updateHeight();
+			
+			if (_nameAttribute == EditorAttribute.NAME_ATTRIBUTE_VIEWS) {
+				for (var k:uint = 0, lenk:uint = _values.length; k < lenk; ++k) {
+					var itemUrl:EditorItemArrayUrl = _values[k] as EditorItemArrayUrl;
+					if (itemUrl != null) {
+						itemUrl.changeUrl();
+					}
+				}
+			}
 		}
 		
 		protected function updateHeight():void {
@@ -108,6 +130,9 @@ package boxesandworlds.editor.items {
 			_ui.bg.lineLeft.y = _ui.bg.lineRight.y = 0;
 			_ui.bg.mcDown.y = _ui.bg.mcCenter.y + _ui.bg.mcCenter.height;
 			_ui.labelName.text = _nameAttribute + " [" + String(len) + "]:";
+			for (var j:uint = 0, lenj:uint = _values.length; j < lenj; ++j) {
+				_values[j].y = ITEM_HEIGHT + ITEM_HEIGHT * j;
+			}
 		}
 		
 		protected function createItem(index:int = -1):EditorItemArray {
@@ -159,22 +184,37 @@ package boxesandworlds.editor.items {
 			return true;
 		}
 		
+		protected function doAddItem():void {
+			var item:EditorItemArray = createItem();
+			_values.push(item);
+			addChild(item);
+			item.addEventListener(ATTRIBUTE_ARRAY_REMOVE_ITEM, removeItemHandler);
+			updateHeight();
+		}
+		
+		protected function doRemoveItem(index:int):void {
+			var item:EditorItemArray = _values[index];
+			_values.splice(index, 1);
+			if (contains(item)) {
+				removeChild(item);
+				item.removeEventListener(ATTRIBUTE_ARRAY_REMOVE_ITEM, removeItemHandler);
+				item = null;
+			}
+			updateHeight();
+		}
+		
 		// handlers
 		private function removeItemHandler(e:Event):void {
 			var item:EditorItemArray = e.currentTarget as EditorItemArray;
 			if (item != null) {
 				for (var i:uint = 0, len:uint = _values.length; i < len; ++i) {
 					if (item == _values[i]) {
-						_values.splice(i, 1);
-						if (contains(item)) {
-							removeChild(item);
-							item.removeEventListener(ATTRIBUTE_ARRAY_REMOVE_ITEM, removeItemHandler);
-							item = null;
+						if (_nameAttribute == EditorAttribute.NAME_ATTRIBUTE_VIEWS) {
+							dispatchEvent(new EditorEventChangeViewItem(EditorEventChangeViewItem.REMOVE_FIELD_VIEW, "", i, true));
+						}else if (_nameAttribute == EditorAttribute.NAME_ATTRIBUTE_CONTAINERS) {
+							dispatchEvent(new EditorEventChangeContainerItem(EditorEventChangeContainerItem.REMOVE_FIELD_CONTAINER, i, int(item.value), true));
 						}
-						for (var j:uint = i, lenj:uint = _values.length; j < lenj; ++j) {
-							_values[j].y = ITEM_HEIGHT + ITEM_HEIGHT * j;
-						}
-						updateHeight();
+						doRemoveItem(i);
 						dispatchEvent(new Event(ATTRIBUTE_ARRAY_UPDATE, true));
 						break;
 					}
@@ -183,13 +223,13 @@ package boxesandworlds.editor.items {
 		}
 		
 		private function addItemHandler(e:Event):void {
-			var item:EditorItemArray = createItem();
-			item.y = ITEM_HEIGHT + ITEM_HEIGHT * _values.length;
-			_values.push(item);
-			addChild(item);
-			item.addEventListener(ATTRIBUTE_ARRAY_REMOVE_ITEM, removeItemHandler);
-			updateHeight();
+			doAddItem();
 			dispatchEvent(new Event(ATTRIBUTE_ARRAY_UPDATE, true));
+			if (_nameAttribute == EditorAttribute.NAME_ATTRIBUTE_VIEWS) {
+				dispatchEvent(new EditorEventChangeViewItem(EditorEventChangeViewItem.ADD_FIELD_VIEW, "", -1, true));
+			}else if (_nameAttribute == EditorAttribute.NAME_ATTRIBUTE_CONTAINERS) {
+				dispatchEvent(new EditorEventChangeContainerItem(EditorEventChangeContainerItem.ADD_FIELD_CONTAINER, -1, -1, true));
+			}
 		}
 		
 	}

@@ -56,7 +56,7 @@ package boxesandworlds.editor.items {
 			_mcHint.graphics.endFill();
 			_mcHint.mouseChildren = _mcHint.mouseEnabled = false;
 			_mcHint.alpha = 0;
-			addChildAt(_mcHint, 0);
+			addChild(_mcHint);
 		}
 		
 	}

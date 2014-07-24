@@ -10,13 +10,15 @@ package boxesandworlds.gui.page {
 	import boxesandworlds.editor.data.EditorLevelData;
 	import boxesandworlds.editor.data.EditorXMLLoader;
 	import boxesandworlds.editor.EditorPopup;
-	import boxesandworlds.editor.events.EditorEventAttributes;
 	import boxesandworlds.editor.events.EditorEventChangeAttributeStart;
 	import boxesandworlds.editor.events.EditorEventNewItem;
 	import boxesandworlds.editor.events.EditorEventPlayer;
 	import boxesandworlds.editor.events.EditorEventWorld;
+	import boxesandworlds.editor.items.EditorItem;
+	import boxesandworlds.editor.TestScript;
 	import boxesandworlds.editor.utils.EditorUtils;
 	import boxesandworlds.editor.data.EditorXMLLoader;
+	import boxesandworlds.game.levels.Level;
 	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoorData;
 	import boxesandworlds.game.objects.enters.gate.GateData;
 	import boxesandworlds.game.objects.items.box.BoxData;
@@ -28,16 +30,20 @@ package boxesandworlds.gui.page {
 	import com.greensock.easing.Linear;
 	import com.greensock.TweenMax;
 	import editor.EditorPageUI;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.net.FileReference;
 	import flash.utils.ByteArray;
+	import flash.utils.getDefinitionByName;
 	
 	/**
 	 * ...
 	 * @author Jarkony
 	 */
 	public class EditorPage extends Page {
+		
+		static private const SCRIPTS:Array = [Level, TestScript];
 		
 		// ui
 		private var _ui:EditorPageUI;
@@ -73,14 +79,11 @@ package boxesandworlds.gui.page {
 			
 			_ui.btnLoad.buttonMode = _ui.btnSave.buttonMode = _ui.btnClear.buttonMode = _ui.btnExit.buttonMode = true;
 			_ui.btnLoad.addEventListener(MouseEvent.CLICK, btnLoadClickHandler);
-			//_ui.btnLoad.addEventListener(MouseEvent.CLICK, btnLoadClickHandler);
 			_ui.btnSave.addEventListener(MouseEvent.CLICK, btnSaveClickHandler);
 			_ui.btnClear.addEventListener(MouseEvent.CLICK, btnClearClickHandler);
 			_ui.btnExit.addEventListener(MouseEvent.CLICK, btnExitClickHandler);
 			
-			_areaWorld = new EditorAreaWorld();
-			_areaWorld.addEventListener(EditorEventAttributes.SHOW_ATTRIBUTES, showAttributesHandler);
-			_areaWorld.addEventListener(EditorEventAttributes.HIDE_ATTRIBUTES, hideAttributesHandler);
+			_areaWorld = new EditorAreaWorld(this);
 			_areaWorld.addEventListener(EditorEventPlayer.PLAYER_NOT_SETUP, playerNotSetupHandler);
 			_ui.areaWorld.addChild(_areaWorld);
 			
@@ -108,8 +111,19 @@ package boxesandworlds.gui.page {
 			
 			_areaScript = new EditorAreaScript();
 			_ui.areaScript.addChild(_areaScript);
+			_areaScript.addEventListener(EditorAreaScript.EDITOR_CHANGED_SCRIPT, changedScriptHandler);
+			changedScriptHandler();
 			
 			//setupTempPositions();
+		}
+		
+		public function showAttributes(item:EditorItem):void {
+			_areaAttributes.showAttributes(item);
+		}
+		
+		public function hideAttributes():void {
+			_areaAttributes.hideAttributes();
+			_areaWorld.unselectItem();
 		}
 		
 		/* функция для калькулятора Бори */
@@ -210,15 +224,6 @@ package boxesandworlds.gui.page {
 			_areaWorld.selectWorld(e.id);
 		}
 		
-		private function showAttributesHandler(e:EditorEventAttributes):void {
-			_areaAttributes.showAttributes(e.item);
-		}
-		
-		private function hideAttributesHandler(e:EditorEventAttributes):void {
-			_areaAttributes.hideAttributes();
-			_areaWorld.unselectItem();
-		}
-		
 		private function playerDownHandler(e:MouseEvent):void {
 			_areaAttributes.hideAttributes();
 			_areaWorld.unselectItem();
@@ -255,6 +260,17 @@ package boxesandworlds.gui.page {
 			_areaWorld.setupPositionItem(e.valueX, e.valueY);
 		}
 		
+		private function changedScriptHandler(e:Event = null):void {
+			var layers:Vector.<Sprite>;
+			try {
+				layers = (getDefinitionByName("boxesandworlds.editor." + _areaScript.levelScript) as Class).layers();
+				trace("Скрипт есть, контейнеры берутся из " + _areaScript.levelScript + ".");
+			}catch(error:Error) {
+				layers = (getDefinitionByName("boxesandworlds.game.levels.Level") as Class).layers();
+				trace("Скрипта нет, контейнеры берутся из Level.");
+			}
+			_areaWorld.setupLayers(layers);
+		}
+		
 	}
-	
 }

@@ -1,5 +1,7 @@
 package boxesandworlds.editor.items {
 	import boxesandworlds.editor.data.items.EditorItemData;
+	import boxesandworlds.editor.events.EditorEventChangeContainerItem;
+	import boxesandworlds.editor.events.EditorEventChangeViewItem;
 	import boxesandworlds.editor.utils.EditorUtils;
 	import boxesandworlds.game.data.Attribute;
 	import com.greensock.TweenMax;
@@ -14,6 +16,7 @@ package boxesandworlds.editor.items {
 		
 		// ui
 		private var _ui:EditorItemUI;
+		private var _containers:Array;
 		private var _mcWarning:Sprite;
 		private var _mcAttributes:Vector.<EditorAttribute>;
 		
@@ -107,9 +110,6 @@ package boxesandworlds.editor.items {
 				}
 			}
 			
-			createUI(nameEditor);
-			createMCWarning();
-			
 			var len:uint = attributes.length;
 			_mcAttributes = new Vector.<EditorAttribute>();
 			var type:String = "";
@@ -120,6 +120,9 @@ package boxesandworlds.editor.items {
 					_mcAttributes.push(attribute);
 				}
 			}
+			
+			createUI(nameEditor);
+			createMCWarning();
 		}
 		
 		protected function createUI(name:String = ""):void {
@@ -127,6 +130,20 @@ package boxesandworlds.editor.items {
 			_ui.label.text = name;
 			_ui.label.mouseEnabled = false;
 			addChild(_ui);
+			
+			_containers = [];
+			for (var i:uint = 0, len:uint = _mcAttributes.length; i < len; ++i) {
+				trace(_mcAttributes[i].nameAttribute);
+				if (_mcAttributes[i].nameAttribute == EditorAttribute.NAME_ATTRIBUTE_VIEWS) {
+					_mcAttributes[i].addEventListener(EditorEventChangeViewItem.ADD_FIELD_VIEW, addFieldViewItemHandler);
+					_mcAttributes[i].addEventListener(EditorEventChangeViewItem.REMOVE_FIELD_VIEW, removeFieldViewItemHandler);
+					_mcAttributes[i].addEventListener(EditorEventChangeViewItem.CHANGE_VIEW, changeViewItemHandler);
+				}else if (_mcAttributes[i].nameAttribute == EditorAttribute.NAME_ATTRIBUTE_CONTAINERS) {
+					_mcAttributes[i].addEventListener(EditorEventChangeContainerItem.ADD_FIELD_CONTAINER, addFieldContainerItemHandler);
+					_mcAttributes[i].addEventListener(EditorEventChangeContainerItem.REMOVE_FIELD_CONTAINER, removeFieldContainerItemHandler);
+					_mcAttributes[i].addEventListener(EditorEventChangeContainerItem.CHANGE_CONTAINER, changeContainerItemHandler);
+				}
+			}
 		}
 		
 		protected function createMCWarning():void {
@@ -139,5 +156,42 @@ package boxesandworlds.editor.items {
 			addChild(_mcWarning);
 		}
 		
+		protected function getAttributeByName(nameAttribute:String):EditorAttribute {
+			for (var i:uint = 0, len:uint = _mcAttributes.length; i < len; ++i) {
+				if (_mcAttributes[i].nameAttribute == nameAttribute) {
+					return _mcAttributes[i];
+				}
+			}
+			return null;
+		}
+		
+		// handlers
+		private function addFieldViewItemHandler(e:EditorEventChangeViewItem):void {
+			var attribute:EditorAttribute = getAttributeByName(EditorAttribute.NAME_ATTRIBUTE_CONTAINERS);
+			attribute.addFieldArray();
+		}
+		
+		private function removeFieldViewItemHandler(e:EditorEventChangeViewItem):void {
+			var attribute:EditorAttribute = getAttributeByName(EditorAttribute.NAME_ATTRIBUTE_CONTAINERS);
+			attribute.removeFieldArray(e.id);
+		}
+		
+		private function changeViewItemHandler(e:EditorEventChangeViewItem):void {
+			trace("change view");
+		}
+		
+		private function addFieldContainerItemHandler(e:EditorEventChangeContainerItem):void {
+			var attribute:EditorAttribute = getAttributeByName(EditorAttribute.NAME_ATTRIBUTE_VIEWS);
+			attribute.addFieldArray();
+		}
+		
+		private function removeFieldContainerItemHandler(e:EditorEventChangeContainerItem):void {
+			var attribute:EditorAttribute = getAttributeByName(EditorAttribute.NAME_ATTRIBUTE_VIEWS);
+			attribute.removeFieldArray(e.id);
+		}
+		
+		private function changeContainerItemHandler(e:EditorEventChangeContainerItem):void {
+			trace("change container");
+		}
 	}
 }

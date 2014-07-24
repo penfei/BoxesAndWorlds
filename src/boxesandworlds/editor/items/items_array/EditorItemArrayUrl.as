@@ -41,6 +41,11 @@ package boxesandworlds.editor.items.items_array {
 			_ui.labelName.text = value;
 		}
 		
+		// public
+		public function changeUrl():void {
+			
+		}
+		
 		// protected
 		protected function setup():void {
 			_ui = new EditorAttributeArrayUrlUI;
