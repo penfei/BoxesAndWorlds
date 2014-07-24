@@ -1,5 +1,6 @@
 package boxesandworlds.game.controller 
 {
+	import boxesandworlds.controller.Core;
 	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.levels.Level;
 	import boxesandworlds.game.utils.XMLUtils;
@@ -22,7 +23,6 @@ package boxesandworlds.game.controller
 		private var _isDestroyed:Boolean;
 		
 		private var _xmlLevelParams:XML;
-		private var _xmlLevelObjects:Dictionary;
 		private var _xmlLevelObjectsCountTotal:uint;
 		private var _xmlLevelObjectsCountLoaded:uint;
 		
@@ -71,7 +71,6 @@ package boxesandworlds.game.controller
 			var urlR:URLRequest = new URLRequest(xmlLevelFileName);
 			
 			urlL.addEventListener(Event.COMPLETE, onXmlLevelLoaded);
-			urlL.addEventListener(IOErrorEvent.IO_ERROR, onXmlLevelNotLoaded);
 			urlL.load(urlR);
 		}
 		
@@ -95,41 +94,21 @@ package boxesandworlds.game.controller
 				}
 			}
 			
-			_xmlLevelObjects = new Dictionary();
 			_xmlLevelObjectsCountTotal = 0;
 			_xmlLevelObjectsCountLoaded = 0;
 			
 			var downloadList:Vector.<String> = XMLUtils.findNodesByType( _xmlLevelParams, Attribute.URL );
 			
-			for each( var path:String in downloadList )
+			for each( var url:String in downloadList )
 			{
-				_xmlLevelObjects[ path ] = null;
-			}
-			
-			for (var k:Object in _xmlLevelObjects) 
-			{
-				var contentLoader:XMLContentLoader = new XMLContentLoader(_xmlLevelObjects);
-				contentLoader.addEventListener(Event.COMPLETE, onXmlContentLoaded);
-				contentLoader.addEventListener(IOErrorEvent.IO_ERROR, onXmlContentNotLoaded);
-				contentLoader.load( (k as String) );
-				
 				++_xmlLevelObjectsCountTotal;
+				Core.content.load(url, onXmlContentLoaded);
 			}
 		} 
-		public function onXmlLevelNotLoaded(e:IOErrorEvent):void
-		{
-			trace(e.toString());
-		}
 		
-		public function onXmlContentLoaded( e:Event ):void
+		public function onXmlContentLoaded():void
 		{
 			++_xmlLevelObjectsCountLoaded;
-			checkLoadedContentAndInitXml();
-		}
-		
-		public function onXmlContentNotLoaded( e:IOErrorEvent ):void
-		{
-			++_xmlLevelObjectsCountLoaded;		
 			checkLoadedContentAndInitXml();
 		}
 		
@@ -146,46 +125,6 @@ package boxesandworlds.game.controller
 		public function get isPaused():Boolean {return _isPaused;}
 		public function set isPaused(value:Boolean):void { _isPaused = value; }
 		public function get xmlLevelParams():XML { return _xmlLevelParams; }
-		public function get xmlLevelObjects():Dictionary { return _xmlLevelObjects; }
 	}
 
-}
-
-import flash.display.Loader;
-import flash.events.Event;
-import flash.events.EventDispatcher;
-import flash.events.IOErrorEvent;
-import flash.net.URLRequest;
-import flash.utils.Dictionary;
-
-class XMLContentLoader extends EventDispatcher
-{
-	private var _dict:Dictionary;
-	private var _path:String;
-	
-	public function XMLContentLoader( dict:Dictionary ):void
-	{
-		_dict = dict;
-	}
-	public function load(path:String):void
-	{
-		_path = path;
-		
-		var url:URLRequest = new URLRequest( "../assets/" + path );
-		var img:Loader = new Loader();
-		img.load(url);
-		img.contentLoaderInfo.addEventListener(Event.COMPLETE, onContentLoaded);
-		img.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onContentNotLoaded);
-	}
-			
-	public function onContentLoaded( e:Event ):void
-	{
-		_dict[_path] = e.target.content;
-		dispatchEvent( e );
-	}
-	
-	public function onContentNotLoaded( e:IOErrorEvent ):void
-	{
-		dispatchEvent(e);
-	}
 }

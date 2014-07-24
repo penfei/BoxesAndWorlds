@@ -1,5 +1,6 @@
 package boxesandworlds.game.levels
 {
+	import boxesandworlds.controller.Core;
 	import boxesandworlds.data.ObjectsLibrary;
 	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.objects.door.Door;
@@ -42,7 +43,7 @@ package boxesandworlds.game.levels
 		public function parse():void {
 			//return;
 			var data:XML = _game.data.xmlLevelParams;
-			var xmlContent:Dictionary = _game.data.xmlLevelObjects;
+			var content:Object = Core.content.library;
 			
 			if (!_isParsed && data) 
 			{
@@ -81,13 +82,13 @@ package boxesandworlds.game.levels
 								var arr:Array = [];
 								for each( var parChild:XML in par.children() ) {
 									if (par.@type == Attribute.VEC2) arr.push(Vec2.weak(parChild.valueX, parChild.valueY));
-									else if (par.@type == Attribute.URL) arr.push(ContentUtils.copy(xmlContent[String(parChild)]));
+									else if (par.@type == Attribute.URL) arr.push(ContentUtils.copy(content[String(parChild)]));
 									else arr.push(parChild);
 								}
 								params[par.name()] = arr;
 							} else {
 								if (par.@type == Attribute.VEC2) params[par.name()] = Vec2.weak(par.@x, par.@y);
-								else if (par.@type == Attribute.URL) params[par.name()] = ContentUtils.copy(xmlContent[String(par.@value)]);
+								else if (par.@type == Attribute.URL) params[par.name()] = ContentUtils.copy(content[String(par.@value)]);
 								else params[par.name()] = par.@value;
 							}
 						}
