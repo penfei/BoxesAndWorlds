@@ -12,16 +12,18 @@ package boxesandworlds.controller
 	public class ContentManager extends EventDispatcher
 	{
 		private var _library:Object;
+		private var _loadingLibrary:Object;
 		
 		public function ContentManager() 
 		{
 			_library = new Object();
+			_loadingLibrary = new Object();
 		}
 		
 		public function get library():Object { return _library; }
 		
 		public function hasItem(url:String):Boolean {
-			return _library.hasOwnProperty(url);
+			return _loadingLibrary[url] != null;
 		}
 		
 		public function hasLoadedItem(url:String):Boolean {
@@ -33,7 +35,8 @@ package boxesandworlds.controller
 			if (!hasItem(url)) {
 				var loader:ContentLoader = new ContentLoader(_library);
 				loader.load(url, callBack);
-			}
+				_loadingLibrary[url] = loader;
+			} else _loadingLibrary[url].addCallback(callBack);
 		}		
 	}
 
@@ -49,16 +52,17 @@ class ContentLoader extends EventDispatcher
 {
 	private var _library:Object;
 	private var _url:String;
-	private var _callBack:Function;
+	private var _callBacks:Vector.<Function>;
 	
 	public function ContentLoader(library:Object):void
 	{
 		_library = library;
+		_callBacks = new Vector.<Function>;
 	}
 	
 	public function load(url:String, callBack:Function = null):void
 	{
-		_callBack = callBack;
+		addCallback(callBack);
 		_url = url;
 		_library[url] = null;
 		
@@ -68,10 +72,16 @@ class ContentLoader extends EventDispatcher
 		loader.load(new URLRequest( "../assets/" + url ));
 	}
 	
+	public function addCallback(callback:Function):void {
+		_callBacks.push(callback);
+	}
+	
 	private function onContentLoaded( e:Event ):void
 	{
 		_library[_url] = e.target.content;
-		if (_callBack != null) _callBack();
+		for each(var callBack:Function in _callBacks) {
+			if (callBack != null) callBack();
+		}
 	}
 	
 	private function onContentNotLoaded( e:IOErrorEvent ):void

@@ -33,8 +33,8 @@ package boxesandworlds.game.objects.player
 			Attribute.pushAttribute(arr, "type", "Player", Attribute.STRING);
 			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING);
 			Attribute.pushAttribute(arr, "bodyType", BodyType.DYNAMIC, Attribute.STRING);
-			Attribute.pushAttribute(arr, "width", 66, Attribute.NUMBER);
-			Attribute.pushAttribute(arr, "height", 120, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "width", 30, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "height", 60, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "density", 12, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "elasticity", 0, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "dynamicFriction", 0, Attribute.NUMBER);
@@ -42,7 +42,7 @@ package boxesandworlds.game.objects.player
 			Attribute.pushAttribute(arr, "offsetX", 1, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "offsetY", 5, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "speed", 300, Attribute.NUMBER);
-			Attribute.pushAttribute(arr, "jumpPower", -35000, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "jumpPower", -7000, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "isMoveLeft", false, Attribute.BOOL);
 			Attribute.pushAttribute(arr, "isMoveDown", false, Attribute.BOOL);
 			Attribute.pushAttribute(arr, "isMoveUp", false, Attribute.BOOL);

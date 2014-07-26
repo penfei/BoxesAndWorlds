@@ -7,9 +7,9 @@ package boxesandworlds.game.objects.player
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
-	import symbols.game.HeroStayUI;
-	import symbols.game.HeroWalkUI;
-	import symbols.game.HeroJumpUI;
+	import symbols.hero.StayUI;
+	import symbols.hero.RunUI;
+	import symbols.hero.JumpUI;
 	/**
 	 * ...
 	 * @author Sah
@@ -18,9 +18,9 @@ package boxesandworlds.game.objects.player
 	{
 		private var _ui:Sprite
 		private var _player:Player;
-		private var _uiStay:HeroStayUI;
-		private var _uiWalk:HeroWalkUI;
-		private var _uiJump:HeroJumpUI;
+		private var _uiStay:StayUI;
+		private var _uiWalk:RunUI;
+		private var _uiJump:JumpUI;
 		
 		public function PlayerView(game:Game, player:Player) 
 		{
@@ -30,9 +30,9 @@ package boxesandworlds.game.objects.player
 		
 		override public function init():void {
 			_ui = new Sprite
-			_uiStay = new HeroStayUI;
-			_uiWalk = new HeroWalkUI;
-			_uiJump = new HeroJumpUI;
+			_uiStay = new StayUI;
+			_uiWalk = new RunUI;
+			_uiJump = new JumpUI;
 			_ui.addChild(_uiStay);
 			
 			obj.data.views.push(_ui);
@@ -81,6 +81,17 @@ package boxesandworlds.game.objects.player
 			unVisibleState(_uiWalk);
 			unVisibleState(_uiStay);
 			visibleState(_uiJump);
+			
+			var vel:Number = _player.body.velocity.y
+			var frame:int = (_uiJump.totalFrames + 1) / 2 + (vel * (_uiJump.totalFrames + 1) * 0.0016);
+			if (vel < 0) {
+				frame = frame + 0.5;
+				if (frame < 1) frame = 1;
+				if (frame > (_uiJump.totalFrames + 1) / 2) frame = (_uiJump.totalFrames + 1) / 2;
+			} else {
+				if (frame > _uiJump.totalFrames) frame = _uiJump.totalFrames;
+			}
+			_uiJump.gotoAndStop(frame);
 		}
 		
 		public function rotateY(value:Number):void {
@@ -88,28 +99,29 @@ package boxesandworlds.game.objects.player
 		}
 		
 		private function visibleState(view:MovieClip):void {
-			if(!view.parent){
+			if (!view.parent) {
 				_ui.addChild(view);
-				var mc:MovieClip
-				for ( var i:uint = 0; i < _ui.numChildren; i++ ) {
-					if (_ui.getChildAt(i) is MovieClip) {
-						mc = _ui.getChildAt(i) as MovieClip;
-						if (mc.totalFrames > 1) mc.gotoAndPlay(1);
-					}
-				}
+				view.gotoAndPlay(1);
+				//var mc:MovieClip
+				//for ( var i:uint = 0; i < _ui.numChildren; i++ ) {
+					//if (_ui.getChildAt(i) is MovieClip) {
+						//mc = _ui.getChildAt(i) as MovieClip;
+						//if (mc.totalFrames > 1) mc.gotoAndPlay(1);
+					//}
+				//}
 			}
 		}
 		
 		private function unVisibleState(view:MovieClip):void  {
 			if(view.parent){
 				_ui.removeChild(view);
-				var mc:MovieClip
-				for ( var i:uint = 0; i < _ui.numChildren; i++ ) {
-					if (_ui.getChildAt(i) is MovieClip) {
-						mc = _ui.getChildAt(i) as MovieClip;
-						if (mc.totalFrames > 1) mc.stop();
-					}
-				}
+				//var mc:MovieClip
+				//for ( var i:uint = 0; i < _ui.numChildren; i++ ) {
+					//if (_ui.getChildAt(i) is MovieClip) {
+						//mc = _ui.getChildAt(i) as MovieClip;
+						//if (mc.totalFrames > 1) mc.stop();
+					//}
+				//}
 			}
 		}
 	}
