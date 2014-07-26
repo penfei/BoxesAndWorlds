@@ -70,6 +70,7 @@ package boxesandworlds.game.objects.player
 		{
 			super.step();
 			_properties.isOnEarth = isOnEarth();
+			if (!_properties.isOnEarth) _view.showJump();
 			if (_properties.isMoveUp && _properties.isJump && canJump()) jump();
 			if (_properties.isMoveLeft && !_properties.isMoveRight) goLeft();
 			if (_properties.isMoveRight && !_properties.isMoveLeft) goRight();

@@ -4,6 +4,8 @@ package boxesandworlds.game.levels.tutorial
 	import boxesandworlds.game.levels.Level;
 	import boxesandworlds.game.objects.items.button.Button;
 	import flash.display.Sprite;
+	import flash.filters.BitmapFilterQuality;
+	import flash.filters.GlowFilter;
 	import nape.callbacks.CbEvent;
 	import nape.callbacks.InteractionCallback;
 	import nape.callbacks.InteractionListener;
@@ -20,7 +22,13 @@ package boxesandworlds.game.levels.tutorial
 		}
 		
 		static public function layers():Vector.<Sprite> {
-			return Level.layers();
+			var arr:Vector.<Sprite> = Level.layers();
+			
+			var heroLayer:Sprite = arr[0];
+			var glow:GlowFilter = new GlowFilter(0x435570, 1, 2, 2, 10, BitmapFilterQuality.HIGH, false, false);
+			heroLayer.filters = [glow];
+			
+			return arr;
 		}
 		
 		override public function getLayers():Vector.<Sprite> {

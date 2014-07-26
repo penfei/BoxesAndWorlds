@@ -42,7 +42,8 @@ package boxesandworlds.game.controller
 			_isGameOver = false;
 			_isPaused = false;
 			_isDestroyed = false;
-			_isTest = true;
+			//_isTest = true;
+			_isTest = false;
 		}
 		
 		override public function step():void 

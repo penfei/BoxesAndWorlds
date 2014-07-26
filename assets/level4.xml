@@ -1,25 +1,17 @@
 <xml>
-  <levelScript scriptName=""/>
+  <levelScript scriptName="boxesandworlds.game.levels.tutorial.TutorialLevel"/>
   <player worldId="1" x="339" y="410"/>
   <world id="1">
     <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="1"/>
 	  <physicsBitmap type="URL" value="TestLevel4.png"/>
       <views attributeName="viewURLs" type="URL" isArray="true">
-        <value>TestLevel2.png</value>
-		<value>TestLevel3.png</value>
+        <value>TestLevel4.png</value>
       </views>
       <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
         <value>2</value>
-		<value>3</value>
 	  </containerIds>
       <start attributeName="start" type="VEC2" x="-400" y="-400"/>
     </WorldStructure>
-	<Box>
-      <start x="-338" y="-335" type="VEC2"/>
-    </Box>
-    <Box>
-      <start x="-339" y="-222" type="VEC2"/>
-    </Box>
   </world>
 </xml>
