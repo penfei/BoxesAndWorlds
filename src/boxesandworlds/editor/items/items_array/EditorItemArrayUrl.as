@@ -1,5 +1,9 @@
 package boxesandworlds.editor.items.items_array {
+	import boxesandworlds.editor.events.EditorEventChangeViewItem;
+	import boxesandworlds.editor.UploadFile;
 	import boxesandworlds.editor.utils.EditorUtils;
+	import com.greensock.easing.Linear;
+	import com.greensock.TweenMax;
 	import editor.EditorAttributeArrayUrlUI;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -14,16 +18,20 @@ package boxesandworlds.editor.items.items_array {
 		
 		// const
 		static public const DEFAULT_VALUE:String = "url";
+		private const DURATION_SECONDS_BEFORE_CHANGE:Number = 2;
 		
 		// ui
 		private var _ui:EditorAttributeArrayUrlUI;
 		
 		// vars
 		private var _file:FileReference;
+		private var _fileData:UploadFile;
 		private var _defaultValue:String;
+		private var _index:int;
 		
-		public function EditorItemArrayUrl(defaultValue:String = DEFAULT_VALUE) {
+		public function EditorItemArrayUrl(defaultValue:String = DEFAULT_VALUE, index:int = -1) {
 			_defaultValue = defaultValue;
+			_index = index;
 			setup();
 		}
 		
@@ -37,13 +45,15 @@ package boxesandworlds.editor.items.items_array {
 		}
 		
 		// set
-		override public function set value(value:String):void {
-			_ui.labelName.text = value;
+		override public function set value(value:String):void { 
+			_ui.labelName.text = value; 
 		}
+		
+		public function set index(value:int):void { _index = value; }
 		
 		// public
 		public function changeUrl():void {
-			
+			dispatchEvent(new EditorEventChangeViewItem(EditorEventChangeViewItem.CHANGE_VIEW, _ui.labelName.text, _index, null, true));
 		}
 		
 		// protected
@@ -54,8 +64,18 @@ package boxesandworlds.editor.items.items_array {
 			_ui.labelName.text = _defaultValue;
 			_ui.labelName.selectable = true;
 			_ui.labelName.type = TextFieldType.INPUT;
+			_ui.labelName.addEventListener(Event.CHANGE, urlChangeHandler);
 			_ui.mcChoiceUrl.buttonMode = true;
 			_ui.mcChoiceUrl.addEventListener(MouseEvent.CLICK, mcChoiceUrlClickHandler);
+		}
+		
+		// handlers
+		private function urlChangeHandler(e:Event):void {
+			TweenMax.killTweensOf(_ui.mcProgress.mc);
+			_ui.mcProgress.mc.x = - _ui.mcProgress.mc.width;
+			TweenMax.to(_ui.mcProgress.mc, DURATION_SECONDS_BEFORE_CHANGE, { x:0, ease:Linear.easeNone, onComplete: function scriptChanged():void {
+				changeUrl();
+			}});
 		}
 		
 		private function mcChoiceUrlClickHandler(e:MouseEvent):void {
@@ -67,8 +87,16 @@ package boxesandworlds.editor.items.items_array {
 		}
 		
 		private function fileSelectedHandler(e:Event):void {
-			_file.cancel();
+			//_file.cancel();
 			_ui.labelName.text = _file.name;
+			_fileData = new UploadFile(_file);
+			_fileData.addEventListener(Event.COMPLETE, contentLoadedHandler);
+			_fileData.download();
+		}
+		
+		private function contentLoadedHandler(e:Event):void {
+			_fileData.removeEventListener(Event.COMPLETE, contentLoadedHandler);
+			dispatchEvent(new EditorEventChangeViewItem(EditorEventChangeViewItem.CHANGE_VIEW, _ui.labelName.text, _index, _fileData.image, true));
 		}
 		
 	}

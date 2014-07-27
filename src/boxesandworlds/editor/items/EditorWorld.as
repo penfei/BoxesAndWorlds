@@ -53,9 +53,6 @@ package boxesandworlds.editor.items {
 					var item:EditorItem = _items[i];
 					if (item != null) {
 						item.destroy();
-						if (item.parent != null) {
-							item.parent.removeChild(item);
-						}
 						item = null;
 					}
 				}
@@ -67,7 +64,7 @@ package boxesandworlds.editor.items {
 		public function addItem(uniqueItemId:int, attributes:Vector.<Attribute>):EditorItem {
 			disableMoveItems();
 			
-			var item:EditorItem = new EditorItem(uniqueItemId, attributes);
+			var item:EditorItem = new EditorItem(uniqueItemId, _items.length, attributes);
 			_items.push(item);
 			_areaWorld.setupMovebleItem(item, true);
 			return item;
@@ -105,24 +102,20 @@ package boxesandworlds.editor.items {
 			var item:EditorItem = _items[index];
 			item.destroy();
 			_items.splice(index, 1);
-			if (item.parent != null) {
-				item.parent.removeChild(item);
-			}
 			item = null;
 		}
 		
 		public function setupPositionItem(valueX:Number, valueY:Number):void {
-			_currentItem.x = valueX + EditorUtils.WORLD_WITDH / 2;
-			_currentItem.y = valueY + EditorUtils.WORLD_HEIGHT / 2;
-			if (_currentItem.x < 0) {
-				_currentItem.x = 0;
-			}else if (_currentItem.x + _currentItem.width > EditorUtils.WORLD_WITDH) {
-				_currentItem.x = EditorUtils.WORLD_WITDH - _currentItem.width;
+			_currentItem.setupPosition(valueX + EditorUtils.WORLD_WITDH / 2, valueY + EditorUtils.WORLD_HEIGHT / 2);
+			if (_currentItem.viewDefault.x < 0) {
+				_currentItem.setupPosition(0, 0, true, false);
+			}else if (_currentItem.viewDefault.x + _currentItem.width > EditorUtils.WORLD_WITDH) {
+				_currentItem.setupPosition(EditorUtils.WORLD_WITDH - _currentItem.width, 0, true, false);
 			}
-			if (_currentItem.y < 0) {
-				_currentItem.y = 0;
-			}else if (_currentItem.y + _currentItem.height > EditorUtils.WORLD_HEIGHT) {
-				_currentItem.y = EditorUtils.WORLD_HEIGHT - _currentItem.height;
+			if (_currentItem.viewDefault.y < 0) {
+				_currentItem.setupPosition(0, 0, false, true);
+			}else if (_currentItem.viewDefault.y + _currentItem.height > EditorUtils.WORLD_HEIGHT) {
+				_currentItem.setupPosition(0, EditorUtils.WORLD_HEIGHT - _currentItem.height, false, true);
 			}
 		}
 		
@@ -133,9 +126,8 @@ package boxesandworlds.editor.items {
 			for (var i:uint = 0; i < len; ++i) {
 				var attributes:Vector.<Attribute> = EditorUtils.createAttributesFromXML(worldData.itemsData[i]);
 				
-				var item:EditorItem = new EditorItem(0, attributes);
-				item.x = 0;
-				item.y = 0;
+				var item:EditorItem = new EditorItem(0, i, attributes);
+				item.setupPosition(0, 0);
 				_items[i] = item;
 			}
 			
@@ -144,23 +136,31 @@ package boxesandworlds.editor.items {
 		
 		public function removeChildItems():void {
 			for (var i:uint = 0, len:uint = _items.length; i < len; ++i) {
-				if (_items[i] != null && _items[i].parent != null) {
-					_items[i].parent.removeChild(_items[i]);
+				if (_items[i] != null) {
+					for (var j:uint = 0, lenj:uint = _items[i].views.length; j < lenj; ++j) {
+						if (_items[i].viewDefault != null && _items[i].viewDefault.parent != null) {
+							_items[i].viewDefault.parent.removeChild(_items[i].viewDefault);
+						}
+						var view:EditorItemView = _items[i].views[j];
+						if (view != null && view.parent != null) {
+							view.parent.removeChild(view);
+						}
+					}
 				}
 			}
 		}
 		
 		public function enableMoveItems():void {
 			for (var i:uint = 0, len:uint = _items.length; i < len; ++i) {
-				_items[i].addEventListener(MouseEvent.MOUSE_DOWN, itemDownHandler);
-				_items[i].buttonMode = true;
+				_items[i].viewDefault.addEventListener(MouseEvent.MOUSE_DOWN, itemDownHandler);
+				_items[i].viewDefault.buttonMode = true;
 			}
 		}
 		
 		public function savePositionStartInAttribute():void {
 			if (_currentItem != null) {
-				_startPosition.x = _currentItem.x - EditorUtils.WORLD_WITDH / 2;
-				_startPosition.y = _currentItem.y - EditorUtils.WORLD_HEIGHT / 2;
+				_startPosition.x = _currentItem.viewDefault.x - EditorUtils.WORLD_WITDH / 2;
+				_startPosition.y = _currentItem.viewDefault.y - EditorUtils.WORLD_HEIGHT / 2;
 				_currentItem.setupAttribute("start", _startPosition);
 			}
 		}
@@ -188,16 +188,16 @@ package boxesandworlds.editor.items {
 		
 		protected function disableMoveItems():void {
 			for (var i:uint = 0, len:uint = _items.length; i < len; ++i) {
-				_items[i].removeEventListener(MouseEvent.MOUSE_DOWN, itemDownHandler);
-				_items[i].buttonMode = false;
+				_items[i].viewDefault.removeEventListener(MouseEvent.MOUSE_DOWN, itemDownHandler);
+				_items[i].viewDefault.buttonMode = false;
 			}
 		}
 		
 		// handlers
 		private function itemDownHandler(e:MouseEvent):void {
-			var item:EditorItem = e.currentTarget as EditorItem;
+			var item:EditorItemViewDefault = e.currentTarget as EditorItemViewDefault;
 			if (item != null) {
-				_areaWorld.setupMovebleItem(item);
+				_areaWorld.setupMovebleItem(item.editorItem);
 			}
 		}
 		

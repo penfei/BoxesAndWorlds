@@ -131,6 +131,10 @@ package boxesandworlds.editor.items {
 			return isChanged;
 		}
 		
+		public function get sizeArray():int { return (_ui as EditorAttributeArray).size; }
+		
+		public function get ui():MovieClip { return _ui; }
+		
 		// public
 		public function destroy():void {
 			if (_ui != null) {
@@ -169,6 +173,10 @@ package boxesandworlds.editor.items {
 		
 		public function removeFieldArray(id:int):void {
 			(_ui as EditorAttributeArray).removeField(id);
+		}
+		
+		public function setupListenersForContainers():void {
+			(_ui as EditorAttributeArray).setupListenersForContainers();
 		}
 		
 		// protected

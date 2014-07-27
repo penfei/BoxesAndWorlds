@@ -2,12 +2,16 @@ package boxesandworlds.editor.area {
 	import boxesandworlds.controller.Core;
 	import boxesandworlds.editor.data.items.EditorPlayerData;
 	import boxesandworlds.editor.data.items.EditorWorldData;
+	import boxesandworlds.editor.events.EditorEventUpdateContainerItem;
+	import boxesandworlds.editor.events.EditorEventUpdateViewItem;
 	import boxesandworlds.editor.items.EditorAttribute;
 	import boxesandworlds.editor.items.EditorItem;
+	import boxesandworlds.editor.items.EditorItemView;
 	import boxesandworlds.editor.items.EditorWorld;
 	import boxesandworlds.editor.utils.EditorUtils;
 	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.gui.page.EditorPage;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -93,7 +97,9 @@ package boxesandworlds.editor.area {
 		public function addItem(attributes:Vector.<Attribute>):void {
 			if (_currentWorld != null) {
 				var item:EditorItem = _currentWorld.addItem(_uniqueItemId++, attributes);
-				_layers[0].addChild(item);
+				item.addEventListener(EditorEventUpdateViewItem.UPDATE_VIEW, updateViewItemHandler);
+				item.addEventListener(EditorEventUpdateContainerItem.UPDATE_CONTAINER, updateContainerItemHandler);
+				addChildItem(item);
 			}
 		}
 		
@@ -148,10 +154,9 @@ package boxesandworlds.editor.area {
 			_currentItem = item;
 			_currentWorld.currentItem = item;
 			if (isAdd) {
-				_currentItem.x = Core.stage.mouseX - _currentItem.width / 2;
-				_currentItem.y = Core.stage.mouseY - _currentItem.height / 2;
+				_currentItem.setupPosition(Core.stage.mouseX - _currentItem.width / 2, Core.stage.mouseY - _currentItem.height / 2);
 			}
-			_currentItem.startDrag(false, new Rectangle(0, 0, Core.stage.stageWidth - _currentItem.width, Core.stage.stageHeight - _currentItem.height));
+			startDragCurrentItem();
 			_currentWorld.setupSelectableItem(_currentItem);
 			
 			Core.stage.addEventListener(MouseEvent.MOUSE_UP, itemUpHandler);
@@ -195,8 +200,17 @@ package boxesandworlds.editor.area {
 		}
 		
 		protected function addChildItems(world:EditorWorld):void {
-			for (var i:uint = 0, len:uint = world.items.length; i < len; ++i) {
-				_layers[0].addChild(world.items[i]);
+			var items:Vector.<EditorItem> = world.items;
+			for (var i:uint = 0, len:uint = items.length; i < len; ++i) {
+				addChildItem(items[i]);
+			}
+		}
+		
+		protected function addChildItem(item:EditorItem):void {
+			_canvasTop.addChild(item.viewDefault);
+			for (var i:uint = 0, len:uint = item.views.length; i < len; ++i) {
+				var view:EditorItemView = item.views[i];
+				_layers[view.containerId].addChild(view);
 			}
 		}
 		
@@ -247,13 +261,23 @@ package boxesandworlds.editor.area {
 			return xml;
 		}
 		
+		protected function startDragCurrentItem():void {
+			_currentItem.viewDefault.startDrag(false, new Rectangle(0, 0, Core.stage.stageWidth - _currentItem.width, Core.stage.stageHeight - _currentItem.height));
+			addEventListener(Event.ENTER_FRAME, updateItemViewsPositionsHandler);
+		}
+		
+		protected function stopDragCurrentItem():void {
+			_currentItem.viewDefault.stopDrag();
+			removeEventListener(Event.ENTER_FRAME, updateItemViewsPositionsHandler);
+			updateItemViewsPositionsHandler();
+		}
+		
 		// handlers
 		private function itemUpHandler(e:MouseEvent):void {
 			Core.stage.removeEventListener(MouseEvent.MOUSE_UP, itemUpHandler);
 			removeEventListener(Event.ENTER_FRAME, enterFrameMoveItemHandler);
-			_currentItem.stopDrag();
-			_currentItem.x = Math.floor(_currentItem.x);
-			_currentItem.y = Math.floor(_currentItem.y);
+			stopDragCurrentItem();
+			_currentItem.setupPosition(Math.floor(_currentItem.viewDefault.x), Math.floor(_currentItem.viewDefault.y));
 			if (_currentItem.isShowedWarning) {
 				for (var i:uint = 0, len:uint = _currentWorld.items.length; i < len; ++i) {
 					if (_currentItem == _currentWorld.items[i]) {
@@ -267,12 +291,32 @@ package boxesandworlds.editor.area {
 		}
 		
 		private function enterFrameMoveItemHandler(e:Event):void {
-			if (_currentItem.x < 0 || _currentItem.y < 0 || _currentItem.x + _currentItem.width > EditorUtils.WORLD_WITDH || _currentItem.y + _currentItem.height > EditorUtils.WORLD_HEIGHT) {
+			if (_currentItem.viewDefault.x < 0 || _currentItem.viewDefault.y < 0 || _currentItem.viewDefault.x + _currentItem.width > EditorUtils.WORLD_WITDH || _currentItem.viewDefault.y + _currentItem.height > EditorUtils.WORLD_HEIGHT) {
 				_currentItem.showWarning();
 			}else if (_currentItem.isShowedWarning) {
 				_currentItem.hideWarning();
 			}
 			_currentWorld.savePositionStartInAttribute();
+		}
+		
+		private function updateViewItemHandler(e:EditorEventUpdateViewItem):void {
+			var item:EditorItem = _currentWorld.items[e.indexItem];
+			var view:EditorItemView = item.views[e.idView];
+			view.x = item.viewDefault.x;
+			view.y = item.viewDefault.y;
+			_layers[view.containerId].addChild(view);
+		}
+		
+		private function updateContainerItemHandler(e:EditorEventUpdateContainerItem):void {
+			var item:EditorItem = _currentWorld.items[e.indexItem];
+			var view:EditorItemView = item.views[e.indexView];
+			_layers[e.idContainer].addChild(view);
+		}
+		
+		private function updateItemViewsPositionsHandler(e:Event = null):void {
+			for (var i:uint = 0, len:uint = _currentItem.views.length; i < len; ++i) {
+				_currentItem.setupPosition(_currentItem.viewDefault.x, _currentItem.viewDefault.y);
+			}
 		}
 		
 	}

@@ -1,4 +1,5 @@
 package boxesandworlds.editor.events {
+	import flash.display.Bitmap;
 	import flash.events.Event;
 	
 	/**
@@ -14,18 +15,22 @@ package boxesandworlds.editor.events {
 		
 		// vars
 		private var _url:String;
-		private var _id:int;
+		private var _index:int;
+		private var _image:Bitmap;
 		
-		public function EditorEventChangeViewItem(type:String, url:String = "", id:int = -1, bubbles:Boolean = false, cancelable:Boolean = false) {
+		public function EditorEventChangeViewItem(type:String, url:String = "", index:int = -1, image:Bitmap = null, bubbles:Boolean = false, cancelable:Boolean = false) {
 			_url = url;
-			_id = id;
+			_index = index;
+			_image = image;
 			super(type, bubbles, cancelable);
 		}
 		
 		// get
 		public function get url():String { return _url; }
 		
-		public function get id():int { return _id; }
+		public function get index():int { return _index; }
+		
+		public function get image():Bitmap { return _image; }
 		
 	}
 }

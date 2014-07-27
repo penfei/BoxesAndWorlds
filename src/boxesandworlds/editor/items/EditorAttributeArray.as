@@ -37,6 +37,7 @@ package boxesandworlds.editor.items {
 		private var _value:Array;
 		private var _defaultValue:Array;
 		private var _id:int;
+		private var _isContainers:Boolean;
 		
 		public function EditorAttributeArray(type:String, nameAttribute:String, value:*, defaultValue:*, id:int) {
 			_type = type;
@@ -75,6 +76,10 @@ package boxesandworlds.editor.items {
 			return isChanged;
 		}
 		
+		public function get size():int { return _values.length; }
+		
+		public function get values():Vector.<EditorItemArray> { return _values; }
+		
 		// public
 		public function addField():void {
 			doAddItem();
@@ -84,6 +89,17 @@ package boxesandworlds.editor.items {
 		public function removeField(index:int):void {
 			doRemoveItem(index);
 			dispatchEvent(new Event(ATTRIBUTE_ARRAY_UPDATE, true));
+		}
+		
+		public function getContainerIdByIndex(index:int):int {
+			return int(_values[index].value);
+		}
+		
+		public function setupListenersForContainers():void {
+			_isContainers = true;
+			for (var i:uint = 0, len:uint = _values.length; i < len; ++i) {
+				(_values[i] as EditorItemArrayNumber).setupListenersForContainers();
+			}
 		}
 		
 		// protected
@@ -103,6 +119,9 @@ package boxesandworlds.editor.items {
 			_values.length = len;
 			for (var i:int = 0; i < len; ++i) {
 				var item:EditorItemArray = createItem(i);
+				if (_isContainers) {
+					(item as EditorItemArrayNumber).setupListenersForContainers();
+				}
 				item.y = ITEM_HEIGHT + ITEM_HEIGHT * i;
 				_values[i] = item;
 				addChild(item);
@@ -143,7 +162,7 @@ package boxesandworlds.editor.items {
 					break;
 					
 				case Attribute.NUMBER:
-					item = new EditorItemArrayNumber(index == -1 ? EditorItemArrayNumber.DEFAULT_VALUE : String(_defaultValue[index]));
+					item = new EditorItemArrayNumber(index == -1 ? EditorItemArrayNumber.DEFAULT_VALUE : String(_defaultValue[index]), _values.length);
 					break;
 					
 				case Attribute.STRING:
@@ -151,7 +170,7 @@ package boxesandworlds.editor.items {
 					break;
 					
 				case Attribute.URL:
-					item = new EditorItemArrayUrl(index == -1 ? EditorItemArrayUrl.DEFAULT_VALUE : String(_defaultValue[index]));
+					item = new EditorItemArrayUrl(index == -1 ? EditorItemArrayUrl.DEFAULT_VALUE : String(_defaultValue[index]), _values.length);
 					break;
 					
 				case Attribute.VEC2:
@@ -186,6 +205,9 @@ package boxesandworlds.editor.items {
 		
 		protected function doAddItem():void {
 			var item:EditorItemArray = createItem();
+			if (_isContainers) {
+				(item as EditorItemArrayNumber).setupListenersForContainers();
+			}
 			_values.push(item);
 			addChild(item);
 			item.addEventListener(ATTRIBUTE_ARRAY_REMOVE_ITEM, removeItemHandler);
@@ -210,7 +232,7 @@ package boxesandworlds.editor.items {
 				for (var i:uint = 0, len:uint = _values.length; i < len; ++i) {
 					if (item == _values[i]) {
 						if (_nameAttribute == EditorAttribute.NAME_ATTRIBUTE_VIEWS) {
-							dispatchEvent(new EditorEventChangeViewItem(EditorEventChangeViewItem.REMOVE_FIELD_VIEW, "", i, true));
+							dispatchEvent(new EditorEventChangeViewItem(EditorEventChangeViewItem.REMOVE_FIELD_VIEW, "", i, null, true));
 						}else if (_nameAttribute == EditorAttribute.NAME_ATTRIBUTE_CONTAINERS) {
 							dispatchEvent(new EditorEventChangeContainerItem(EditorEventChangeContainerItem.REMOVE_FIELD_CONTAINER, i, int(item.value), true));
 						}
@@ -226,7 +248,7 @@ package boxesandworlds.editor.items {
 			doAddItem();
 			dispatchEvent(new Event(ATTRIBUTE_ARRAY_UPDATE, true));
 			if (_nameAttribute == EditorAttribute.NAME_ATTRIBUTE_VIEWS) {
-				dispatchEvent(new EditorEventChangeViewItem(EditorEventChangeViewItem.ADD_FIELD_VIEW, "", -1, true));
+				dispatchEvent(new EditorEventChangeViewItem(EditorEventChangeViewItem.ADD_FIELD_VIEW, "", -1, null, true));
 			}else if (_nameAttribute == EditorAttribute.NAME_ATTRIBUTE_CONTAINERS) {
 				dispatchEvent(new EditorEventChangeContainerItem(EditorEventChangeContainerItem.ADD_FIELD_CONTAINER, -1, -1, true));
 			}

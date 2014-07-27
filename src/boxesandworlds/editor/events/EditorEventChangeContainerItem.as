@@ -13,17 +13,17 @@ package boxesandworlds.editor.events {
 		static public const REMOVE_FIELD_CONTAINER:String = "editorEventRemoveFieldContainerItem";
 		
 		// vars
-		private var _id:int;
+		private var _index:int;
 		private var _value:int;
 		
-		public function EditorEventChangeContainerItem(type:String, id:int = -1, value:int = -1, bubbles:Boolean = false, cancelable:Boolean = false) {
-			_id = id;
+		public function EditorEventChangeContainerItem(type:String, index:int = -1, value:int = -1, bubbles:Boolean = false, cancelable:Boolean = false) {
+			_index = index;
 			_value = value;
 			super(type, bubbles, cancelable);
 		}
 		
 		// get
-		public function get id():int { return _id; }
+		public function get index():int { return _index; }
 		
 		public function get value():int { return _value; }
 		
