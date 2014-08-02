@@ -182,11 +182,9 @@ package boxesandworlds.editor.items {
 			
 			var len:uint = attributes.length;
 			_mcAttributes = new Vector.<EditorAttribute>();
-			var type:String = "";
 			for (var i:int = 0; i < len; ++i) {
 				if (attributes[i].redactorAction) {
-					type = attributes[i].type;
-					var attribute:EditorAttribute = new EditorAttribute(i, attributes[i].name, attributes[i].isEnum, attributes[i].isArray, type, attributes[i].value, attributes[i].defaultValue, attributes[i].enumValues);
+					var attribute:EditorAttribute = new EditorAttribute(i, attributes[i].name, attributes[i].isEnum, attributes[i].isArray, attributes[i].type, attributes[i].value, attributes[i].defaultValue, attributes[i].enumValues);
 					_mcAttributes.push(attribute);
 				}
 			}
@@ -257,39 +255,33 @@ package boxesandworlds.editor.items {
 		protected function recalculateIndexes():void {
 			var attributeUrl:EditorAttributeArray = (_mcAttributes[_indexOfAttributeViews].ui as EditorAttributeArray);
 			for (var i:int = 0, len:uint = attributeUrl.values.length; i < len; ++i) {
-				//trace("a", i);
 				(attributeUrl.values[i] as EditorItemArrayUrl).index = i;
 			}
 			var attributeContainer:EditorAttributeArray = (_mcAttributes[_indexOfAttributeContainers].ui as EditorAttributeArray);
 			for (var j:int = 0, lenj:uint = attributeContainer.values.length; j < lenj; ++j) {
-				//trace("b", j);
 				(attributeContainer.values[j] as EditorItemArrayNumber).index = j;
 			}
 		}
 		
 		// handlers
 		private function addFieldViewItemHandler(e:EditorEventChangeViewItem):void {
-			var attribute:EditorAttribute = getAttributeByName(EditorAttribute.NAME_ATTRIBUTE_CONTAINERS);
-			attribute.addFieldArray();
+			_mcAttributes[_indexOfAttributeContainers].addFieldArray();
 			var itemView:EditorItemView = new EditorItemView();
 			itemView.addEventListener(EditorItemView.UPDATE_ITEM_SIZE, updateItemSizeHandler);
 			_views.push(itemView);
 		}
 		
 		private function removeFieldViewItemHandler(e:EditorEventChangeViewItem):void {
-			var attribute:EditorAttribute = getAttributeByName(EditorAttribute.NAME_ATTRIBUTE_CONTAINERS);
-			attribute.removeFieldArray(e.index);
+			_mcAttributes[_indexOfAttributeContainers].removeFieldArray(e.index);
 			var view:EditorItemView = _views[e.index];
 			_views.splice(e.index, 1);
 			destroyView(view);
 			updateSize();
 			recalculateIndexes();
-			trace("views size:",_views.length);
 		}
 		
 		private function changeViewItemHandler(e:EditorEventChangeViewItem):void {
 			var containerId:int = (_mcAttributes[_indexOfAttributeContainers].ui as EditorAttributeArray).getContainerIdByIndex(e.index);
-			trace("containerId",containerId);
 			if (e.image == null) {
 				_views[e.index].loadView(e.url, containerId);
 			}else {
@@ -307,8 +299,7 @@ package boxesandworlds.editor.items {
 		}
 		
 		private function removeFieldContainerItemHandler(e:EditorEventChangeContainerItem):void {
-			var attribute:EditorAttribute = getAttributeByName(EditorAttribute.NAME_ATTRIBUTE_VIEWS);
-			attribute.removeFieldArray(e.index);
+			_mcAttributes[_indexOfAttributeViews].removeFieldArray(e.index);
 			var view:EditorItemView = _views[e.index];
 			_views.splice(e.index, 1);
 			destroyView(view);

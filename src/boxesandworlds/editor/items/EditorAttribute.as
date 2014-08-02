@@ -39,7 +39,7 @@ package boxesandworlds.editor.items {
 		private var _enumValues:Array;
 		
 		private var _defaultValue:*;
-		private var _id:int;
+		private var _id:int;// индекс в массиве атрибутов _mcAttributes в его родителе EditorItem
 		private var _file:FileReference;
 		
 		public function EditorAttribute(id:int, name:String, isEnum:Boolean, isArray:Boolean, type:String = "", value:* = null, defaultValue:* = null, enumValues:Array = null) {

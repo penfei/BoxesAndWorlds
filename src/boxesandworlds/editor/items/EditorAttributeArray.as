@@ -36,7 +36,7 @@ package boxesandworlds.editor.items {
 		private var _nameAttribute:String;
 		private var _value:Array;
 		private var _defaultValue:Array;
-		private var _id:int;
+		private var _id:int;// индекс в массиве атрибутов _mcAttributes в его родителе EditorAttribute и EditorItem
 		private var _isContainers:Boolean;
 		
 		public function EditorAttributeArray(type:String, nameAttribute:String, value:*, defaultValue:*, id:int) {
@@ -229,14 +229,14 @@ package boxesandworlds.editor.items {
 		private function removeItemHandler(e:Event):void {
 			var item:EditorItemArray = e.currentTarget as EditorItemArray;
 			if (item != null) {
-				for (var i:uint = 0, len:uint = _values.length; i < len; ++i) {
+				for (var i:int = 0, len:uint = _values.length; i < len; ++i) {
 					if (item == _values[i]) {
+						doRemoveItem(i);
 						if (_nameAttribute == EditorAttribute.NAME_ATTRIBUTE_VIEWS) {
 							dispatchEvent(new EditorEventChangeViewItem(EditorEventChangeViewItem.REMOVE_FIELD_VIEW, "", i, null, true));
 						}else if (_nameAttribute == EditorAttribute.NAME_ATTRIBUTE_CONTAINERS) {
 							dispatchEvent(new EditorEventChangeContainerItem(EditorEventChangeContainerItem.REMOVE_FIELD_CONTAINER, i, int(item.value), true));
 						}
-						doRemoveItem(i);
 						dispatchEvent(new Event(ATTRIBUTE_ARRAY_UPDATE, true));
 						break;
 					}
