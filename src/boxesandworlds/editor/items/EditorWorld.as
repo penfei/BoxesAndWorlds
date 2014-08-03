@@ -63,7 +63,6 @@ package boxesandworlds.editor.items {
 		
 		public function addItem(uniqueItemId:int, attributes:Vector.<Attribute>):EditorItem {
 			disableMoveItems();
-			
 			var item:EditorItem = new EditorItem(uniqueItemId, _items.length, attributes);
 			_items.push(item);
 			_areaWorld.setupMovebleItem(item, true);
@@ -101,8 +100,9 @@ package boxesandworlds.editor.items {
 		public function removeItem(index:int):void {
 			var item:EditorItem = _items[index];
 			item.destroy();
-			_items.splice(index, 1);
 			item = null;
+			_items.splice(index, 1);
+			_currentItem = null;
 		}
 		
 		public function setupPositionItem(valueX:Number, valueY:Number):void {
@@ -135,12 +135,15 @@ package boxesandworlds.editor.items {
 		}
 		
 		public function removeChildItems():void {
+			if (_player != null && _player.parent != null) {
+				_player.parent.removeChild(_player);
+			}
 			for (var i:uint = 0, len:uint = _items.length; i < len; ++i) {
 				if (_items[i] != null) {
+					if (_items[i].viewDefault != null && _items[i].viewDefault.parent != null) {
+						_items[i].viewDefault.parent.removeChild(_items[i].viewDefault);
+					}
 					for (var j:uint = 0, lenj:uint = _items[i].views.length; j < lenj; ++j) {
-						if (_items[i].viewDefault != null && _items[i].viewDefault.parent != null) {
-							_items[i].viewDefault.parent.removeChild(_items[i].viewDefault);
-						}
 						var view:EditorItemView = _items[i].views[j];
 						if (view != null && view.parent != null) {
 							view.parent.removeChild(view);
@@ -179,11 +182,9 @@ package boxesandworlds.editor.items {
 				_player.y = Core.stage.mouseY - _player.height / 2;
 				_player.buttonMode = true;
 				_player.addEventListener(MouseEvent.MOUSE_DOWN, playerDownHandler);
+				dispatchEvent(new Event(EditorPlayer.ADD_PLAYER));
 			}
 			_player.startDrag(false, new Rectangle(0, 0, Core.stage.stageWidth - _player.width, Core.stage.stageHeight - _player.height));
-			
-			Core.stage.addEventListener(MouseEvent.MOUSE_UP, playerUpHandler);
-			addEventListener(Event.ENTER_FRAME, enterFrameMovePlayerHandler);
 		}
 		
 		protected function disableMoveItems():void {
@@ -204,26 +205,7 @@ package boxesandworlds.editor.items {
 		private function playerDownHandler(e:MouseEvent):void {
 			_editorPage.hideAttributes();
 			setupMoveblePlayer();
-		}
-		
-		private function playerUpHandler(e:MouseEvent):void {
-			Core.stage.removeEventListener(MouseEvent.MOUSE_UP, playerUpHandler);
-			removeEventListener(Event.ENTER_FRAME, enterFrameMovePlayerHandler);
-			_player.stopDrag();
-			_player.x = Math.floor(_player.x);
-			_player.y = Math.floor(_player.y);
-			if (_player.isShowedWarning) {
-				removePlayer();
-				dispatchEvent(new EditorEventPlayer(EditorEventPlayer.PLAYER_NOT_SETUP, true));
-			}
-		}
-		
-		private function enterFrameMovePlayerHandler(e:Event):void {
-			if (_player.x < 0 || _player.y < 0 || _player.x + _player.width > EditorUtils.WORLD_WITDH || _player.y + _player.height > EditorUtils.WORLD_HEIGHT) {
-				_player.showWarning();
-			}else if (_player.isShowedWarning) {
-				_player.hideWarning();
-			}
+			_areaWorld.setupMoveblePlayer();
 		}
 		
 		private function savePositionStartInAttributeHandler(e:MouseEvent):void {

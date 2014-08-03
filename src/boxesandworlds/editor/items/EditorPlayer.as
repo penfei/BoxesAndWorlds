@@ -9,6 +9,9 @@ package boxesandworlds.editor.items {
 	 */
 	public class EditorPlayer extends Sprite {
 		
+		// const
+		static public const ADD_PLAYER:String = "editorEventAddPlayer";
+		
 		// ui
 		private var _ui:EditorPlayerUI;
 		

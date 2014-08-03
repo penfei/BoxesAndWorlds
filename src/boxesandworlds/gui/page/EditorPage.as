@@ -217,7 +217,7 @@ package boxesandworlds.gui.page {
 		}
 		
 		private function removeWorldHandler(e:EditorEventWorld):void {
-			_areaWorld.removeWorld(e.id, e.addId);
+			_areaWorld.removeWorld(e.id, e.nextId);
 		}
 		
 		private function selectWorldHandler(e:EditorEventWorld):void {
