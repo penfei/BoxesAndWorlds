@@ -2,27 +2,13 @@ package boxesandworlds.game.levels
 {
 	import boxesandworlds.controller.Core;
 	import boxesandworlds.data.ObjectsLibrary;
-	import boxesandworlds.game.data.Attribute;
-	import boxesandworlds.game.objects.door.Door;
-	import boxesandworlds.game.objects.enters.EnterData;
 	import boxesandworlds.game.controller.Game;
-	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoor;
-	import boxesandworlds.game.objects.enters.gate.Gate;
+	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.objects.GameObject;
-	import boxesandworlds.game.objects.items.box.Box;
-	import boxesandworlds.game.objects.items.button.Button;
-	import boxesandworlds.game.objects.items.key.Key;
-	import boxesandworlds.game.objects.items.teleportBox.TeleportBox;
-	import boxesandworlds.game.objects.items.worldBox.WorldBox;
 	import boxesandworlds.game.objects.worldstructrure.WorldStructure;
 	import boxesandworlds.game.utils.ContentUtils;
 	import boxesandworlds.game.world.World;
-	import flash.display.Bitmap;
-	import flash.display.DisplayObject;
-	import flash.display.MovieClip;
-	import flash.utils.Dictionary;
 	import nape.geom.Vec2;
-	import nape.phys.BodyType;
 	/**
 	 * ...
 	 * @author Sah

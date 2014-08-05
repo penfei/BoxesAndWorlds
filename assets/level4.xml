@@ -1,6 +1,6 @@
 <xml>
   <levelScript scriptName="boxesandworlds.game.levels.tutorial.TutorialLevel"/>
-  <player worldId="1" x="339" y="410"/>
+  <player worldId="1" x="400" y="300"/>
   <world id="1">
     <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="1"/>

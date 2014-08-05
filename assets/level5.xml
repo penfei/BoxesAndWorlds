@@ -10,7 +10,8 @@
           <valueY>10</valueY>
         </value>
       </containerIds>
-      <start attributeName="start" type="VEC2" x="85" y="-256"/>
-    </Box>
+      <start attributeName="start" type="VEC2" x="0" y="0"/>
+	  <bodyType attributeName="start" type="STRING" value="STATIC" />
+	</Box>
   </world>
 </xml>

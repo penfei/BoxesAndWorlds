@@ -82,12 +82,20 @@ package boxesandworlds.game.objects
 			}
 			
 			for (var key:String in params) {
-				this[key] = params[key];
+				if (key == "bodyType") this[key] = stringToBodyType(params[key]);
+				else this[key] = params[key];
 			}
 		}
 		
 		protected function getAttributes():Vector.<Attribute> {
 			return attributes();
+		}
+		
+		private function stringToBodyType(type:String):BodyType {
+			if (type == "STATIC") return BodyType.STATIC;
+			if (type == "DYNAMIC") return BodyType.DYNAMIC;
+			if (type == "KINEMATIC") return BodyType.KINEMATIC;
+			return BodyType.DYNAMIC;
 		}
 		
 		public function get bodyShapeType():String {return _bodyShapeType;}
