@@ -7,6 +7,7 @@ package boxesandworlds.game.objects.player
 	import boxesandworlds.game.objects.GameObject;
 	import boxesandworlds.game.objects.items.Item;
 	import boxesandworlds.game.objects.items.key.Key;
+	import flash.utils.setTimeout;
 	import nape.geom.AABB;
 	import nape.geom.Vec2;
 	import nape.phys.BodyList;
@@ -110,9 +111,15 @@ package boxesandworlds.game.objects.player
 		
 		public function jump():void 
 		{
+			_properties.isBeforeJump = true;
+			_properties.isJump = false;
+			setTimeout(jumpCallback, 60);
+		}
+		
+		private function jumpCallback():void {
+			_properties.isBeforeJump = false;
 			body.velocity.set(new Vec2(0, 0));
 			body.applyImpulse(new Vec2(0.0, _properties.jumpPower));
-			_properties.isJump = false;
 		}
 		
 		public function canJump():Boolean 

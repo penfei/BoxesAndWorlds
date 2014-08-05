@@ -7,6 +7,7 @@ package boxesandworlds.game.objects.player
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import symbols.hero.BeforeJumpUI;
 	import symbols.hero.StayUI;
 	import symbols.hero.RunUI;
 	import symbols.hero.JumpUI;
@@ -21,6 +22,9 @@ package boxesandworlds.game.objects.player
 		private var _uiStay:StayUI;
 		private var _uiWalk:RunUI;
 		private var _uiJump:JumpUI;
+		private var _uiBeforeJump:BeforeJumpUI;
+		
+		private var _states:Vector.<MovieClip>
 		
 		public function PlayerView(game:Game, player:Player) 
 		{
@@ -33,7 +37,14 @@ package boxesandworlds.game.objects.player
 			_uiStay = new StayUI;
 			_uiWalk = new RunUI;
 			_uiJump = new JumpUI;
+			_uiBeforeJump = new BeforeJumpUI;
 			_ui.addChild(_uiStay);
+			
+			_states = new Vector.<MovieClip>;
+			_states.push(_uiStay);
+			_states.push(_uiWalk);
+			_states.push(_uiJump);
+			_states.push(_uiBeforeJump);
 			
 			obj.data.views.push(_ui);
 			obj.data.containerIds[0] = 0;
@@ -52,9 +63,8 @@ package boxesandworlds.game.objects.player
 		public function showLeft():void {
 			if (_player.playerData.isOnEarth) {
 				game.sound.walking();
-				visibleState(_uiWalk);
-				unVisibleState(_uiStay);
-				unVisibleState(_uiJump);
+				if(_player.playerData.isBeforeJump) activate(_uiBeforeJump);
+				else activate(_uiWalk);
 			}
 			_ui.rotationY = -180;
 		}
@@ -62,25 +72,20 @@ package boxesandworlds.game.objects.player
 		public function showRight():void {
 			if (_player.playerData.isOnEarth) {
 				game.sound.walking();
-				visibleState(_uiWalk);
-				unVisibleState(_uiStay);
-				unVisibleState(_uiJump);
+				if(_player.playerData.isBeforeJump) activate(_uiBeforeJump);
+				else activate(_uiWalk);
 			}
 			_ui.rotationY = 0;
 		}
 		
 		public function showStay():void {
 			if (_player.playerData.isOnEarth) {
-				visibleState(_uiStay);
-				unVisibleState(_uiWalk);
-				unVisibleState(_uiJump);
+				activate(_uiStay);
 			}
 		}
 		
 		public function showJump():void {
-			unVisibleState(_uiWalk);
-			unVisibleState(_uiStay);
-			visibleState(_uiJump);
+			activate(_uiJump);
 			
 			var vel:Number = _player.body.velocity.y
 			var frame:int = (_uiJump.totalFrames + 1) / 2 + (vel * (_uiJump.totalFrames + 1) * 0.0016);
@@ -96,6 +101,14 @@ package boxesandworlds.game.objects.player
 		
 		public function rotateY(value:Number):void {
 			_ui.rotationY = value;
+		}
+		
+		private function activate(view:MovieClip):void {
+			for each (var item:MovieClip in _states) 
+			{
+				if (item == view) visibleState(view);
+				else unVisibleState(item);
+			}
 		}
 		
 		private function visibleState(view:MovieClip):void {
@@ -115,6 +128,7 @@ package boxesandworlds.game.objects.player
 		private function unVisibleState(view:MovieClip):void  {
 			if(view.parent){
 				_ui.removeChild(view);
+				view.gotoAndStop(1);
 				//var mc:MovieClip
 				//for ( var i:uint = 0; i < _ui.numChildren; i++ ) {
 					//if (_ui.getChildAt(i) is MovieClip) {
