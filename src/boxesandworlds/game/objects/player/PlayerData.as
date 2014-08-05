@@ -16,6 +16,7 @@ package boxesandworlds.game.objects.player
 		private var _isMoveDown:Boolean;
 		private var _isMoveUp:Boolean;
 		private var _isJump:Boolean;
+		private var _isBeforeJump:Boolean;
 		private var _jumpPower:Number;
 		private var _isOnEarth:Boolean;
 		private var _itemAreaIndentX:Number;
@@ -85,6 +86,8 @@ package boxesandworlds.game.objects.player
 		}
 		public function get isRight():Boolean {return _isRight;}
 		public function set isRight(value:Boolean):void {_isRight = value;}
+		public function get isBeforeJump():Boolean {return _isBeforeJump;}
+		public function set isBeforeJump(value:Boolean):void {_isBeforeJump = value;}
 	}
 
 }
