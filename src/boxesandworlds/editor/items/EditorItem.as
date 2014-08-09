@@ -51,12 +51,20 @@ package boxesandworlds.editor.items {
 				return DEFAULT_WIDTH;
 			}
 			var maxWidth:Number = 0;
+			var isExistRealWidth:Boolean = false;
 			for (var i:uint = 0, len:uint = _views.length; i < len; ++i) {
 				if (_views[i].width > maxWidth) {
 					maxWidth = _views[i].width;
 				}
+				if (_views[i].width > 0) {
+					isExistRealWidth = true;
+				}
 			}
-			return maxWidth;
+			if (isExistRealWidth) {
+				return maxWidth;
+			}else {
+				return DEFAULT_WIDTH;
+			}
 		}
 		
 		public function get height():Number {
@@ -64,12 +72,20 @@ package boxesandworlds.editor.items {
 				return DEFAULT_HEIGHT;
 			}
 			var maxHeight:Number = 0;
+			var isExistRealHeight:Boolean = false;
 			for (var i:uint = 0, len:uint = _views.length; i < len; ++i) {
 				if (_views[i].height > maxHeight) {
 					maxHeight = _views[i].height;
 				}
+				if (_views[i].height > 0) {
+					isExistRealHeight = true;
+				}
 			}
-			return maxHeight;
+			if (isExistRealHeight) {
+				return maxHeight;
+			}else {
+				return DEFAULT_WIDTH;
+			}
 		}
 		
 		public function get nameItem():String { return _nameItem; }
