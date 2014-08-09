@@ -53,11 +53,11 @@ package boxesandworlds.game.levels
 						
 					world = new World(_game);	
 					world.init( { id:xmlWorld.@id, axis:new Vec2(worldPosX, worldPosY) } );
+					_game.objects.worlds.push(world);
 					
 					if ( xmlWorld.@id == data.player.@worldId )
 						world.addGameObject(_game.objects.me);
 						
-							
 					for each( var child:XML in xmlWorld.children() )
 					{
 						var objectClass:Class = ObjectsLibrary.getObjectClassByType(child.name());
@@ -90,6 +90,7 @@ package boxesandworlds.game.levels
 						}
 					}
 				}
+
 				for each( world in _game.objects.worlds ) 
 					world.postInit();
 			}

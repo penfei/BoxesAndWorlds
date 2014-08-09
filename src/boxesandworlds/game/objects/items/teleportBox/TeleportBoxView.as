@@ -20,8 +20,8 @@ package boxesandworlds.game.objects.items.teleportBox
 		
 		override public function init():void {
 			_ui = new Sprite();
-			_ui.graphics.beginFill(0xFF0000);
-			_ui.graphics.drawRect( -obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height);
+			_ui.graphics.beginFill(0xFFFFFF);
+			_ui.graphics.drawRect( -obj.data.width / 2 - 1, -obj.data.height / 2 - 1, obj.data.width + 2, obj.data.height + 2);
 			
 			_hintContainer = new Sprite();
 			_hintContainer.graphics.beginFill(0xCC9900);
