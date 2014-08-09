@@ -79,6 +79,7 @@ package boxesandworlds.editor.area {
 					}
 					world.destroy();
 					world = null;
+					_worlds[i] = null;
 					_worlds.splice(i, 1);
 					_currentWorld = null;
 					selectWorld(nextId);
@@ -244,7 +245,7 @@ package boxesandworlds.editor.area {
 		}
 		
 		protected function getWorldXML(world:EditorWorld):String {
-			var xml:String = "<world id='" + String( world.id + 1 ) + "'>";
+			var xml:String = "<world id='" + String( world.id ) + "'>";
 			for (var i:uint = 0, len:uint = world.items.length; i < len; ++i) {
 				xml += getItemXML(world.items[i]);
 			}

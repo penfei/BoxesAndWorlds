@@ -48,12 +48,14 @@ package boxesandworlds.editor.items {
 		
 		// public
 		public function destroy():void {
+			Core.stage.removeEventListener(MouseEvent.MOUSE_UP, savePositionStartInAttributeHandler);
 			if (_items != null) {
 				for (var i:uint = 0, len:uint = _items.length; i < len; ++i) {
 					var item:EditorItem = _items[i];
 					if (item != null) {
 						item.destroy();
 						item = null;
+						_items[i] = null;
 					}
 				}
 				_items = null;
@@ -161,7 +163,7 @@ package boxesandworlds.editor.items {
 		}
 		
 		public function savePositionStartInAttribute():void {
-			if (_currentItem != null) {
+			if (_currentItem != null && _startPosition != null) {
 				_startPosition.x = _currentItem.viewDefault.x - EditorUtils.WORLD_WITDH / 2;
 				_startPosition.y = _currentItem.viewDefault.y - EditorUtils.WORLD_HEIGHT / 2;
 				_currentItem.setupAttribute("start", _startPosition);

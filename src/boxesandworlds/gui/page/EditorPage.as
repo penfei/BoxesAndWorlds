@@ -114,7 +114,7 @@ package boxesandworlds.gui.page {
 			_areaScript.addEventListener(EditorAreaScript.EDITOR_CHANGED_SCRIPT, changedScriptHandler);
 			changedScriptHandler();
 			
-			//setupTempPositions();
+			setupTempPositions();
 		}
 		
 		public function showAttributes(item:EditorItem):void {

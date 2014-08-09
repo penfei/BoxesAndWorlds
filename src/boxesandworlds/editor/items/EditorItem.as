@@ -114,6 +114,7 @@ package boxesandworlds.editor.items {
 							mcAttribute.parent.removeChild(mcAttribute);
 						}
 						mcAttribute = null;
+						_mcAttributes[i] = null;
 					}
 				}
 				_mcAttributes = null;
