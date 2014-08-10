@@ -1,6 +1,8 @@
 package boxesandworlds.game.world 
 {
+	import boxesandworlds.controller.Core;
 	import boxesandworlds.game.controller.Game;
+	import flash.display.BitmapData;
 	import nape.geom.Vec2;
 	/**
 	 * ...
@@ -23,10 +25,15 @@ package boxesandworlds.game.world
 		public function init(params:Object):void {
 			_id = params.id;
 			_rotation = 0;
-			if (params.width) _width = params.width;
-			else _width = 800;
-			if (params.height) _height = params.height;
-			else _height = 800;
+			if (params.physic.WorldStructure) {
+				var bitmapData:BitmapData = Core.content.library[params.physic.WorldStructure.physicsBitmap.@value].bitmapData;
+				_width = bitmapData.width;
+				_height = bitmapData.height;
+			}else {
+				_width = 800;
+				_height = 800;
+			}
+			
 			if (params.axis) _axis = params.axis;
 			else _axis = new Vec2();			
 		}

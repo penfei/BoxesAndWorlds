@@ -166,6 +166,14 @@ package boxesandworlds.game.controller
 		{
 			
 		}
+		
+		public function getWorldById(id:uint):World 
+		{
+			for each(var world:World in _worlds) {
+				if (world.data.id == id) return world;
+			}
+			return null;
+		}
 	}
 
 }

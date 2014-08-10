@@ -84,6 +84,14 @@ package boxesandworlds.game.world
 			addGameObject(_structure);
 		}
 		
+		public function addPlayer(player:Player):void {
+			addGameObject(player);
+		}
+		
+		public function removePlayer(player:Player):void {
+			removeGameObject(player);
+		}
+		
 		public function addGameObject(obj:GameObject):void {
 			obj.world = this;
 			_objects.push(obj);

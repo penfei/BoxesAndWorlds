@@ -58,8 +58,6 @@ package boxesandworlds.gui.page {
 		
 		private function gameLoadComplete(e:ViewEvent):void 
 		{
-			Core.ui.hidePreloader()
-			doLoadComplete();
 			newGameLoadComplete();
 		}
 		
@@ -67,7 +65,15 @@ package boxesandworlds.gui.page {
 		{
 			_game.addEventListener(Game.BACK, backHandler);
 			_game.addEventListener(Game.GAME_COMPLETE, completeHandler);
+			_game.addEventListener(Game.GAME_STARTED, startHandler);
 			_game.start();
+		}
+		
+		private function startHandler(e:Event):void 
+		{
+			_game.removeEventListener(Game.GAME_STARTED, startHandler);
+			Core.ui.hidePreloader();
+			doLoadComplete();
 		}
 		
 		private function completeHandler(e:Event):void 

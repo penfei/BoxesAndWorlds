@@ -209,8 +209,8 @@ package boxesandworlds.game.objects.player
 			if (teleportTarget != null) {
 				if (_item == teleportTarget) resetItem();
 				body.position.set(teleportTarget.getTeleportTargetPosition(params));
-				world.removeGameObject(this);
-				teleportTarget.world.addGameObject(this);
+				world.removePlayer(this);
+				teleportTarget.world.addPlayer(this);
 				if (hasItem) {
 					_item.world.removeGameObject(_item);
 					teleportTarget.world.addGameObject(_item);

@@ -32,31 +32,15 @@ package boxesandworlds.game.levels
 			var content:Object = Core.content.library;
 			
 			if (!_isParsed && data) 
-			{
-				if ( data.player )
-				{
-					_game.objects.me.init( { start:new Vec2( 
-								Game.WORLD_START_X_POSITION - 400.0 + ( uint(data.player.@worldId) - 1) * Game.WORLD_X_OFFSET + Number(data.player.@x),
-								Game.WORLD_START_Y_POSITION - 400.0 + Number(data.player.@y)) } );
-				}
-				else
-				{
-					trace("player info not found in xml");
-				}
-				
-				var i:uint = 0;
+			{				
 				var world:World;
+				var worldPosX:Number = 0;
 				for each( var xmlWorld:XML in data.world )
 				{
-					var worldPosX:Number = Game.WORLD_START_X_POSITION + i * Game.WORLD_X_OFFSET;
-					var worldPosY:Number = Game.WORLD_START_Y_POSITION;
-						
 					world = new World(_game);	
-					world.init( { id:xmlWorld.@id, axis:new Vec2(worldPosX, worldPosY) } );
+					world.init( { id:xmlWorld.@id, axis:new Vec2(worldPosX, 0), physic:xmlWorld } );
 					_game.objects.worlds.push(world);
-					
-					if ( xmlWorld.@id == data.player.@worldId )
-						world.addGameObject(_game.objects.me);
+					worldPosX += world.data.width + 200;
 						
 					for each( var child:XML in xmlWorld.children() )
 					{
@@ -84,11 +68,26 @@ package boxesandworlds.game.levels
 							object.init(params);
 							world.addStructureToWorld(object as WorldStructure);
 						} else {
-							params.start = Vec2.weak(worldPosX + params.start.x, worldPosY + params.start.y); 
+							params.start = Vec2.weak(world.data.axis.x + params.start.x, world.data.axis.y + params.start.y); 
 							object.init(params);
 							world.addGameObject(object);
 						}
 					}
+				}
+				
+				if (data.player )
+				{
+					world = _game.objects.getWorldById(data.player.@worldId);
+					_game.objects.me.init( { start:Vec2.weak(world.data.axis.x + Number(data.player.@x), world.data.axis.y + Number(data.player.@y)) } ); 
+					world.addPlayer(_game.objects.me);
+						
+					//_game.objects.me.init( { start:new Vec2( 
+								//Game.WORLD_START_X_POSITION - 400.0 + ( uint(data.player.@worldId) - 1) * Game.WORLD_X_OFFSET + Number(data.player.@x),
+								//Game.WORLD_START_Y_POSITION - 400.0 + Number(data.player.@y)) } );
+				}
+				else
+				{
+					trace("player info not found in xml");
 				}
 
 				for each( world in _game.objects.worlds ) 

@@ -1,6 +1,6 @@
 <xml>
   <levelScript scriptName="boxesandworlds.game.levels.tutorial.TutorialLevel"/>
-  <player worldId="1" x="400" y="300"/>
+  <player worldId="1" x="0" y="0"/>
   <world id="1">
     <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="1"/>
@@ -15,14 +15,27 @@
     </WorldStructure>
 	 <Box itemName="Box">
       <id attributeName="id" type="NUMBER" value="10"/>
-      <start attributeName="start" type="VEC2" x="0" y="0"/>
+      <start attributeName="start" type="VEC2" x="0" y="200"/>
 	</Box>
 	 <TeleportBox itemName="TeleportBox">
 		<teleportId attributeName="teleportId" type="NUMBER" value="4"/>
       <id attributeName="id" type="NUMBER" value="3"/>
       <start attributeName="start" type="VEC2" x="100" y="0"/>
 	</TeleportBox>
-	 <TeleportBox itemName="TeleportBox">
+  </world>
+  <world id="2">
+	<WorldStructure itemName="WorldStructure">
+      <id attributeName="id" type="NUMBER" value="2"/>
+	  <physicsBitmap type="URL" value="TestLevel4.png"/>
+      <views attributeName="viewURLs" type="URL" isArray="true">
+        <value>TestLevel4View.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>0</value>
+	  </containerIds>
+      <start attributeName="start" type="VEC2" x="-400" y="-400"/>
+    </WorldStructure>
+	<TeleportBox itemName="TeleportBox">
 		<teleportId attributeName="teleportId" type="NUMBER" value="3"/>
       <id attributeName="id" type="NUMBER" value="4"/>
       <start attributeName="start" type="VEC2" x="-100" y="0"/>

@@ -57,9 +57,13 @@ package boxesandworlds.game.controller
 		}
 		
 		override public function step():void {
-			var data:WorldData = game.objects.me.world.data;
-			container.x = -data.axis.x + data.width / 2;
-			container.y = -data.axis.y + data.height / 2;
+			//var data:WorldData = game.objects.me.world.data;
+			//container.x = -data.axis.x + data.width / 2;
+			//container.y = -data.axis.y + data.height / 2;
+			
+			container.x = -game.objects.me.body.position.x + stageWidth / 2;
+			container.y = -game.objects.me.body.position.y + stageHeight * 0.7;
+			//TweenLite.to(container, 0.5, { x:-game.objects.me.body.position.x + stageWidth / 2, y: -game.objects.me.body.position.y + stageHeight * 0.7 } );
 			
 			if (game.data.isTest) {
 				_debug.clear();
@@ -79,7 +83,7 @@ package boxesandworlds.game.controller
 			_mainContainer = null;
 		}
 		
-		public function get mousePoint():Vec2 { return Vec2.get(container.x + game.stage.mouseX, container.y + game.stage.mouseY); }
+		public function get mousePoint():Vec2 { return Vec2.get(game.stage.mouseX - container.x, game.stage.mouseY - container.y); }
 		
 		public function getItemUnderPoint():Item {
 			var bodyList:BodyList = game.physics.world.bodiesUnderPoint(mousePoint, null, bodyList);

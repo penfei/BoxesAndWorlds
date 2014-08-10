@@ -12,10 +12,7 @@ package boxesandworlds.game.controller
 	{
 		static public const BACK:String = "BACK";
 		static public const GAME_COMPLETE:String = "GAME_COMPLETE";
-		
-		static public const WORLD_START_X_POSITION:uint = 400;
-		static public const WORLD_START_Y_POSITION:uint = 400;
-		static public const WORLD_X_OFFSET:uint = 1000;
+		static public const GAME_STARTED:String = "GAME_STARTED";
 		
 		private var _data:GameDataController;
 		private var _level:Level;
@@ -70,6 +67,9 @@ package boxesandworlds.game.controller
 			
 			_level.start();
 			
+			_gui.step();
+			
+			dispatchEvent(new Event(GAME_STARTED));
 			if (!hasEventListener(Event.ENTER_FRAME)) addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
