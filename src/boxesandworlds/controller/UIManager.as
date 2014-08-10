@@ -55,8 +55,8 @@ package boxesandworlds.controller {
 			hidePreloader();
 			
 			//showPage(MAIN_PAGE_ID);
-			showPage(EDITOR_PAGE_ID);
-			//showPage(GAME_PAGE_ID);			
+			//showPage(EDITOR_PAGE_ID);
+			showPage(GAME_PAGE_ID);			
 			//showPage(EDITOR_PAGE_ID);
 			//showPage(GAME_PAGE_ID);			
 			resize();

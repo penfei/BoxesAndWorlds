@@ -22,6 +22,7 @@ package boxesandworlds.game.controller
 			game.stage.addEventListener(KeyboardEvent.KEY_DOWN, keybordDownHandler);
 			game.stage.addEventListener(KeyboardEvent.KEY_UP, keybordUpHandler);
 			game.stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
+			game.stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
 			game.stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, rightMouseDownHandler);
 			game.stage.focus = game.stage;
 		}
@@ -54,9 +55,9 @@ package boxesandworlds.game.controller
 		
 		private function mouseDownHandler(e:MouseEvent):void 
 		{
+			game.objects.me.addTelekinesisItem();
 			game.stage.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
 			game.stage.addEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
-			game.stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
 		}
 		
 		private function mouseMoveHandler(e:MouseEvent):void 
@@ -66,8 +67,8 @@ package boxesandworlds.game.controller
 		
 		private function mouseUpHandler(e:MouseEvent):void 
 		{
+			game.objects.me.removeTelekinesisItem();
 			game.stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
-			game.stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
 			game.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
 		}
 		

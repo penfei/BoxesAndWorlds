@@ -10,6 +10,7 @@ package boxesandworlds.game.objects.items
 	public class ItemData extends GameObjectData
 	{
 		private var _canAdded:Boolean;
+		private var _canTelekinesis:Boolean;
 		
 		public function ItemData(game:Game) 
 		{
@@ -20,6 +21,7 @@ package boxesandworlds.game.objects.items
 		{
 			var arr:Vector.<Attribute> = GameObjectData.attributes();
 			Attribute.pushAttribute(arr, "canAdded", true, Attribute.BOOL);
+			Attribute.pushAttribute(arr, "canTelekinesis", true, Attribute.BOOL);
 			return arr;
 		}
 		
@@ -29,6 +31,8 @@ package boxesandworlds.game.objects.items
 		
 		public function get canAdded():Boolean {return _canAdded;}
 		public function set canAdded(value:Boolean):void {_canAdded = value;}
+		public function get canTelekinesis():Boolean {return _canTelekinesis;}
+		public function set canTelekinesis(value:Boolean):void {_canTelekinesis = value;}
 		
 	}
 

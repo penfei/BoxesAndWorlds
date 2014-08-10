@@ -21,6 +21,8 @@ package boxesandworlds.game.objects.player
 		private var _properties:PlayerData;
 		
 		private var _item:Item;
+		private var _telekinesisItem:Item;
+		private var _potencialTelekinesisItem:Item;
 		private var _itemArea:AABB;
 		private var _potencialTeleportTarget:GameObject;
 		private var _bodyListInItemArea:BodyList;
@@ -38,6 +40,8 @@ package boxesandworlds.game.objects.player
 		public function get itemArea():AABB {return _itemArea;}
 		public function get potencialTeleport():GameObject {return _potencialTeleportTarget;}
 		public function get hasItem():Boolean {return _item != null;}
+		public function get telekinesisItem():Item { return _telekinesisItem; }
+		public function get hasTelekinesisItem():Boolean {return _telekinesisItem != null;}
 		
 		override public function init(params:Object = null):void 
 		{
@@ -88,6 +92,7 @@ package boxesandworlds.game.objects.player
 				teleportWithEnter();
 			}
 			
+			telekinesis();
 			if (!game.data.isGameOver) _view.step();			
 		}
 		
@@ -233,6 +238,31 @@ package boxesandworlds.game.objects.player
 			_itemArea.y = body.position.y - _properties.height / 2 - _properties.itemAreaIndentY;
 			var bodyList:BodyList = game.physics.world.bodiesInAABB(_itemArea, false, true, null, bodyList);
 			return bodyList;
+		}
+		
+		public function telekinesis():void 
+		{
+			if (!hasTelekinesisItem){
+				_potencialTelekinesisItem = game.gui.getItemUnderPoint();
+			} else {
+				_telekinesisItem.telekinesis();
+			}
+		}
+		
+		public function addTelekinesisItem():void 
+		{
+			if (!hasTelekinesisItem && _potencialTelekinesisItem != null) {
+				_telekinesisItem = _potencialTelekinesisItem;
+				_telekinesisItem.startTelekinesis();
+			}
+		}
+		
+		public function removeTelekinesisItem():void 
+		{
+			if (hasTelekinesisItem) {
+				_telekinesisItem.stopTelekinesis();
+				_telekinesisItem = null;
+			}
 		}
 		
 		private function addItem(pItem:Item):void 

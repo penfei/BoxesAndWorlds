@@ -1,12 +1,14 @@
 package boxesandworlds.game.controller 
 {
 	import boxesandworlds.game.gui.Menu;
+	import boxesandworlds.game.objects.items.Item;
 	import boxesandworlds.game.world.WorldData;
 	import boxesandworlds.gui.View;
 	import com.greensock.TweenLite;
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import nape.geom.Vec2;
+	import nape.phys.BodyList;
 	import nape.util.BitmapDebug;
 	import nape.util.Debug;
 	/**
@@ -75,6 +77,20 @@ package boxesandworlds.game.controller
 			game.removeChild(_canvas);
 			_canvas = null;
 			_mainContainer = null;
+		}
+		
+		public function get mousePoint():Vec2 { return Vec2.get(container.x + game.stage.mouseX, container.y + game.stage.mouseY); }
+		
+		public function getItemUnderPoint():Item {
+			var bodyList:BodyList = game.physics.world.bodiesUnderPoint(mousePoint, null, bodyList);
+			var item:Item;
+			for (var i:int = 0; i < bodyList.length; i++) {
+				item = bodyList.at(i).userData.obj as Item;
+				if (item != null && item.itemData.canTelekinesis && item != game.objects.me.item && item != game.objects.me.telekinesisItem) {
+					return item;
+				}
+			}
+			return null;
 		}
 	}
 
