@@ -2,11 +2,13 @@ package boxesandworlds.editor.area {
 	import boxesandworlds.controller.Core;
 	import boxesandworlds.editor.data.items.EditorPlayerData;
 	import boxesandworlds.editor.data.items.EditorWorldData;
+	import boxesandworlds.editor.events.EditorEventPlayer;
 	import boxesandworlds.editor.events.EditorEventUpdateContainerItem;
 	import boxesandworlds.editor.events.EditorEventUpdateViewItem;
 	import boxesandworlds.editor.items.EditorAttribute;
 	import boxesandworlds.editor.items.EditorItem;
 	import boxesandworlds.editor.items.EditorItemView;
+	import boxesandworlds.editor.items.EditorPlayer;
 	import boxesandworlds.editor.items.EditorWorld;
 	import boxesandworlds.editor.utils.EditorUtils;
 	import boxesandworlds.game.data.Attribute;
@@ -62,18 +64,25 @@ package boxesandworlds.editor.area {
 				_currentWorld.removeChildItems();
 			}
 			var world:EditorWorld = new EditorWorld(id, _editorPage, this);
+			world.addEventListener(EditorPlayer.ADD_PLAYER, playerAddedHandler);
 			_worlds.push(world);
 			_currentWorld = world;
 		}
 		
-		public function removeWorld(id:int, selectId:int):void {
+		public function removeWorld(removeId:int, nextId:int):void {
 			for (var i:uint = 0, len:uint = _worlds.length; i < len; ++i) {
-				if (_worlds[i].id == id) {
+				if (_worlds[i].id == removeId) {
 					var world:EditorWorld = _worlds[i];
+					if (world.player != null) {
+						world.removePlayer();
+						dispatchEvent(new EditorEventPlayer(EditorEventPlayer.PLAYER_NOT_SETUP));
+					}
 					world.destroy();
 					world = null;
+					_worlds[i] = null;
 					_worlds.splice(i, 1);
-					selectWorld(selectId);
+					_currentWorld = null;
+					selectWorld(nextId);
 					return;
 				}
 			}
@@ -122,6 +131,12 @@ package boxesandworlds.editor.area {
 				_worlds[i].removePlayer();
 			}
 			_currentWorld.addPlayer();
+			setupMoveblePlayer();
+		}
+		
+		public function setupMoveblePlayer():void {
+			Core.stage.addEventListener(MouseEvent.MOUSE_UP, playerUpHandler);
+			addEventListener(Event.ENTER_FRAME, enterFrameMovePlayerHandler);
 		}
 		
 		public function setupPositionItem(valueX:Number, valueY:Number):void {
@@ -178,9 +193,20 @@ package boxesandworlds.editor.area {
 			_worlds = new Vector.<EditorWorld>();
 			_worlds.length = len;
 			for (var i:int = 0; i < len; ++i) {
-				var world:EditorWorld = new EditorWorld(i, _editorPage, this);
+				var world:EditorWorld = new EditorWorld(int(worldsData[i].id), _editorPage, this);
+				world.addEventListener(EditorPlayer.ADD_PLAYER, playerAddedHandler);
 				world.setupDataFromXML(worldsData[i]);
 				_worlds[i] = world;
+				for (var j:uint = 0, lenj:uint = world.items.length; j < lenj; ++j) {
+					world.items[j].addEventListener(EditorEventUpdateViewItem.UPDATE_VIEW, updateViewItemHandler);
+					world.items[j].addEventListener(EditorEventUpdateContainerItem.UPDATE_CONTAINER, updateContainerItemHandler);
+				}
+				_currentWorld = world;
+				if (playerData.playerWorldId != "" && int(playerData.playerWorldId) == world.id) {
+					world.addPlayer(false, false, Number(playerData.playerPositionX), Number(playerData.playerPositionY));
+					doAddPlayer(world.player);
+					_editorPage.disablePlayer();
+				}
 			}
 			_currentWorld = _worlds[0];
 			addChildItems(_currentWorld);
@@ -200,6 +226,9 @@ package boxesandworlds.editor.area {
 		}
 		
 		protected function addChildItems(world:EditorWorld):void {
+			if (world.player != null) {
+				_canvasTop.addChild(world.player);
+			}
 			var items:Vector.<EditorItem> = world.items;
 			for (var i:uint = 0, len:uint = items.length; i < len; ++i) {
 				addChildItem(items[i]);
@@ -210,7 +239,9 @@ package boxesandworlds.editor.area {
 			_canvasTop.addChild(item.viewDefault);
 			for (var i:uint = 0, len:uint = item.views.length; i < len; ++i) {
 				var view:EditorItemView = item.views[i];
-				_layers[view.containerId].addChild(view);
+				if (view != null) {
+					_layers[view.containerId].addChild(view);
+				}
 			}
 		}
 		
@@ -218,7 +249,7 @@ package boxesandworlds.editor.area {
 			var xml:String = "<player";
 			for (var i:uint = 0, len:uint = _worlds.length; i < len; ++i) {
 				if (_worlds[i].player != null) {
-					xml += " worldId='" + String(_worlds[i].id + 1) + "' x='" + String(_worlds[i].player.x) + "' y='" + String(_worlds[i].player.y) + "'";
+					xml += " worldId='" + String(_worlds[i].id) + "' x='" + String(_worlds[i].player.x) + "' y='" + String(_worlds[i].player.y) + "'";
 					break;
 				}
 			}
@@ -227,7 +258,7 @@ package boxesandworlds.editor.area {
 		}
 		
 		protected function getWorldXML(world:EditorWorld):String {
-			var xml:String = "<world id='" + String( world.id + 1 ) + "'>";
+			var xml:String = "<world id='" + String( world.id ) + "'>";
 			for (var i:uint = 0, len:uint = world.items.length; i < len; ++i) {
 				xml += getItemXML(world.items[i]);
 			}
@@ -272,6 +303,10 @@ package boxesandworlds.editor.area {
 			updateItemViewsPositionsHandler();
 		}
 		
+		protected function doAddPlayer(player:EditorPlayer):void {
+			_canvasTop.addChild(player);
+		}
+		
 		// handlers
 		private function itemUpHandler(e:MouseEvent):void {
 			Core.stage.removeEventListener(MouseEvent.MOUSE_UP, itemUpHandler);
@@ -282,6 +317,7 @@ package boxesandworlds.editor.area {
 				for (var i:uint = 0, len:uint = _currentWorld.items.length; i < len; ++i) {
 					if (_currentItem == _currentWorld.items[i]) {
 						_currentWorld.removeItem(i);
+						_currentItem = null;
 						_editorPage.hideAttributes();
 						break;
 					}
@@ -316,6 +352,30 @@ package boxesandworlds.editor.area {
 		private function updateItemViewsPositionsHandler(e:Event = null):void {
 			for (var i:uint = 0, len:uint = _currentItem.views.length; i < len; ++i) {
 				_currentItem.setupPosition(_currentItem.viewDefault.x, _currentItem.viewDefault.y);
+			}
+		}
+		
+		private function playerAddedHandler(e:Event):void {
+			doAddPlayer(_currentWorld.player);
+		}
+		
+		private function playerUpHandler(e:MouseEvent):void {
+			Core.stage.removeEventListener(MouseEvent.MOUSE_UP, playerUpHandler);
+			removeEventListener(Event.ENTER_FRAME, enterFrameMovePlayerHandler);
+			_currentWorld.player.stopDrag();
+			_currentWorld.player.x = Math.floor(_currentWorld.player.x);
+			_currentWorld.player.y = Math.floor(_currentWorld.player.y);
+			if (_currentWorld.player.isShowedWarning) {
+				_currentWorld.removePlayer();
+				dispatchEvent(new EditorEventPlayer(EditorEventPlayer.PLAYER_NOT_SETUP));
+			}
+		}
+		
+		private function enterFrameMovePlayerHandler(e:Event):void {
+			if (_currentWorld.player.x < 0 || _currentWorld.player.y < 0 || _currentWorld.player.x + _currentWorld.player.width > EditorUtils.WORLD_WITDH || _currentWorld.player.y + _currentWorld.player.height > EditorUtils.WORLD_HEIGHT) {
+				_currentWorld.player.showWarning();
+			}else if (_currentWorld.player.isShowedWarning) {
+				_currentWorld.player.hideWarning();
 			}
 		}
 		

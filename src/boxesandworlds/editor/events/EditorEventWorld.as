@@ -14,18 +14,18 @@ package boxesandworlds.editor.events {
 		
 		// vars
 		private var _id:int;
-		private var _addId:int;// нужен для того, чтобы понять какой мир автоматически выбран следующим после удаления предыдущего
+		private var _nextId:int;// нужен для того, чтобы понять какой мир автоматически выбран следующим после удаления предыдущего
 		
-		public function EditorEventWorld(type:String, id:int, addId:int = -1, bubbles:Boolean = false, cancelable:Boolean = false) {
+		public function EditorEventWorld(type:String, id:int, nextId:int = -1, bubbles:Boolean = false, cancelable:Boolean = false) {
 			_id = id;
-			_addId = addId;
+			_nextId = nextId;
 			super(type, bubbles, cancelable);
 		}
 		
 		// get
 		public function get id():int { return _id; }
 		
-		public function get addId():int { return _addId; }
+		public function get nextId():int { return _nextId; }
 		
 	}
 

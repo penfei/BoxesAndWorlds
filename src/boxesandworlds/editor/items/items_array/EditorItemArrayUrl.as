@@ -51,6 +51,11 @@ package boxesandworlds.editor.items.items_array {
 		
 		public function set index(value:int):void { _index = value; }
 		
+		public function get index():int 
+		{
+			return _index;
+		}
+		
 		// public
 		public function changeUrl():void {
 			dispatchEvent(new EditorEventChangeViewItem(EditorEventChangeViewItem.CHANGE_VIEW, _ui.labelName.text, _index, null, true));
@@ -87,7 +92,6 @@ package boxesandworlds.editor.items.items_array {
 		}
 		
 		private function fileSelectedHandler(e:Event):void {
-			//_file.cancel();
 			_ui.labelName.text = _file.name;
 			_fileData = new UploadFile(_file);
 			_fileData.addEventListener(Event.COMPLETE, contentLoadedHandler);

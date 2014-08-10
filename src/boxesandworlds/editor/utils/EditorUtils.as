@@ -1,4 +1,5 @@
 package boxesandworlds.editor.utils {
+	import boxesandworlds.data.ObjectsLibrary;
 	import boxesandworlds.editor.data.items.EditorAttributeData;
 	import boxesandworlds.editor.data.items.EditorItemData;
 	import boxesandworlds.game.data.Attribute;
@@ -31,6 +32,12 @@ package boxesandworlds.editor.utils {
 			return realName;
 		}
 		
+		static public function getItemNameFromClass(className:String):String {
+			var array:Array = className.split(" ");
+			var result:String = array[1];
+			return result.substring(0, result.length - 5);
+		}
+		
 		static public function cutSideSpaces(str:String):String {
 			var index:int = -1;
 			for (var i:int = 0, len:uint = str.length; i < len; ++i) {
@@ -51,32 +58,56 @@ package boxesandworlds.editor.utils {
 		}
 		
 		static public function createAttributesFromXML(itemData:EditorItemData):Vector.<Attribute> {
+			var indexClass:uint;
+			for (var j:uint = 0, lenj:uint = ObjectsLibrary.objectDatas.length; j < lenj; ++j) {
+				if (itemData.itemName == getItemNameFromClass(String(ObjectsLibrary.objectDatas[j]))) {
+					indexClass = j;
+				}
+			}
+			var attributesOriginal:Vector.<Attribute> = ObjectsLibrary.objectDatas[indexClass].attributes();
+			
 			var attributesData:Vector.<EditorAttributeData> = itemData.attributesData;
-			var len:uint = attributesData.length;
 			var attributes:Vector.<Attribute> = new Vector.<Attribute>();
-			attributes.length = len;
-			for (var i:uint = 0; i < len; ++i) {
-				var attributeName:String = attributesData[i].attributeName;
-				var type:String = attributesData[i].type;
-				var isEnum:Boolean = attributesData[i].isEnum;
-				var isArray:Boolean = attributesData[i].isArray;
-				var value:*;
-				if (type == Attribute.VEC2 && !isArray) {
-					value = new Vec2(Number(attributesData[i].valueX), Number(attributesData[i].valueY));
-				}else {
-					if (isArray) {
-						value = attributesData[i].valuesArray;
-					}else {
-						value = attributesData[i].value;
+			for (var i:uint = 0; i < attributesOriginal.length; ++i) {
+				if (!attributesOriginal[i].redactorAction) {
+					continue;
+				}
+				var originalName:String = attributesOriginal[i].name;
+				var isExist:Boolean = false;
+				var indexExist:int;
+				for (var g:int = 0, leng:uint = attributesData.length; g < leng; ++g) {
+					if (attributesData[g].attributeName == originalName) {
+						isExist = true;
+						indexExist = g;
+						break;
 					}
 				}
-				var valuesEnum:Array;
-				if (isEnum) {
-					valuesEnum = attributesData[i].valuesEnum;
-				}
 				
-				var attribute:Attribute = new Attribute(attributeName, value, type, 1, isEnum, valuesEnum, isArray);
-				attributes[i] = attribute;
+				if (isExist) {
+					var attributeName:String = attributesData[indexExist].attributeName;
+					var type:String = attributesData[indexExist].type;
+					var isEnum:Boolean = attributesData[indexExist].isEnum;
+					var isArray:Boolean = attributesData[indexExist].isArray;
+					var value:*;
+					if (type == Attribute.VEC2 && !isArray) {
+						value = new Vec2(Number(attributesData[indexExist].valueX), Number(attributesData[indexExist].valueY));
+					}else {
+						if (isArray) {
+							value = attributesData[indexExist].valuesArray;
+						}else {
+							value = attributesData[indexExist].value;
+						}
+					}
+					var valuesEnum:Array;
+					if (isEnum) {
+						valuesEnum = attributesData[indexExist].valuesEnum;
+					}
+					
+					var attribute:Attribute = new Attribute(attributeName, value, type, 1, isEnum, valuesEnum, isArray);
+					attributes.push(attribute);
+				}else {
+					attributes.push(attributesOriginal[i]);
+				}
 			}
 			return attributes;
 		}

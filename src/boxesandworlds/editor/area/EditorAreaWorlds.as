@@ -1,6 +1,7 @@
 package boxesandworlds.editor.area {
 	import boxesandworlds.controller.Core;
 	import boxesandworlds.editor.controls.EditorVerticalScroller;
+	import boxesandworlds.editor.data.items.EditorWorldData;
 	import boxesandworlds.editor.events.EditorEventWorld;
 	import boxesandworlds.editor.items.EditorWorldPreview;
 	import editor.EditorScrollWorldsUI;
@@ -29,6 +30,21 @@ package boxesandworlds.editor.area {
 			_btnRemoveWorld = btnRemoveWorld;
 			_btnSortWorlds = btnSortWorlds;
 			setup();
+		}
+		
+		// public
+		public function setupDataFromXML(worldsData:Vector.<EditorWorldData>):void {
+			while(_worlds.length > 0) {
+				doRemoveWorld();
+			}
+			for (var i:uint = 0, len:uint = worldsData.length; i < len; ++i) {
+				doAddWorld(int(worldsData[i].id));
+			}
+			if (_currentWorld != null) {
+				_currentWorld.setupSelect(false);
+			}
+			_currentWorld = _worlds[0];
+			_currentWorld.setupSelect(true);
 		}
 		
 		// protected
@@ -64,8 +80,8 @@ package boxesandworlds.editor.area {
 			}
 		}
 		
-		protected function addWorld():int {
-			var id:int = getFreeId();
+		protected function addWorld(worldId:int = -1):int {
+			var id:int = (worldId == -1 ? getFreeId() : worldId);
 			var world:EditorWorldPreview = new EditorWorldPreview(id);
 			world.buttonMode = true;
 			world.addEventListener(MouseEvent.MOUSE_DOWN, worldDownHandler);
@@ -106,9 +122,8 @@ package boxesandworlds.editor.area {
 			return 1;
 		}
 		
-		// handlers
-		private function btnAddWorldClickHandler(e:MouseEvent):void {
-			var id:int = addWorld();
+		protected function doAddWorld(worldId:int = -1):void {
+			var id:int = addWorld(worldId);
 			var content:Sprite = new Sprite();
 			setupPositionsWorlds(content);
 			_scroll.replaceContent(content);
@@ -117,27 +132,38 @@ package boxesandworlds.editor.area {
 			dispatchEvent(new EditorEventWorld(EditorEventWorld.ADD_WORLD, id));
 		}
 		
-		private function btnRemoveWorldClickHandler(e:MouseEvent):void {
-			if (_currentWorld != null && _worlds.length > 1) {
-				var idRemove:int = _currentWorld.id;
-				for (var i:uint = 0, len:uint = _worlds.length; i < len; ++i) {
-					if (_currentWorld == _worlds[i]) {
-						_worlds.splice(i, 1);
-						_currentWorld.parent.removeChild(_currentWorld);
-						_currentWorld.destroy();
+		protected function doRemoveWorld():void {
+			var idRemove:int = _currentWorld.id;
+			for (var i:uint = 0, len:uint = _worlds.length; i < len; ++i) {
+				if (_currentWorld == _worlds[i]) {
+					_worlds.splice(i, 1);
+					_currentWorld.parent.removeChild(_currentWorld);
+					_currentWorld.destroy();
+					if (_worlds.length > 0) {
 						if (i < len - 1) {
 							_currentWorld = _worlds[i];
 						}else {
 							_currentWorld = _worlds[i - 1];
 						}
 						_currentWorld.setupSelect(true);
-						break;
 					}
+					break;
 				}
-				var content:Sprite = new Sprite();
-				setupPositionsWorlds(content);
-				_scroll.replaceContent(content);
-				dispatchEvent(new EditorEventWorld(EditorEventWorld.REMOVE_WORLD, idRemove, _currentWorld.id));
+			}
+			var content:Sprite = new Sprite();
+			setupPositionsWorlds(content);
+			_scroll.replaceContent(content);
+			dispatchEvent(new EditorEventWorld(EditorEventWorld.REMOVE_WORLD, idRemove, _currentWorld.id));
+		}
+		
+		// handlers
+		private function btnAddWorldClickHandler(e:MouseEvent):void {
+			doAddWorld();
+		}
+		
+		private function btnRemoveWorldClickHandler(e:MouseEvent):void {
+			if (_currentWorld != null && _worlds.length > 1) {
+				doRemoveWorld();
 			}
 		}
 		

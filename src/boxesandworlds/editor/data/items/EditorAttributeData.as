@@ -17,9 +17,9 @@ package boxesandworlds.editor.data.items {
 		
 		/* if(_isArray == true) */
 		private var _valuesArray:Vector.<String>;
-		/* if(_isArray == false && _attributeName == start) */
-		private var _value:String;
 		/* if(_isArray == false && _attributeName != start) */
+		private var _value:String;
+		/* if(_isArray == false && _attributeName == start) */
 		private var _valueX:String;
 		private var _valueY:String;
 		
