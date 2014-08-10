@@ -101,7 +101,7 @@ package boxesandworlds.gui.page {
 			_ui.player.addEventListener(MouseEvent.MOUSE_DOWN, playerDownHandler);
 			_ui.player.addEventListener(MouseEvent.ROLL_OVER, playerOverHandler);
 			_ui.player.addEventListener(MouseEvent.ROLL_OUT, playerOutHandler);
-			_isSetupPlayer = false;
+			enablePlayer();
 			
 			Core.stage.addEventListener(MouseEvent.CLICK, stageClickHandler);
 			
@@ -124,6 +124,11 @@ package boxesandworlds.gui.page {
 		public function hideAttributes():void {
 			_areaAttributes.hideAttributes();
 			_areaWorld.unselectItem();
+		}
+		
+		public function disablePlayer():void {
+			_ui.player.mc.alpha = 0;
+			_isSetupPlayer = true;
 		}
 		
 		/* функция для калькулятора Бори */
@@ -158,6 +163,11 @@ package boxesandworlds.gui.page {
 			fr.save(ba, EditorUtils.XML_NAME);
 		}
 		
+		protected function enablePlayer():void {
+			_ui.player.mc.alpha = 1;
+			_isSetupPlayer = false;
+		}
+		
 		// handlers
 		private function btnLoadClickHandler(e:MouseEvent):void {
 			if (_xmlLoader == null) {
@@ -172,6 +182,7 @@ package boxesandworlds.gui.page {
 			
 			var levelData:EditorLevelData = _xmlLoader.levelData;
 			_areaScript.levelScript = levelData.levelScriptData.levelScriptName;
+			_areaWorlds.setupDataFromXML(levelData.worldsData);
 			_areaWorld.setupDataFromXML(levelData.playerData, levelData.worldsData);
 		}
 		
@@ -228,13 +239,11 @@ package boxesandworlds.gui.page {
 			_areaAttributes.hideAttributes();
 			_areaWorld.unselectItem();
 			_areaWorld.addPlayer();
-			_ui.player.mc.alpha = 0;
-			_isSetupPlayer = true;
+			disablePlayer();
 		}
 		
 		private function playerNotSetupHandler(e:EditorEventPlayer):void {
-			_ui.player.mc.alpha = 1;
-			_isSetupPlayer = false;
+			enablePlayer();
 		}
 		
 		private function playerOverHandler(e:MouseEvent):void {

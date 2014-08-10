@@ -193,9 +193,20 @@ package boxesandworlds.editor.area {
 			_worlds = new Vector.<EditorWorld>();
 			_worlds.length = len;
 			for (var i:int = 0; i < len; ++i) {
-				var world:EditorWorld = new EditorWorld(i, _editorPage, this);
+				var world:EditorWorld = new EditorWorld(int(worldsData[i].id), _editorPage, this);
+				world.addEventListener(EditorPlayer.ADD_PLAYER, playerAddedHandler);
 				world.setupDataFromXML(worldsData[i]);
 				_worlds[i] = world;
+				for (var j:uint = 0, lenj:uint = world.items.length; j < lenj; ++j) {
+					world.items[j].addEventListener(EditorEventUpdateViewItem.UPDATE_VIEW, updateViewItemHandler);
+					world.items[j].addEventListener(EditorEventUpdateContainerItem.UPDATE_CONTAINER, updateContainerItemHandler);
+				}
+				_currentWorld = world;
+				if (playerData.playerWorldId != "" && int(playerData.playerWorldId) == world.id) {
+					world.addPlayer(false, false, Number(playerData.playerPositionX), Number(playerData.playerPositionY));
+					doAddPlayer(world.player);
+					_editorPage.disablePlayer();
+				}
 			}
 			_currentWorld = _worlds[0];
 			addChildItems(_currentWorld);
@@ -228,7 +239,9 @@ package boxesandworlds.editor.area {
 			_canvasTop.addChild(item.viewDefault);
 			for (var i:uint = 0, len:uint = item.views.length; i < len; ++i) {
 				var view:EditorItemView = item.views[i];
-				_layers[view.containerId].addChild(view);
+				if (view != null) {
+					_layers[view.containerId].addChild(view);
+				}
 			}
 		}
 		
@@ -236,7 +249,7 @@ package boxesandworlds.editor.area {
 			var xml:String = "<player";
 			for (var i:uint = 0, len:uint = _worlds.length; i < len; ++i) {
 				if (_worlds[i].player != null) {
-					xml += " worldId='" + String(_worlds[i].id + 1) + "' x='" + String(_worlds[i].player.x) + "' y='" + String(_worlds[i].player.y) + "'";
+					xml += " worldId='" + String(_worlds[i].id) + "' x='" + String(_worlds[i].player.x) + "' y='" + String(_worlds[i].player.y) + "'";
 					break;
 				}
 			}
@@ -290,6 +303,10 @@ package boxesandworlds.editor.area {
 			updateItemViewsPositionsHandler();
 		}
 		
+		protected function doAddPlayer(player:EditorPlayer):void {
+			_canvasTop.addChild(player);
+		}
+		
 		// handlers
 		private function itemUpHandler(e:MouseEvent):void {
 			Core.stage.removeEventListener(MouseEvent.MOUSE_UP, itemUpHandler);
@@ -339,7 +356,7 @@ package boxesandworlds.editor.area {
 		}
 		
 		private function playerAddedHandler(e:Event):void {
-			_canvasTop.addChild(_currentWorld.player);
+			doAddPlayer(_currentWorld.player);
 		}
 		
 		private function playerUpHandler(e:MouseEvent):void {

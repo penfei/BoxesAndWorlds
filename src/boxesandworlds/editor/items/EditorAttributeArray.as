@@ -9,6 +9,7 @@ package boxesandworlds.editor.items {
 	import boxesandworlds.editor.items.items_array.EditorItemArrayVec2;
 	import boxesandworlds.editor.utils.EditorUtils;
 	import boxesandworlds.game.data.Attribute;
+	import com.greensock.TweenMax;
 	import editor.EditorAttributeArrayUI;
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -104,7 +105,6 @@ package boxesandworlds.editor.items {
 		
 		// protected
 		protected function setup():void {
-			var len:uint = _value.length;
 			_ui = new EditorAttributeArrayUI;
 			addChild(_ui);
 			_ui.addEventListener(ATTRIBUTE_ARRAY_ADD_ITEM, addItemHandler);
@@ -115,6 +115,7 @@ package boxesandworlds.editor.items {
 				}
 			}
 			
+			var len:uint = _value.length;
 			_values = new Vector.<EditorItemArray>();
 			_values.length = len;
 			for (var i:int = 0; i < len; ++i) {
@@ -129,15 +130,6 @@ package boxesandworlds.editor.items {
 			}
 			
 			updateHeight();
-			
-			if (_nameAttribute == EditorAttribute.NAME_ATTRIBUTE_VIEWS) {
-				for (var k:uint = 0, lenk:uint = _values.length; k < lenk; ++k) {
-					var itemUrl:EditorItemArrayUrl = _values[k] as EditorItemArrayUrl;
-					if (itemUrl != null) {
-						itemUrl.changeUrl();
-					}
-				}
-			}
 		}
 		
 		protected function updateHeight():void {
@@ -162,7 +154,7 @@ package boxesandworlds.editor.items {
 					break;
 					
 				case Attribute.NUMBER:
-					item = new EditorItemArrayNumber(index == -1 ? EditorItemArrayNumber.DEFAULT_VALUE : String(_defaultValue[index]), _values.length);
+					item = new EditorItemArrayNumber(index == -1 ? EditorItemArrayNumber.DEFAULT_VALUE : String(_defaultValue[index]), index == - 1 ? _values.length : index);
 					break;
 					
 				case Attribute.STRING:
@@ -170,7 +162,7 @@ package boxesandworlds.editor.items {
 					break;
 					
 				case Attribute.URL:
-					item = new EditorItemArrayUrl(index == -1 ? EditorItemArrayUrl.DEFAULT_VALUE : String(_defaultValue[index]), _values.length);
+					item = new EditorItemArrayUrl(index == -1 ? EditorItemArrayUrl.DEFAULT_VALUE : String(_defaultValue[index]), index == - 1 ? _values.length : index);
 					break;
 					
 				case Attribute.VEC2:

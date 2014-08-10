@@ -125,7 +125,7 @@ package boxesandworlds.editor.items {
 						break;
 				}
 			}
-			if (_nameAttribute == "id") {
+			if (_nameAttribute == "id" || _nameAttribute == "start") {
 				isChanged = true;
 			}
 			return isChanged;
@@ -134,6 +134,8 @@ package boxesandworlds.editor.items {
 		public function get sizeArray():int { return (_ui as EditorAttributeArray).size; }
 		
 		public function get ui():MovieClip { return _ui; }
+		
+		public function get value():* { return _value; }
 		
 		// public
 		public function destroy():void {
@@ -196,6 +198,7 @@ package boxesandworlds.editor.items {
 						_ui.labelName.text = _nameAttribute;
 						_ui.mcValue.buttonMode = true;
 						_ui.mcValue.addEventListener(MouseEvent.CLICK, mcValueBoolClickHandler);
+						_value = String(_value) == "true" ? true : false;
 						_ui.mcValue.mcCheck.visible = _value;
 						break;
 						

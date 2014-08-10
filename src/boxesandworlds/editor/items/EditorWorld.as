@@ -6,6 +6,7 @@ package boxesandworlds.editor.items {
 	import boxesandworlds.editor.utils.EditorUtils;
 	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.gui.page.EditorPage;
+	import com.greensock.TweenMax;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
@@ -71,8 +72,8 @@ package boxesandworlds.editor.items {
 			return item;
 		}
 		
-		public function addPlayer():void {
-			setupMoveblePlayer();
+		public function addPlayer(isDrag:Boolean = true, isDefaultPositions:Boolean = true, posX:Number = 0, posY:Number = 0):void {
+			setupMoveblePlayer(isDrag, isDefaultPositions, posX, posY);
 		}
 		
 		public function removePlayer():void {
@@ -125,14 +126,16 @@ package boxesandworlds.editor.items {
 			_id = int(worldData.id);
 			var len:uint = worldData.itemsData.length;
 			_items.length = len;
-			for (var i:uint = 0; i < len; ++i) {
+			for (var i:int = 0; i < len; ++i) {
 				var attributes:Vector.<Attribute> = EditorUtils.createAttributesFromXML(worldData.itemsData[i]);
-				
-				var item:EditorItem = new EditorItem(0, i, attributes);
-				item.setupPosition(0, 0);
+				var item:EditorItem = new EditorItem(int(worldData.itemsData[i].uniqueId), i, attributes);
+				item.loadViews();
+				var startPosition:Vec2 = item.startPosition as Vec2;
+				if (startPosition != null) {
+					item.setupPosition(startPosition.x + EditorUtils.WORLD_WITDH / 2, startPosition.y + EditorUtils.WORLD_HEIGHT / 2);
+				}
 				_items[i] = item;
 			}
-			
 			enableMoveItems();
 		}
 		
@@ -177,16 +180,23 @@ package boxesandworlds.editor.items {
 			Core.stage.addEventListener(MouseEvent.MOUSE_UP, savePositionStartInAttributeHandler);
 		}
 		
-		protected function setupMoveblePlayer():void {
+		protected function setupMoveblePlayer(isDrag:Boolean = true, isDefaultPositions:Boolean = true, posX:Number = 0, posY:Number = 0):void {
 			if (_player == null) {
 				_player = new EditorPlayer();
-				_player.x = Core.stage.mouseX - _player.width / 2;
-				_player.y = Core.stage.mouseY - _player.height / 2;
+				if (isDefaultPositions) {
+					_player.x = Core.stage.mouseX - _player.width / 2;
+					_player.y = Core.stage.mouseY - _player.height / 2;
+				}else {
+					_player.x = posX;
+					_player.y = posY;
+				}
 				_player.buttonMode = true;
 				_player.addEventListener(MouseEvent.MOUSE_DOWN, playerDownHandler);
 				dispatchEvent(new Event(EditorPlayer.ADD_PLAYER));
 			}
-			_player.startDrag(false, new Rectangle(0, 0, Core.stage.stageWidth - _player.width, Core.stage.stageHeight - _player.height));
+			if (isDrag) {
+				_player.startDrag(false, new Rectangle(0, 0, Core.stage.stageWidth - _player.width, Core.stage.stageHeight - _player.height));
+			}
 		}
 		
 		protected function disableMoveItems():void {

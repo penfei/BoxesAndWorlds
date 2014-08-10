@@ -18,6 +18,10 @@ package boxesandworlds.editor.data.items {
 		}
 		
 		// get
+		public function get itemName():String { return _itemName; }
+		
+		public function get uniqueId():String { return _uniqueId; }
+		
 		public function get attributesData():Vector.<EditorAttributeData> { return _attributesData; }
 		
 		// protected

@@ -13,6 +13,7 @@ package boxesandworlds.editor.items {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import nape.geom.Vec2;
 	
 	/**
 	 * ...
@@ -36,7 +37,7 @@ package boxesandworlds.editor.items {
 		private var _index:int;
 		private var _isShowedWarning:Boolean;
 		private var _isSelectable:Boolean;
-		private var _indexOfAttributeViews:int;
+		private var _indexOfAttributeViews:int = -1;
 		private var _indexOfAttributeContainers:int;
 		
 		public function EditorItem(uniqueId:int, index:int, attributes:Vector.<Attribute>) {
@@ -53,11 +54,13 @@ package boxesandworlds.editor.items {
 			var maxWidth:Number = 0;
 			var isExistRealWidth:Boolean = false;
 			for (var i:uint = 0, len:uint = _views.length; i < len; ++i) {
-				if (_views[i].width > maxWidth) {
-					maxWidth = _views[i].width;
-				}
-				if (_views[i].width > 0) {
-					isExistRealWidth = true;
+				if (_views[i] != null) {
+					if (_views[i].width > maxWidth) {
+						maxWidth = _views[i].width;
+					}
+					if (_views[i].width > 0) {
+						isExistRealWidth = true;
+					}
 				}
 			}
 			if (isExistRealWidth) {
@@ -74,11 +77,13 @@ package boxesandworlds.editor.items {
 			var maxHeight:Number = 0;
 			var isExistRealHeight:Boolean = false;
 			for (var i:uint = 0, len:uint = _views.length; i < len; ++i) {
-				if (_views[i].height > maxHeight) {
-					maxHeight = _views[i].height;
-				}
-				if (_views[i].height > 0) {
-					isExistRealHeight = true;
+				if (_views[i] != null) {
+					if (_views[i].height > maxHeight) {
+						maxHeight = _views[i].height;
+					}
+					if (_views[i].height > 0) {
+						isExistRealHeight = true;
+					}
 				}
 			}
 			if (isExistRealHeight) {
@@ -101,6 +106,15 @@ package boxesandworlds.editor.items {
 		public function get views():Vector.<EditorItemView> { return _views; }
 		
 		public function get viewDefault():EditorItemViewDefault { return _viewDefault; }
+		
+		public function get startPosition():Vec2 {
+			for (var i:uint = 0, len:uint = _mcAttributes.length; i < len; ++i) {
+				if (_mcAttributes[i].nameAttribute == "start") {
+					return _mcAttributes[i].value;
+				}
+			}
+			return null;
+		}
 		
 		// public
 		public function destroy():void {
@@ -160,11 +174,13 @@ package boxesandworlds.editor.items {
 				_viewDefault.y = valueY;
 			}
 			for (var i:uint = 0, len:uint = _views.length; i < len; ++i) {
-				if (isValueX) {
-					_views[i].x = valueX;
-				}
-				if (isValueY) {
-					_views[i].y = valueY;
+				if (_views[i] != null) {
+					if (isValueX) {
+						_views[i].x = valueX;
+					}
+					if (isValueY) {
+						_views[i].y = valueY;
+					}
 				}
 			}
 		}
@@ -180,8 +196,23 @@ package boxesandworlds.editor.items {
 			}
 		}
 		
-		public function setupDataFromXML(itemData:EditorItemData):void {
-			
+		public function loadViews():void {
+			for (var i:uint = 0, len:uint = _views.length; i < len; ++i) {
+				var itemView:EditorItemView = new EditorItemView();
+				itemView.addEventListener(EditorItemView.UPDATE_ITEM_SIZE, updateItemSizeHandler);
+				_views[i] = itemView;
+			}
+			if (_indexOfAttributeViews != -1) {
+				var attributeArray:EditorAttributeArray = _mcAttributes[_indexOfAttributeViews].ui as EditorAttributeArray;
+				if (attributeArray != null) {
+					for (var j:uint = 0, lenj:uint = attributeArray.values.length; j < lenj; ++j) {
+						var item:EditorItemArrayUrl = attributeArray.values[j] as EditorItemArrayUrl;
+						if (item != null) {
+							item.changeUrl();
+						}
+					}
+				}
+			}
 		}
 		
 		// protected
@@ -280,12 +311,16 @@ package boxesandworlds.editor.items {
 			}
 		}
 		
-		// handlers
-		private function addFieldViewItemHandler(e:EditorEventChangeViewItem):void {
+		protected function doAddFieldViewItem():void {
 			_mcAttributes[_indexOfAttributeContainers].addFieldArray();
 			var itemView:EditorItemView = new EditorItemView();
 			itemView.addEventListener(EditorItemView.UPDATE_ITEM_SIZE, updateItemSizeHandler);
 			_views.push(itemView);
+		}
+		
+		// handlers
+		private function addFieldViewItemHandler(e:EditorEventChangeViewItem):void {
+			doAddFieldViewItem();
 		}
 		
 		private function removeFieldViewItemHandler(e:EditorEventChangeViewItem):void {
