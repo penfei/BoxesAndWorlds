@@ -4,9 +4,9 @@
   <world id="1">
     <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="1"/>
-	  <physicsBitmap type="URL" value="TestLevel4.png"/>
+	  <physicsBitmap type="URL" value="TestLevel.png"/>
       <views attributeName="viewURLs" type="URL" isArray="true">
-        <value>TestLevel4View.png</value>
+        <value>TestLevelView.png</value>
       </views>
       <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
         <value>0</value>
@@ -20,7 +20,7 @@
 	 <TeleportBox itemName="TeleportBox">
 		<teleportId attributeName="teleportId" type="NUMBER" value="4"/>
       <id attributeName="id" type="NUMBER" value="3"/>
-      <start attributeName="start" type="VEC2" x="100" y="0"/>
+      <start attributeName="start" type="VEC2" x="200" y="0"/>
 	</TeleportBox>
   </world>
   <world id="2">

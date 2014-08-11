@@ -37,7 +37,11 @@ package boxesandworlds.game.world
 		public function get worldBox():WorldBox {return _worldBox;}
 		public function set worldBox(value:WorldBox):void {_worldBox = value;}
 		public function get worldBody():Body {return _worldBody;}
-		public function get structure():WorldStructure {return _structure;}
+		public function get structure():WorldStructure { return _structure; }
+		public function get visible():Boolean {
+			if (_game.objects.me.world == null) return false;
+			return data.id == _game.objects.me.world.data.id;
+		}
 		
 		public function init(params:Object):void 
 		{
@@ -86,15 +90,22 @@ package boxesandworlds.game.world
 		
 		public function addPlayer(player:Player):void {
 			addGameObject(player);
+			for each(var obj:GameObject in _objects) {
+				obj.checkWorldVisible();
+			}
 		}
 		
 		public function removePlayer(player:Player):void {
 			removeGameObject(player);
+			for each(var obj:GameObject in _objects) {
+				obj.checkWorldVisible();
+			}
 		}
 		
 		public function addGameObject(obj:GameObject):void {
 			obj.world = this;
 			_objects.push(obj);
+			obj.checkWorldVisible();
 		}
 		
 		public function removeGameObject(obj:GameObject):void 
@@ -103,6 +114,7 @@ package boxesandworlds.game.world
 				if (obj == _objects[i]) {
 					obj.world = null;
 					_objects.splice(i, 1);
+					obj.checkWorldVisible();
 				}
 			}
 		}

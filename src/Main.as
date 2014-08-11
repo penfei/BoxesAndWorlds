@@ -35,7 +35,7 @@ package {
 		public function init(params:Object):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			SWFProfiler.init(stage, this);
+			//SWFProfiler.init(stage, this);
 			
 			initCore(params);
 		}

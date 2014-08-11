@@ -16,6 +16,7 @@ package boxesandworlds.game.levels.tutorial
 	 */
 	public class TutorialLevel extends Level
 	{
+		private var _lines:Lines;
 		public function TutorialLevel(game:Game) 
 		{
 			super(game);
@@ -38,6 +39,8 @@ package boxesandworlds.game.levels.tutorial
 		override public function init():void {
 			super.init();
 			
+			_lines = new Lines();
+			game.gui.canvas.addChildAt(_lines, 0);
 			//game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, game.physics.buttonType, game.physics.movableType, buttonContactHandler));
 		}
 		
@@ -47,7 +50,7 @@ package boxesandworlds.game.levels.tutorial
 		}
 		
 		override public function destroy():void {
-			
+			_lines.destroy();
 		}
 		
 		override public function gameOver():void 

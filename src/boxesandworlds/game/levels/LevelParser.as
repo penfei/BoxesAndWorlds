@@ -62,14 +62,11 @@ package boxesandworlds.game.levels
 								else params[par.name()] = par.@value;
 							}
 						}
-							
+						params.start = Vec2.weak(world.data.axis.x + params.start.x, world.data.axis.y + params.start.y); 
+						object.init(params);	
 						if (object is WorldStructure) {
-							params.start = Vec2.weak(world.data.axis.x - world.data.width / 2, world.data.axis.y - world.data.height / 2);
-							object.init(params);
 							world.addStructureToWorld(object as WorldStructure);
 						} else {
-							params.start = Vec2.weak(world.data.axis.x + params.start.x, world.data.axis.y + params.start.y); 
-							object.init(params);
 							world.addGameObject(object);
 						}
 					}

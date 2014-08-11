@@ -9,6 +9,8 @@ package boxesandworlds.game.objects.player
 	import boxesandworlds.game.objects.items.key.Key;
 	import flash.utils.setTimeout;
 	import nape.geom.AABB;
+	import nape.geom.Ray;
+	import nape.geom.RayResult;
 	import nape.geom.Vec2;
 	import nape.phys.BodyList;
 	/**
@@ -26,6 +28,9 @@ package boxesandworlds.game.objects.player
 		private var _itemArea:AABB;
 		private var _potencialTeleportTarget:GameObject;
 		private var _bodyListInItemArea:BodyList;
+		
+		private var _ray:Ray;
+		private var _result:RayResult;
 		
 		public function Player(game:Game) 
 		{
@@ -246,6 +251,10 @@ package boxesandworlds.game.objects.player
 				_potencialTelekinesisItem = game.gui.getItemUnderPoint();
 			} else {
 				_telekinesisItem.telekinesis();
+				_ray = Ray.fromSegment(_telekinesisItem.body.position, body.position);
+				_result = game.physics.world.rayCast(_ray);
+				if (_result == null) removeTelekinesisItem();
+				else if (_result.shape.body.userData.obj != this) removeTelekinesisItem();
 			}
 		}
 		

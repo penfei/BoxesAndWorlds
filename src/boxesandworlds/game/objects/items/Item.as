@@ -4,6 +4,9 @@ package boxesandworlds.game.objects.items
 	import boxesandworlds.game.objects.enters.Enter;
 	import boxesandworlds.game.objects.GameObject;
 	import nape.constraint.PivotJoint;
+	import nape.dynamics.InteractionFilter;
+	import nape.geom.Ray;
+	import nape.geom.RayResult;
 	import nape.geom.Vec2;
 	import nape.phys.BodyType;
 	/**
@@ -16,6 +19,10 @@ package boxesandworlds.game.objects.items
 		private var _properties:ItemData;
 		
 		private var _handJoint:PivotJoint;
+		
+		private var _ray:Ray;
+		private var _result:RayResult;
+		private var _filter:InteractionFilter;
 		
 		public function Item(game:Game) 
 		{
@@ -31,6 +38,7 @@ package boxesandworlds.game.objects.items
 			_handJoint.stiff = false;
 			
 			if (_properties.bodyType == BodyType.STATIC) _properties.canAdded = false;
+			_filter = new InteractionFilter(1, body.shapes.at(0).filter.collisionMask);
 		}
 		
 		override public function step():void 
@@ -39,7 +47,7 @@ package boxesandworlds.game.objects.items
 			
 			if (!world.worldBody.contains(body.position)) {
 				teleportWithEnter();
-			}	
+			}
 		}
 		
 		private function teleportWithEnter():void 

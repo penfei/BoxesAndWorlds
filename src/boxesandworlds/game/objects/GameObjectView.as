@@ -29,7 +29,6 @@ package boxesandworlds.game.objects
 			len = obj.data.views.length;
 			for (index = 0; index < len; index++) {
 				views.push(obj.data.views[index] as DisplayObject);
-				game.gui.layers[obj.data.containerIds[index]].addChild(views[index]);
 			}
 		}
 		
@@ -38,6 +37,13 @@ package boxesandworlds.game.objects
 				views[index].x = dx;
 				views[index].y = dy;
 				views[index].rotation = rotation;
+			}
+		}
+		
+		public function checkWorldVisible():void {
+			for (index = 0; index < len; index++) {
+				if (obj.visible && views[index].parent == null) game.gui.layers[obj.data.containerIds[index]].addChild(views[index]);
+				if (!obj.visible && views[index].parent != null) game.gui.layers[obj.data.containerIds[index]].removeChild(views[index]);
 			}
 		}
 		

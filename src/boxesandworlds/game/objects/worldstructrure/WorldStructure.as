@@ -45,7 +45,7 @@ package boxesandworlds.game.objects.worldstructrure
 			var iso:BitmapDataIso = new BitmapDataIso(_properties.physicsBitmap.bitmapData, 0x80);
 			
 			body = new Body(_properties.bodyType, _properties.start);
-			
+			body.userData.obj = this;
 			var polys:GeomPolyList = MarchingSquares.run(iso, iso.bounds, _properties.granularity, _properties.quality);
 			for (var i:int = 0; i < polys.length; i++) {
 				var p:GeomPoly = polys.at(i);

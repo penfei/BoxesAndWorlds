@@ -49,7 +49,11 @@ package boxesandworlds.game.objects
 		public function get target():GameObject {return _teleportTarget;}
 		public function set target(value:GameObject):void { _teleportTarget = value; }
 		public function get world():World {return _world;}
-		public function set world(value:World):void {_world = value;}
+		public function set world(value:World):void { _world = value; }
+		public function get visible():Boolean {
+			if (_world == null) return false;
+			return _world.visible;
+		}
 		
 		public function init(params:Object = null):void {
 			initPhysics();
@@ -168,6 +172,10 @@ package boxesandworlds.game.objects
 					}
 				}
 			}
+		}
+		
+		public function checkWorldVisible():void {
+			_view.checkWorldVisible();
 		}
 		
 		public function isOnEarth():Boolean {
