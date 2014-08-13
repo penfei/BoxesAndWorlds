@@ -17,6 +17,7 @@ package boxesandworlds.editor.area {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	/**
@@ -168,8 +169,9 @@ package boxesandworlds.editor.area {
 		public function setupMovebleItem(item:EditorItem, isAdd:Boolean = false):void {
 			_currentItem = item;
 			_currentWorld.currentItem = item;
+			
 			if (isAdd) {
-				_currentItem.setupPosition(Core.stage.mouseX - _currentItem.width / 2, Core.stage.mouseY - _currentItem.height / 2);
+				_currentItem.setupPosition(Core.stage.mouseX - _currentItem.width / 2 - _editorPage.containerWorld.x, Core.stage.mouseY - _currentItem.height / 2 - _editorPage.containerWorld.y);
 			}
 			startDragCurrentItem();
 			_currentWorld.setupSelectableItem(_currentItem);
@@ -293,7 +295,8 @@ package boxesandworlds.editor.area {
 		}
 		
 		protected function startDragCurrentItem():void {
-			_currentItem.viewDefault.startDrag(false, new Rectangle(0, 0, Core.stage.stageWidth - _currentItem.width, Core.stage.stageHeight - _currentItem.height));
+			//_currentItem.viewDefault.startDrag(false, new Rectangle(0, 0, Core.stage.stageWidth - _currentItem.width, Core.stage.stageHeight - _currentItem.height));
+			_currentItem.viewDefault.startDrag(false);
 			addEventListener(Event.ENTER_FRAME, updateItemViewsPositionsHandler);
 		}
 		
@@ -327,7 +330,13 @@ package boxesandworlds.editor.area {
 		}
 		
 		private function enterFrameMoveItemHandler(e:Event):void {
-			if (_currentItem.viewDefault.x < 0 || _currentItem.viewDefault.y < 0 || _currentItem.viewDefault.x + _currentItem.width > EditorUtils.WORLD_WITDH || _currentItem.viewDefault.y + _currentItem.height > EditorUtils.WORLD_HEIGHT) {
+			//if (_currentItem.viewDefault.x < 0 || _currentItem.viewDefault.y < 0 || _currentItem.viewDefault.x + _currentItem.width > EditorUtils.WORLD_WITDH || _currentItem.viewDefault.y + _currentItem.height > EditorUtils.WORLD_HEIGHT) {
+				//_currentItem.showWarning();
+			//}else if (_currentItem.isShowedWarning) {
+				//_currentItem.hideWarning();
+			//}
+			var p:Point = localToGlobal(new Point(_currentItem.viewDefault.x, _currentItem.viewDefault.y));
+			if (p.x + _currentItem.width > EditorUtils.WORLD_WITDH) {
 				_currentItem.showWarning();
 			}else if (_currentItem.isShowedWarning) {
 				_currentItem.hideWarning();

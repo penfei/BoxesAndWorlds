@@ -30,6 +30,7 @@ package boxesandworlds.gui.page {
 	import com.greensock.easing.Linear;
 	import com.greensock.TweenMax;
 	import editor.EditorPageUI;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -85,7 +86,9 @@ package boxesandworlds.gui.page {
 			
 			_areaWorld = new EditorAreaWorld(this);
 			_areaWorld.addEventListener(EditorEventPlayer.PLAYER_NOT_SETUP, playerNotSetupHandler);
-			_ui.areaWorld.addChild(_areaWorld);
+			_ui.areaWorld.contWorld.addChild(_areaWorld);
+			_ui.areaWorld.bg.addEventListener(MouseEvent.MOUSE_DOWN, bgWorldDownHandler);
+			Core.stage.addEventListener(MouseEvent.MOUSE_UP, bgWorldUpHandler);
 			
 			_areaWorlds = new EditorAreaWorlds(_ui.btnAddWorld, _ui.btnRemoveWorld, _ui.btnSortWorlds);
 			_ui.areaWorlds.addChild(_areaWorlds);
@@ -114,7 +117,7 @@ package boxesandworlds.gui.page {
 			_areaScript.addEventListener(EditorAreaScript.EDITOR_CHANGED_SCRIPT, changedScriptHandler);
 			changedScriptHandler();
 			
-			setupTempPositions();
+			//setupTempPositions();
 		}
 		
 		public function showAttributes(item:EditorItem):void {
@@ -131,6 +134,10 @@ package boxesandworlds.gui.page {
 			_isSetupPlayer = true;
 		}
 		
+		public function get containerWorld():MovieClip {
+			return _ui.areaWorld.contWorld;
+		}
+		
 		/* функция для калькулятора Бори */
 		protected function setupTempPositions():void {
 			var step:int = 100;
@@ -141,15 +148,15 @@ package boxesandworlds.gui.page {
 		protected function showPopup():void {
 			_ui.mouseChildren = _ui.mouseEnabled = false;
 			_popup.alpha = 0;
-			_popup.y = _ui.y + (_ui.height - _popup.height) / 2 - 50;
+			_popup.y = (Core.stage.stageHeight - _popup.height) / 2 - 50;
 			_popup.mouseChildren = _popup.mouseEnabled = true;
-			TweenMax.to(_popup, .5, { y: _ui.y + (_ui.height - _popup.height) / 2, alpha:1, ease:Expo.easeOut } );
+			TweenMax.to(_popup, .5, { y: (Core.stage.stageHeight - _popup.height) / 2, alpha:1, ease:Expo.easeOut } );
 		}
 		
 		protected function hidePopup():void {
 			_ui.mouseChildren = _ui.mouseEnabled = true;
 			_popup.mouseChildren = _popup.mouseEnabled = false;
-			TweenMax.to(_popup, .4, { y: _ui.y + (_ui.height - _popup.height) / 2 + 50, alpha:0, ease:Linear.easeNone } );
+			TweenMax.to(_popup, .4, { y: (Core.stage.stageHeight - _popup.height) / 2 + 50, alpha:0, ease:Linear.easeNone } );
 		}
 		
 		protected function saveXML():void {
@@ -169,6 +176,15 @@ package boxesandworlds.gui.page {
 		}
 		
 		// handlers
+		private function bgWorldDownHandler(e:MouseEvent):void {
+			hideAttributes();
+			_ui.areaWorld.contWorld.startDrag();
+		}
+		
+		private function bgWorldUpHandler(e:MouseEvent):void {
+			_ui.areaWorld.contWorld.stopDrag();
+		}
+		
 		private function btnLoadClickHandler(e:MouseEvent):void {
 			if (_xmlLoader == null) {
 				_xmlLoader = new EditorXMLLoader();
@@ -184,6 +200,7 @@ package boxesandworlds.gui.page {
 			_areaScript.levelScript = levelData.levelScriptData.levelScriptName;
 			_areaWorlds.setupDataFromXML(levelData.worldsData);
 			_areaWorld.setupDataFromXML(levelData.playerData, levelData.worldsData);
+			_ui.areaWorld.contWorld.x = _ui.areaWorld.contWorld.y = 0;
 		}
 		
 		private function btnSaveClickHandler(e:MouseEvent):void {
