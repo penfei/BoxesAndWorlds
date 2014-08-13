@@ -50,18 +50,6 @@ package boxesandworlds.game.world
 			_objects = new Vector.<GameObject>;
 			
 			_connectWorldsHash = { };
-			
-			_worldBody = new Body(BodyType.STATIC, data.axis);
-			var shape:Shape = new Polygon(Polygon.box(data.width, data.height));
-			_worldBody.shapes.add(shape);
-			var p:Vec2 = _worldBody.position.copy();
-			_worldBody.align();
-			_worldBody.position.set(p);
-			_worldBody.space = _game.physics.world;
-			
-			for (var i:uint = 0; i < _worldBody.shapes.length; i++) {
-				_worldBody.shapes.at(i).sensorEnabled = true;
-			}
 		}
 		
 		public function postInit():void 
@@ -86,6 +74,18 @@ package boxesandworlds.game.world
 		public function addStructureToWorld(str:WorldStructure):void {
 			_structure = str;
 			addGameObject(_structure);
+			
+			_worldBody = new Body(BodyType.STATIC, Vec2.get(_structure.body.position.x + data.width / 2, _structure.body.position.y + data.height / 2));
+			var shape:Shape = new Polygon(Polygon.box(data.width, data.height));
+			_worldBody.shapes.add(shape);
+			//var p:Vec2 = _worldBody.position.copy();
+			//_worldBody.align();
+			//_worldBody.position.set(p);
+			_worldBody.space = _game.physics.world;
+			
+			for (var i:uint = 0; i < _worldBody.shapes.length; i++) {
+				_worldBody.shapes.at(i).sensorEnabled = true;
+			}
 		}
 		
 		public function addPlayer(player:Player):void {
