@@ -39,11 +39,6 @@ package boxesandworlds.game.controller
 			_data = new GameDataController(this, params);
 		}
 		
-		override public function load():void {
-			_data.addEventListener(Event.COMPLETE, xmlLoadCompleteHandler);
-			_data.load();
-		}
-		
 		public function start():void {
 			destroy();
 			
@@ -81,6 +76,20 @@ package boxesandworlds.game.controller
 				_level.gameOver();
 				trace("game over " + label);
 			}
+		}
+		
+		override public function load():void {
+			_data.addEventListener(Event.COMPLETE, xmlLoadCompleteHandler);
+			_data.load();
+		}
+		
+		public function loadLevel(data:Object):void {
+			
+		}
+		
+		public function saveLevel():Object {
+			var data:Object = { };
+			return data;
 		}
 		
 		public function resize():void 

@@ -15,6 +15,7 @@ package boxesandworlds.controller {
 		//static public const SERVER_URL:String = "";
 		
 		private var _so:SharedObject;
+		private var _save:SharedObject;
 		private var _volumeSound:Number;
 		private var _volumeMusic:Number;
 		private var _params:Object;
@@ -35,18 +36,29 @@ package boxesandworlds.controller {
 		public function set volumeMusic(value:Number):void {_volumeMusic = value;}
 		public function get isSocial():Boolean {return _isSocial;}
 		public function get me():BawUser {return _me;}
-		public function set me(value:BawUser):void {_me = value;}
+		public function set me(value:BawUser):void { _me = value; }
+		public function get musics():Vector.<MusicData> {return _musics;}
+		public function get loadedMusic():MusicData {return _loadedMusic;}
+		public function get save():SharedObject {return _save;}
 		
 		public function init():void 
 		{
 			_volumeSound = 1;
 			_volumeMusic = 0;
-			_so = SharedObject.getLocal("as3coder-player");
+			_so = SharedObject.getLocal("boxandworlds");
 			
 			_musics = new Vector.<MusicData>;
 			loadMusic();
 			
 			dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		public function saveLevel():void {
+			
+		}
+		
+		public function loadLevel():void {
+			
 		}
 		
 		public function saveName(text:String):void 
@@ -80,9 +92,6 @@ package boxesandworlds.controller {
 				_loadedMusic = null;
 			}
 		}
-		
-		public function get musics():Vector.<MusicData> {return _musics;}
-		public function get loadedMusic():MusicData {return _loadedMusic;}
 
 	}
 }

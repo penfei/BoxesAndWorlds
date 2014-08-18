@@ -39,6 +39,8 @@ package boxesandworlds.game.levels.tutorial
 		override public function init():void {
 			super.init();
 			
+			data = new TutorialLevelData();
+			
 			_lines = new Lines();
 			game.gui.canvas.addChildAt(_lines, 0);
 			//game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, game.physics.buttonType, game.physics.movableType, buttonContactHandler));
