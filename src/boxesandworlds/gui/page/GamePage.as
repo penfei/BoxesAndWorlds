@@ -1,10 +1,7 @@
 package boxesandworlds.gui.page {
 	import boxesandworlds.controller.Core;
-	import boxesandworlds.controller.DataManager;
 	import boxesandworlds.controller.UIManager;
 	import boxesandworlds.game.controller.Game;
-	import boxesandworlds.game.controller.GameDataController;
-	import boxesandworlds.game.levels.tutorial.TutorialLevel;
 	import boxesandworlds.gui.ViewEvent;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -25,7 +22,8 @@ package boxesandworlds.gui.page {
 		}
 		
 		override public function load():void {
-			_game.addEventListener(ViewEvent.LOAD_COMPLETE, gameLoadComplete);
+			Core.ui.showPreloader();
+			_game.addEventListener(ViewEvent.LOAD_COMPLETE, newGameLoadComplete);
 			_game.load();
 		}
 		
@@ -33,7 +31,7 @@ package boxesandworlds.gui.page {
 			_ui = new Sprite();
 			addChild(_ui);
 			
-			newGame();
+			newGame({ xmlLevelPath:"../assets/level4.xml" });
 		}
 		
 		override public function resize():void {
@@ -42,27 +40,17 @@ package boxesandworlds.gui.page {
 			}
 		}
 		
-		public function newGame():void {			
-			setupGame();
-		}
-		
-		private function setupGame():void {
+		public function newGame(params:Object):void {
+			_ui.removeChildren();
 			_game = new Game();
+			Core.data.setGame(_game);
 			_ui.addChild(_game);
-			//var params:Object = { xmlLevelPath:"../assets/level1.xml" };
-			//var params:Object = { xmlLevelPath:"../assets/level2.xml" };
-			//var params:Object = { xmlLevelPath:"../assets/level3.xml" };
-			var params:Object = { xmlLevelPath:"../assets/level4.xml" };
 			_game.init(params);
-		}
-		
-		private function gameLoadComplete(e:ViewEvent):void 
-		{
-			newGameLoadComplete();
 		}
 		
 		private function newGameLoadComplete(e:ViewEvent = null):void 
 		{
+			Core.ui.hidePreloader();
 			_game.addEventListener(Game.BACK, backHandler);
 			_game.addEventListener(Game.GAME_COMPLETE, completeHandler);
 			_game.addEventListener(Game.GAME_STARTED, startHandler);
@@ -78,7 +66,11 @@ package boxesandworlds.gui.page {
 		
 		private function completeHandler(e:Event):void 
 		{
-			Core.ui.showPage(UIManager.MAIN_PAGE_ID);
+			if (_game.data.completeParams) {
+				newGame(_game.data.completeParams);
+				_game.addEventListener(ViewEvent.LOAD_COMPLETE, newGameLoadComplete);
+				_game.load();
+			} else Core.ui.showPage(UIManager.MAIN_PAGE_ID);
 		}
 		
 		private function backHandler(e:Event):void 

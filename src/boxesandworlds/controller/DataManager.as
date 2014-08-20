@@ -2,6 +2,7 @@ package boxesandworlds.controller {
 	import boxesandworlds.data.BawUser;
 	import boxesandworlds.data.MusicData;
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.levels.level0.Level0;
 	import boxesandworlds.game.levels.tutorial.TutorialLevel;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -11,7 +12,7 @@ package boxesandworlds.controller {
 
 	public class DataManager extends EventDispatcher{
 		static public const SERVER_URL:String = "http://clush.ru/";
-		static public const LEVELS:Array = [TutorialLevel];
+		static public const LEVELS:Array = [TutorialLevel, Level0];
 		//static public const SERVER_URL:String = "";
 		
 		private var _so:SharedObject;
@@ -65,6 +66,11 @@ package boxesandworlds.controller {
 		{
 			_me.name = text;
 			_so.data.name = text;
+		}
+		
+		public function setGame(game:Game):void 
+		{
+			_game = game;
 		}
 		
 		private function loadComplete(e:Event):void 

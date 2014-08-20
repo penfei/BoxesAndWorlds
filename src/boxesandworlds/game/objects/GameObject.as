@@ -178,6 +178,15 @@ package boxesandworlds.game.objects
 			_view.checkWorldVisible();
 		}
 		
+		public function loadLevel(data:Object):void {
+			
+		}
+		
+		public function saveLevel():Object {
+			var data:Object = { };
+			return data;
+		}
+		
 		public function isOnEarth():Boolean {
 			_rayPoint.x = body.position.x;
 			_rayPoint.y = body.position.y + _properties.height / 2 + _properties.offsetY;

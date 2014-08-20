@@ -2,11 +2,12 @@ package boxesandworlds.game.levels.tutorial
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.levels.Level;
-	import boxesandworlds.game.objects.items.button.Button;
+	import boxesandworlds.game.objects.items.box.Box;
 	import flash.display.Sprite;
 	import flash.filters.BitmapFilterQuality;
 	import flash.filters.GlowFilter;
 	import nape.callbacks.CbEvent;
+	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
 	import nape.callbacks.InteractionListener;
 	import nape.callbacks.InteractionType;
@@ -43,7 +44,11 @@ package boxesandworlds.game.levels.tutorial
 			
 			_lines = new Lines();
 			game.gui.canvas.addChildAt(_lines, 0);
-			//game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, game.physics.buttonType, game.physics.movableType, buttonContactHandler));
+			
+			var completeLevelType:CbType = new CbType();
+			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, completeLevelType, game.physics.meType, completeLevelContactHandler));
+			var box:Box = game.objects.getWorldById(2).getObjectById(11) as Box;
+			box.body.cbTypes.add(completeLevelType);
 		}
 		
 		override public function start():void 
@@ -65,10 +70,10 @@ package boxesandworlds.game.levels.tutorial
 			
 		}
 		
-		private function buttonContactHandler(e:InteractionCallback):void 
+		private function completeLevelContactHandler(e:InteractionCallback):void 
 		{
-			var button:Button = e.int1.userData.obj as Button;
-			
+			game.data.completeParams = {xmlLevelPath:"../assets/level5.xml"}
+			game.complete();
 		}		
 	}
 

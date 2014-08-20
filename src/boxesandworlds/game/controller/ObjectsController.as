@@ -174,6 +174,15 @@ package boxesandworlds.game.controller
 			}
 			return null;
 		}
+		
+		public function loadLevel(data:Object):void {
+			
+		}
+		
+		public function saveLevel():Object {
+			var data:Object = { };
+			return data;
+		}
 	}
 
 }

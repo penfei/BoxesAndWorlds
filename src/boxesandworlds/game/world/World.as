@@ -88,6 +88,15 @@ package boxesandworlds.game.world
 			}
 		}
 		
+		public function loadLevel(data:Object):void {
+			
+		}
+		
+		public function saveLevel():Object {
+			var data:Object = { };
+			return data;
+		}
+		
 		public function addPlayer(player:Player):void {
 			addGameObject(player);
 			for each(var obj:GameObject in _objects) {
@@ -179,6 +188,14 @@ package boxesandworlds.game.world
 				w.disconnectWorld(this);
 				disconnectWorld(w);
 			}
+		}
+		
+		public function getObjectById(id:uint):GameObject 
+		{
+			for each(var object:GameObject in _objects) {
+				if (object.data.id == id) return object;
+			}
+			return null;
 		}
 		
 		public function disconnectWorld(world:World):void 

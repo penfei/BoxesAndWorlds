@@ -41,6 +41,9 @@ package boxesandworlds.game.objects
 		private var _canTeleport:Boolean;
 		private var _needButtonToTeleport:Boolean;
 		
+		public var saveCallback:Function;
+		public var loadCallback:Function;
+		
 		protected var game:Game;
 		
 		public function GameObjectData(game:Game) 

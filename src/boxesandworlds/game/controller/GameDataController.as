@@ -28,6 +28,8 @@ package boxesandworlds.game.controller
 		
 		private var _params:Object;
 		
+		public var completeParams:Object;
+		
 		public function GameDataController(game:Game, params:Object) 
 		{
 			super(game);
@@ -67,9 +69,8 @@ package boxesandworlds.game.controller
 		
 		public function load():void 
 		{
-			var xmlLevelFileName:String = _params.xmlLevelPath;
 			var urlL:URLLoader = new URLLoader();
-			var urlR:URLRequest = new URLRequest(xmlLevelFileName);
+			var urlR:URLRequest = new URLRequest(xmlLevelPath);
 			
 			urlL.addEventListener(Event.COMPLETE, onXmlLevelLoaded);
 			urlL.load(urlR);
@@ -126,6 +127,7 @@ package boxesandworlds.game.controller
 		public function get isPaused():Boolean {return _isPaused;}
 		public function set isPaused(value:Boolean):void { _isPaused = value; }
 		public function get xmlLevelParams():XML { return _xmlLevelParams; }
+		public function get xmlLevelPath():String { return _params.xmlLevelPath; }
 	}
 
 }

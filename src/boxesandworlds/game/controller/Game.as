@@ -1,5 +1,6 @@
 package boxesandworlds.game.controller 
 {
+	import boxesandworlds.controller.Core;
 	import boxesandworlds.game.levels.Level;
 	import boxesandworlds.gui.View;
 	import boxesandworlds.gui.ViewEvent;
@@ -64,6 +65,8 @@ package boxesandworlds.game.controller
 			
 			_gui.step();
 			
+			Core.data.saveLevel();
+			
 			dispatchEvent(new Event(GAME_STARTED));
 			if (!hasEventListener(Event.ENTER_FRAME)) addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
@@ -105,6 +108,7 @@ package boxesandworlds.game.controller
 		
 		public function complete():void 
 		{
+			Core.data.saveLevel();
 			destroy();
 			dispatchEvent(new Event(GAME_COMPLETE));
 		}

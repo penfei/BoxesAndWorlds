@@ -1,0 +1,16 @@
+<xml>
+  <levelScript scriptName=""/>
+  <player/>
+  <world id="0">
+    <WorldStructure itemName="WorldStructure">
+      <id attributeName="id" type="NUMBER" value="0"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>TestLevel4.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>0</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="-400" y="-400"/>
+    </WorldStructure>
+  </world>
+</xml>
