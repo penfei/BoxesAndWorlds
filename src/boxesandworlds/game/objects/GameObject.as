@@ -183,8 +183,10 @@ package boxesandworlds.game.objects
 		}
 		
 		public function saveLevel():Object {
-			var data:Object = { };
-			return data;
+			var xml:XML = new XML();
+			if (data.saveCallback != null) xml = data.saveCallback(this, xml);
+			var data2:Object = { };
+			return data2;
 		}
 		
 		public function isOnEarth():Boolean {
