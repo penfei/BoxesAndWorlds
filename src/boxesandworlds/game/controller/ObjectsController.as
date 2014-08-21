@@ -179,9 +179,13 @@ package boxesandworlds.game.controller
 			
 		}
 		
-		public function saveLevel():Object {
-			var data:Object = { };
-			return data;
+		public function saveLevel(save:Object):void {
+			save.player = {level: game.data.xmlLevelPath, world:_me.world.data.id, posX:_me.body.position.x, posY:_me.body.position.x, rotation:_me.body.rotation};
+			var arr:Array = new Array();
+			for each(var world:World in _worlds) {
+				arr.push(world.saveLevel());
+			}
+			save[game.data.xmlLevelPath] = { worlds:arr};
 		}
 	}
 

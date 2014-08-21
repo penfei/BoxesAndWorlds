@@ -93,8 +93,12 @@ package boxesandworlds.game.world
 		}
 		
 		public function saveLevel():Object {
-			var data:Object = { };
-			return data;
+			var obj:Object = { id:data.id };
+			obj.objects = new Array();
+			for each(var object:GameObject in _objects) {
+				if (!(object is Player)) obj.objects.push(object.saveLevel());
+			}
+			return obj;
 		}
 		
 		public function addPlayer(player:Player):void {

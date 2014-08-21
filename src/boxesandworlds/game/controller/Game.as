@@ -90,9 +90,8 @@ package boxesandworlds.game.controller
 			
 		}
 		
-		public function saveLevel():Object {
-			var data:Object = { };
-			return data;
+		public function saveLevel(save:Object):void {
+			_objects.saveLevel(save);
 		}
 		
 		public function resize():void 

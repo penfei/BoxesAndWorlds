@@ -17,6 +17,7 @@ package boxesandworlds.controller {
 		
 		private var _so:SharedObject;
 		private var _save:SharedObject;
+		private var _saveObject:Object;
 		private var _volumeSound:Number;
 		private var _volumeMusic:Number;
 		private var _params:Object;
@@ -47,6 +48,10 @@ package boxesandworlds.controller {
 			_volumeSound = 1;
 			_volumeMusic = 0;
 			_so = SharedObject.getLocal("boxandworlds");
+			_save = SharedObject.getLocal("boxandworldssave");
+			//_save.clear();
+			if (_save.data.save1 == null) _saveObject = {};
+			else _saveObject = JSON.parse(_save.data.save1);
 			
 			_musics = new Vector.<MusicData>;
 			loadMusic();
@@ -55,7 +60,8 @@ package boxesandworlds.controller {
 		}
 		
 		public function saveLevel():void {
-			
+			_game.saveLevel(_saveObject);
+			_save.data.save1 = JSON.stringify(_saveObject);
 		}
 		
 		public function loadLevel():void {
