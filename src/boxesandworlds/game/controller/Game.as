@@ -65,6 +65,9 @@ package boxesandworlds.game.controller
 			
 			_gui.step();
 			
+			_objects.loadLevel(Core.data.saveObject);
+			_objects.loadMe(data.params);
+			
 			Core.data.saveLevel();
 			
 			dispatchEvent(new Event(GAME_STARTED));

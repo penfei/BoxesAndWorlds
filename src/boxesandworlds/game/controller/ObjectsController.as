@@ -4,6 +4,7 @@ package boxesandworlds.game.controller
 	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoor;
 	import boxesandworlds.game.objects.enters.EnterData;
 	import boxesandworlds.game.objects.enters.gate.Gate;
+	import boxesandworlds.game.objects.GameObject;
 	import boxesandworlds.game.objects.items.box.Box;
 	import boxesandworlds.game.objects.items.button.Button;
 	import boxesandworlds.game.objects.items.key.Key;
@@ -175,17 +176,36 @@ package boxesandworlds.game.controller
 			return null;
 		}
 		
+		public function loadMe(data:Object):void {
+			_me.loadLevel(data.player);
+		}
+		
 		public function loadLevel(data:Object):void {
-			
+			if(data[game.data.levelPath] != null){
+				for each(var worldData:Object in data[game.data.levelPath].worlds) {
+					var world:World = getWorldById(worldData.id);
+					world.loadLevel(worldData);
+				}
+			}
 		}
 		
 		public function saveLevel(save:Object):void {
-			save.player = {level: game.data.xmlLevelPath, world:_me.world.data.id, posX:_me.body.position.x, posY:_me.body.position.x, rotation:_me.body.rotation};
+			save.player = _me.saveLevel();
 			var arr:Array = new Array();
 			for each(var world:World in _worlds) {
 				arr.push(world.saveLevel());
 			}
-			save[game.data.xmlLevelPath] = { worlds:arr};
+			save[game.data.levelPath] = { worlds:arr};
+		}
+		
+		public function getObjectById(id:uint):GameObject 
+		{
+			for each(var world:World in _worlds) {
+				for each(var object:GameObject in world.objects) {
+					if (object.data.id == id) return object;
+				}
+			}
+			return null;
 		}
 	}
 

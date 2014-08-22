@@ -5,7 +5,7 @@
     <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="1"/>
 	  <physicsBitmap type="URL" value="TestLevel.png"/>
-      <views attributeName="viewURLs" type="URL" isArray="true">
+      <views attributeName="views" type="URL" isArray="true">
         <value>TestLevelView.png</value>
       </views>
       <containerIds attributeName="containerIds" type="NUMBER" isArray="true">

@@ -10,6 +10,7 @@ package boxesandworlds.game.controller
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
+	import nape.geom.Vec2;
 	/**
 	 * ...
 	 * @author Sah
@@ -70,7 +71,7 @@ package boxesandworlds.game.controller
 		public function load():void 
 		{
 			var urlL:URLLoader = new URLLoader();
-			var urlR:URLRequest = new URLRequest(xmlLevelPath);
+			var urlR:URLRequest = new URLRequest(levelPath);
 			
 			urlL.addEventListener(Event.COMPLETE, onXmlLevelLoaded);
 			urlL.load(urlR);
@@ -127,7 +128,8 @@ package boxesandworlds.game.controller
 		public function get isPaused():Boolean {return _isPaused;}
 		public function set isPaused(value:Boolean):void { _isPaused = value; }
 		public function get xmlLevelParams():XML { return _xmlLevelParams; }
-		public function get xmlLevelPath():String { return _params.xmlLevelPath; }
+		public function get levelPath():String { return _params.player.level; }
+		public function get params():Object {return _params;}
 	}
 
 }

@@ -11,6 +11,7 @@ package boxesandworlds.game.levels.tutorial
 	import nape.callbacks.InteractionCallback;
 	import nape.callbacks.InteractionListener;
 	import nape.callbacks.InteractionType;
+	import nape.geom.Vec2;
 	/**
 	 * ...
 	 * @author Sah
@@ -72,7 +73,8 @@ package boxesandworlds.game.levels.tutorial
 		
 		private function completeLevelContactHandler(e:InteractionCallback):void 
 		{
-			game.data.completeParams = {xmlLevelPath:"../assets/level5.xml"}
+			//game.data.completeParams = { xmlLevelPath:"../assets/level5.xml", startPostion:Vec2.get( -200, -200) };
+			game.data.completeParams = { player: { level:"../assets/level5.xml", posX: -200, posY: -200, rotation:0, world:1 }};
 			game.complete();
 		}		
 	}

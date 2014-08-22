@@ -7,6 +7,7 @@ package boxesandworlds.game.objects.player
 	import boxesandworlds.game.objects.GameObject;
 	import boxesandworlds.game.objects.items.Item;
 	import boxesandworlds.game.objects.items.key.Key;
+	import boxesandworlds.game.world.World;
 	import flash.utils.setTimeout;
 	import nape.geom.AABB;
 	import nape.geom.Ray;
@@ -99,6 +100,22 @@ package boxesandworlds.game.objects.player
 			
 			telekinesis();
 			if (!game.data.isGameOver) _view.step();			
+		}
+		
+		override public function saveLevel():Object {
+			var save:Object = super.saveLevel();
+			save.level = game.data.levelPath;
+			return save;
+		}
+		
+		override public function loadLevel(save:Object):void {
+			if(save.world != null){
+				var targetWorld:World = game.objects.getWorldById(save.world);
+				world.removePlayer(this);
+				targetWorld.addPlayer(this);
+				body.position.setxy(save.posX, save.posY);
+				body.rotation = save.rotation;
+			}
 		}
 		
 		private function teleportWithEnter():void 

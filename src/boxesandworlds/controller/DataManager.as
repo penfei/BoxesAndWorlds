@@ -42,6 +42,7 @@ package boxesandworlds.controller {
 		public function get musics():Vector.<MusicData> {return _musics;}
 		public function get loadedMusic():MusicData {return _loadedMusic;}
 		public function get save():SharedObject {return _save;}
+		public function get saveObject():Object {return _saveObject;}
 		
 		public function init():void 
 		{

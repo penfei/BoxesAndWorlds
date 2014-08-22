@@ -88,8 +88,11 @@ package boxesandworlds.game.world
 			}
 		}
 		
-		public function loadLevel(data:Object):void {
-			
+		public function loadLevel(save:Object):void {
+			for each(var objectData:Object in save.objects) {
+				var obj:GameObject = _game.objects.getObjectById(objectData.id);
+				obj.loadLevel(objectData);
+			}
 		}
 		
 		public function saveLevel():Object {

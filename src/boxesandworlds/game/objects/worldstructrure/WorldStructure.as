@@ -69,6 +69,15 @@ package boxesandworlds.game.objects.worldstructrure
 			_properties.mass = body.mass;
 		}
 		
+		override public function loadLevel(save:Object):void {
+			if (save.world != null) {
+				body.space = null;
+				body.position.setxy(save.posX, save.posY);
+				body.rotation = save.rotation;
+				body.space = game.physics.world;
+			}
+		}
+		
 	}
 
 }

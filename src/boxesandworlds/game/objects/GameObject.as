@@ -178,12 +178,20 @@ package boxesandworlds.game.objects
 			_view.checkWorldVisible();
 		}
 		
-		public function loadLevel(data:Object):void {
-			
+		public function loadLevel(save:Object):void {
+			if (save.world != null) {
+				body.space = null;
+				var targetWorld:World = game.objects.getWorldById(save.world);
+				world.removeGameObject(this);
+				targetWorld.addGameObject(this);
+				body.position.setxy(save.posX, save.posY);
+				body.rotation = save.rotation;
+				body.space = game.physics.world;
+			}
 		}
 		
 		public function saveLevel():Object {
-			var obj:Object = {id:data.id, posX:body.position.x, posY:body.position.y, rotation:body.rotation}
+			var obj:Object = {id:data.id, posX:body.position.x, posY:body.position.y, rotation:body.rotation, world:world.data.id}
 			if (data.saveCallback != null) data.saveCallback(this, obj);
 			return obj;
 		}
