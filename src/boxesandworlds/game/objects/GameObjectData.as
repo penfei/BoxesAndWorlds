@@ -69,6 +69,7 @@ package boxesandworlds.game.objects
 			Attribute.pushAttribute(arr, "offsetY", OFFSET_Y, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "isDestroyPhysic", false, Attribute.BOOL, 0);
 			Attribute.pushAttribute(arr, "needButtonToTeleport", false, Attribute.BOOL);
+			//Attribute.pushAttribute(arr, "canTeleport", false, Attribute.BOOL, 1 , false, null, false, true);
 			Attribute.pushAttribute(arr, "canTeleport", false, Attribute.BOOL);
 			return arr;
 		}
@@ -87,6 +88,23 @@ package boxesandworlds.game.objects
 			for (var key:String in params) {
 				if (key == "bodyType") this[key] = stringToBodyType(params[key]);
 				else this[key] = params[key];
+			}
+		}
+		
+		public function saveAttributes(obj:Object):void 
+		{
+			var arr:Vector.<Attribute> = getAttributes();
+			for each(var attribute:Attribute in arr) {
+				if (attribute.isSaved) {
+					obj[attribute.name] = attribute.value;
+				}
+			}
+		}
+		
+		public function loadAttributes(save:Object):void 
+		{
+			for (var key:String in save) {
+				if(this.hasOwnProperty(key)) this[key] = save[key];
 			}
 		}
 		

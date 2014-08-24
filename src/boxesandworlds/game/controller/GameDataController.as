@@ -128,7 +128,7 @@ package boxesandworlds.game.controller
 		public function get isPaused():Boolean {return _isPaused;}
 		public function set isPaused(value:Boolean):void { _isPaused = value; }
 		public function get xmlLevelParams():XML { return _xmlLevelParams; }
-		public function get levelPath():String { return _params.player.level; }
+		public function get levelPath():String { return _params.level; }
 		public function get params():Object {return _params;}
 	}
 

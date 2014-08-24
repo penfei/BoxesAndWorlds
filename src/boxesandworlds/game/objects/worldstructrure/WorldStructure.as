@@ -2,6 +2,7 @@ package boxesandworlds.game.objects.worldstructrure
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.GameObject;
+	import boxesandworlds.game.world.World;
 	import nape.constraint.PivotJoint;
 	import nape.geom.GeomPoly;
 	import nape.geom.GeomPolyList;
@@ -76,6 +77,13 @@ package boxesandworlds.game.objects.worldstructrure
 				body.rotation = save.rotation;
 				body.space = game.physics.world;
 			}
+		}
+		
+		override public function addToWorld(w:World):void {
+			w.structure = this;
+			super.addToWorld(w);
+			
+			w.initWorldBody();
 		}
 		
 	}

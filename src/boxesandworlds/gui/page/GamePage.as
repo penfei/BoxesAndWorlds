@@ -31,8 +31,8 @@ package boxesandworlds.gui.page {
 			_ui = new Sprite();
 			addChild(_ui);
 			
-			newGame( { player: { level:"../assets/level4.xml" }} );
-			//newGame( { player: { level:Core.data.save.player.level}} );
+			newGame( { level:"../assets/level4.xml"} );
+			//newGame(Core.data.saveObject);
 		}
 		
 		override public function resize():void {
@@ -69,8 +69,7 @@ package boxesandworlds.gui.page {
 		{
 			if (_game.data.completeParams) {
 				newGame(_game.data.completeParams);
-				_game.addEventListener(ViewEvent.LOAD_COMPLETE, newGameLoadComplete);
-				_game.load();
+				load();
 			} else Core.ui.showPage(UIManager.MAIN_PAGE_ID);
 		}
 		

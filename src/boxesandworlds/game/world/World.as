@@ -38,6 +38,7 @@ package boxesandworlds.game.world
 		public function set worldBox(value:WorldBox):void {_worldBox = value;}
 		public function get worldBody():Body {return _worldBody;}
 		public function get structure():WorldStructure { return _structure; }
+		public function set structure(value:WorldStructure):void {_structure = value;}
 		public function get visible():Boolean {
 			if (_game.objects.me.world == null) return false;
 			return data.id == _game.objects.me.world.data.id;
@@ -71,23 +72,6 @@ package boxesandworlds.game.world
 			
 		}
 		
-		public function addStructureToWorld(str:WorldStructure):void {
-			_structure = str;
-			addGameObject(_structure);
-			
-			_worldBody = new Body(BodyType.STATIC, Vec2.get(_structure.body.position.x + data.width / 2, _structure.body.position.y + data.height / 2));
-			var shape:Shape = new Polygon(Polygon.box(data.width, data.height));
-			_worldBody.shapes.add(shape);
-			//var p:Vec2 = _worldBody.position.copy();
-			//_worldBody.align();
-			//_worldBody.position.set(p);
-			_worldBody.space = _game.physics.world;
-			
-			for (var i:uint = 0; i < _worldBody.shapes.length; i++) {
-				_worldBody.shapes.at(i).sensorEnabled = true;
-			}
-		}
-		
 		public function loadLevel(save:Object):void {
 			for each(var objectData:Object in save.objects) {
 				var obj:GameObject = _game.objects.getObjectById(objectData.id);
@@ -102,37 +86,6 @@ package boxesandworlds.game.world
 				if (!(object is Player)) obj.objects.push(object.saveLevel());
 			}
 			return obj;
-		}
-		
-		public function addPlayer(player:Player):void {
-			addGameObject(player);
-			for each(var obj:GameObject in _objects) {
-				obj.checkWorldVisible();
-			}
-		}
-		
-		public function removePlayer(player:Player):void {
-			removeGameObject(player);
-			for each(var obj:GameObject in _objects) {
-				obj.checkWorldVisible();
-			}
-		}
-		
-		public function addGameObject(obj:GameObject):void {
-			obj.world = this;
-			_objects.push(obj);
-			obj.checkWorldVisible();
-		}
-		
-		public function removeGameObject(obj:GameObject):void 
-		{
-			for (var i:uint = 0; i < _objects.length; i++) {
-				if (obj == _objects[i]) {
-					obj.world = null;
-					_objects.splice(i, 1);
-					obj.checkWorldVisible();
-				}
-			}
 		}
 		
 		public function rotate(angle:Number):void 
@@ -212,6 +165,18 @@ package boxesandworlds.game.world
 					delete _connectWorldsHash[key];
 					return;
 				}
+			}
+		}
+		
+		public function initWorldBody():void 
+		{
+			_worldBody = new Body(BodyType.STATIC, Vec2.get(_structure.body.position.x + data.width / 2, _structure.body.position.y + data.height / 2));
+			var shape:Shape = new Polygon(Polygon.box(data.width, data.height));
+			_worldBody.shapes.add(shape);
+			_worldBody.space = _game.physics.world;
+			
+			for (var i:uint = 0; i < _worldBody.shapes.length; i++) {
+				_worldBody.shapes.at(i).sensorEnabled = true;
 			}
 		}
 	}

@@ -63,24 +63,16 @@ package boxesandworlds.game.levels
 							}
 						}
 						params.start = Vec2.weak(world.data.axis.x + params.start.x, world.data.axis.y + params.start.y); 
-						object.init(params);	
-						if (object is WorldStructure) {
-							world.addStructureToWorld(object as WorldStructure);
-						} else {
-							world.addGameObject(object);
-						}
+						object.init(params);
+						object.addToWorld(world);
 					}
 				}
 				
 				if (data.player )
 				{
 					world = _game.objects.getWorldById(data.player.@worldId);
-					_game.objects.me.init( { start:Vec2.weak(world.data.axis.x + Number(data.player.@x), world.data.axis.y + Number(data.player.@y)) } ); 
-					world.addPlayer(_game.objects.me);
-						
-					//_game.objects.me.init( { start:new Vec2( 
-								//Game.WORLD_START_X_POSITION - 400.0 + ( uint(data.player.@worldId) - 1) * Game.WORLD_X_OFFSET + Number(data.player.@x),
-								//Game.WORLD_START_Y_POSITION - 400.0 + Number(data.player.@y)) } );
+					_game.objects.me.init( { start:Vec2.weak(world.data.axis.x + Number(data.player.@x), world.data.axis.y + Number(data.player.@y)) } );
+					_game.objects.me.addToWorld(world);
 				}
 				else
 				{

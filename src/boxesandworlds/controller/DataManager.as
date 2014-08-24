@@ -51,8 +51,9 @@ package boxesandworlds.controller {
 			_so = SharedObject.getLocal("boxandworlds");
 			_save = SharedObject.getLocal("boxandworldssave");
 			//_save.clear();
-			if (_save.data.save1 == null) _saveObject = {};
+			if (_save.data.save1 == null) _saveObject = { level:"../assets/level4.xml"};
 			else _saveObject = JSON.parse(_save.data.save1);
+			//trace(JSON.stringify(_saveObject));
 			
 			_musics = new Vector.<MusicData>;
 			loadMusic();
@@ -63,10 +64,6 @@ package boxesandworlds.controller {
 		public function saveLevel():void {
 			_game.saveLevel(_saveObject);
 			_save.data.save1 = JSON.stringify(_saveObject);
-		}
-		
-		public function loadLevel():void {
-			
 		}
 		
 		public function saveName(text:String):void 

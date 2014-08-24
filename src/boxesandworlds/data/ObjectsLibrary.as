@@ -1,13 +1,22 @@
 package boxesandworlds.data 
 {
+	import boxesandworlds.game.objects.door.Door;
 	import boxesandworlds.game.objects.door.DoorData;
+	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoor;
 	import boxesandworlds.game.objects.enters.edgeDoor.EdgeDoorData;
+	import boxesandworlds.game.objects.enters.gate.Gate;
 	import boxesandworlds.game.objects.enters.gate.GateData;
+	import boxesandworlds.game.objects.items.box.Box;
 	import boxesandworlds.game.objects.items.box.BoxData;
+	import boxesandworlds.game.objects.items.button.Button;
 	import boxesandworlds.game.objects.items.button.ButtonData;
+	import boxesandworlds.game.objects.items.key.Key;
 	import boxesandworlds.game.objects.items.key.KeyData;
+	import boxesandworlds.game.objects.items.teleportBox.TeleportBox;
 	import boxesandworlds.game.objects.items.teleportBox.TeleportBoxData;
+	import boxesandworlds.game.objects.items.worldBox.WorldBox;
 	import boxesandworlds.game.objects.items.worldBox.WorldBoxData;
+	import boxesandworlds.game.objects.worldstructrure.WorldStructure;
 	import boxesandworlds.game.objects.worldstructrure.WorldStructureData;
 	
 	import flash.utils.getQualifiedClassName;
@@ -18,6 +27,7 @@ package boxesandworlds.data
 	 */
 	public class ObjectsLibrary 
 	{
+		static public const objects:Array = [WorldStructure, Box, TeleportBox, WorldBox, Button, Gate, EdgeDoor, Key, Door];
 		static public const objectDatas:Array = [WorldStructureData, BoxData, TeleportBoxData, WorldBoxData, ButtonData, GateData, EdgeDoorData, KeyData, DoorData];
 		static private var objectsByType:Object = {};
 		

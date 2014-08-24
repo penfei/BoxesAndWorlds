@@ -15,7 +15,7 @@
     </WorldStructure>
 	 <Box itemName="Box">
       <id attributeName="id" type="NUMBER" value="10"/>
-      <start attributeName="start" type="VEC2" x="0" y="200"/>
+      <start attributeName="start" type="VEC2" x="0" y="50"/>
 	</Box>
 	 <TeleportBox itemName="TeleportBox">
 		<teleportId attributeName="teleportId" type="NUMBER" value="4"/>

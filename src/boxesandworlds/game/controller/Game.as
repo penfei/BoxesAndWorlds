@@ -55,6 +55,8 @@ package boxesandworlds.game.controller
 			_objects.init()
 			
 			_level.init();
+			_objects.loadLevel(data.params);
+			_objects.loadMe(data.params);
 			
 			_input = new InputController(this);
 			_input.init();
@@ -63,12 +65,8 @@ package boxesandworlds.game.controller
 			
 			_level.start();
 			
-			_gui.step();
-			
-			_objects.loadLevel(Core.data.saveObject);
-			_objects.loadMe(data.params);
-			
 			Core.data.saveLevel();
+			onEnterFrame(null);
 			
 			dispatchEvent(new Event(GAME_STARTED));
 			if (!hasEventListener(Event.ENTER_FRAME)) addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -87,10 +85,6 @@ package boxesandworlds.game.controller
 		override public function load():void {
 			_data.addEventListener(Event.COMPLETE, xmlLoadCompleteHandler);
 			_data.load();
-		}
-		
-		public function loadLevel(data:Object):void {
-			
 		}
 		
 		public function saveLevel(save:Object):void {

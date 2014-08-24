@@ -72,8 +72,8 @@ package boxesandworlds.game.objects.items
 		{
 			if (teleportTarget != null) {
 				body.position.set(teleportTarget.getTeleportTargetPosition(params));
-				world.removeGameObject(this);
-				teleportTarget.world.addGameObject(this);
+				removeFromWorld();
+				addToWorld(teleportTarget.world);
 			}
 		}
 		

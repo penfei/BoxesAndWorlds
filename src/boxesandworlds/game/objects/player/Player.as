@@ -7,6 +7,7 @@ package boxesandworlds.game.objects.player
 	import boxesandworlds.game.objects.GameObject;
 	import boxesandworlds.game.objects.items.Item;
 	import boxesandworlds.game.objects.items.key.Key;
+	import boxesandworlds.game.objects.items.worldBox.WorldBox;
 	import boxesandworlds.game.world.World;
 	import flash.utils.setTimeout;
 	import nape.geom.AABB;
@@ -102,19 +103,18 @@ package boxesandworlds.game.objects.player
 			if (!game.data.isGameOver) _view.step();			
 		}
 		
-		override public function saveLevel():Object {
-			var save:Object = super.saveLevel();
-			save.level = game.data.levelPath;
-			return save;
+		override public function addToWorld(w:World):void {
+			super.addToWorld(w);
+			for each(var obj:GameObject in world.objects) {
+				obj.checkWorldVisible();
+			}
 		}
 		
-		override public function loadLevel(save:Object):void {
-			if(save.world != null){
-				var targetWorld:World = game.objects.getWorldById(save.world);
-				world.removePlayer(this);
-				targetWorld.addPlayer(this);
-				body.position.setxy(save.posX, save.posY);
-				body.rotation = save.rotation;
+		override public function removeFromWorld():void {
+			var w:World = world;
+			super.removeFromWorld();
+			for each(var obj:GameObject in w.objects) {
+				obj.checkWorldVisible();
 			}
 		}
 		
@@ -231,11 +231,11 @@ package boxesandworlds.game.objects.player
 			if (teleportTarget != null) {
 				if (_item == teleportTarget) resetItem();
 				body.position.set(teleportTarget.getTeleportTargetPosition(params));
-				world.removePlayer(this);
-				teleportTarget.world.addPlayer(this);
+				removeFromWorld();
+				addToWorld(teleportTarget.world);
 				if (hasItem) {
-					_item.world.removeGameObject(_item);
-					teleportTarget.world.addGameObject(_item);
+					_item.removeFromWorld();
+					_item.addToWorld(teleportTarget.world);
 				}
 			}
 		}

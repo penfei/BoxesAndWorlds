@@ -1,6 +1,8 @@
 package boxesandworlds.game.objects 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.data.Attribute;
+	import boxesandworlds.game.objects.items.box.Box;
 	import boxesandworlds.game.world.World;
 	import nape.dynamics.Arbiter;
 	import nape.dynamics.InteractionFilter;
@@ -70,7 +72,7 @@ package boxesandworlds.game.objects
 		public function destroy():void {
 			destroyPhysic();
 			destroyView();
-			_world.removeGameObject(this);
+			removeFromWorld();
 		}
 		
 		public function destroyPhysic():void {
@@ -179,21 +181,40 @@ package boxesandworlds.game.objects
 		}
 		
 		public function loadLevel(save:Object):void {
-			if (save.world != null) {
+			if (save != null) {
 				body.space = null;
-				var targetWorld:World = game.objects.getWorldById(save.world);
-				world.removeGameObject(this);
-				targetWorld.addGameObject(this);
+				removeFromWorld();
+				addToWorld(game.objects.getWorldById(save.world));
 				body.position.setxy(save.posX, save.posY);
 				body.rotation = save.rotation;
 				body.space = game.physics.world;
+				data.loadAttributes(save);
 			}
 		}
 		
 		public function saveLevel():Object {
-			var obj:Object = {id:data.id, posX:body.position.x, posY:body.position.y, rotation:body.rotation, world:world.data.id}
+			var obj:Object = { id:data.id, posX:body.position.x, posY:body.position.y, rotation:body.rotation, world:world.data.id };
+			data.saveAttributes(obj);
 			if (data.saveCallback != null) data.saveCallback(this, obj);
 			return obj;
+		}
+		
+		public function addToWorld(w:World):void {
+			world = w;
+			world.objects.push(this);
+			checkWorldVisible();
+		}
+		
+		public function removeFromWorld():void 
+		{
+			for (var i:uint = 0; i < world.objects.length; i++) {
+				if (this == world.objects[i]) {
+					world.objects.splice(i, 1);
+					world = null;
+					checkWorldVisible();
+					return;
+				}
+			}
 		}
 		
 		public function isOnEarth():Boolean {
