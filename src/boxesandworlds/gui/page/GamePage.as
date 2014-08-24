@@ -31,8 +31,7 @@ package boxesandworlds.gui.page {
 			_ui = new Sprite();
 			addChild(_ui);
 			
-			newGame( { level:"../assets/level4.xml"} );
-			//newGame(Core.data.saveObject);
+			newGame(_params);
 		}
 		
 		override public function resize():void {

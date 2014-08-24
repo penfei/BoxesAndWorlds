@@ -56,7 +56,8 @@ package boxesandworlds.controller {
 			
 			//showPage(MAIN_PAGE_ID);
 			//showPage(EDITOR_PAGE_ID);
-			showPage(GAME_PAGE_ID);			
+			showPage(GAME_PAGE_ID, { level:"../assets/level4.xml" } );
+			//showPage(GAME_PAGE_ID, Core.data.saveObject);
 			//showPage(EDITOR_PAGE_ID);
 			//showPage(GAME_PAGE_ID);			
 			resize();
