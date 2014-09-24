@@ -144,9 +144,13 @@ package boxesandworlds.game.objects.player
 		}
 		
 		private function jumpCallback():void {
+			addImpulse(_properties.jumpPower);
+		}
+		
+		public function addImpulse(power:Number):void {
 			_properties.isBeforeJump = false;
 			body.velocity.set(new Vec2(0, 0));
-			body.applyImpulse(new Vec2(0.0, _properties.jumpPower));
+			body.applyImpulse(new Vec2(0.0, power));
 		}
 		
 		public function canJump():Boolean 

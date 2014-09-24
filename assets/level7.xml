@@ -1,0 +1,21 @@
+<xml>
+  <levelScript scriptName="boxesandworlds.game.levels.level1.Level1"/>
+  <player worldId="0" x="90" y="-50"/>
+  <world id="0">
+    <WorldStructure itemName="WorldStructure">
+      <id attributeName="id" type="NUMBER" value="2"/>
+	  <physicsBitmap type="URL" value="skys2.png"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>skys2.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>0</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="0" y="0"/>
+    </WorldStructure>
+	<Jumper itemName="Jumper">
+      <id attributeName="id" type="NUMBER" value="0"/>
+      <start attributeName="start" type="VEC2" x="135" y="164"/>
+    </Jumper>
+  </world>
+</xml>

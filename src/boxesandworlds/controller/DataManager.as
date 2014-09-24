@@ -3,16 +3,15 @@ package boxesandworlds.controller {
 	import boxesandworlds.data.MusicData;
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.levels.level0.Level0;
+	import boxesandworlds.game.levels.level1.Level1;
 	import boxesandworlds.game.levels.tutorial.TutorialLevel;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.net.SharedObject;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
 
 	public class DataManager extends EventDispatcher{
 		static public const SERVER_URL:String = "http://clush.ru/";
-		static public const LEVELS:Array = [TutorialLevel, Level0];
+		static public const LEVELS:Array = [TutorialLevel, Level0, Level1];
 		//static public const SERVER_URL:String = "";
 		
 		private var _so:SharedObject;

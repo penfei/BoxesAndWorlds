@@ -2,6 +2,8 @@ package boxesandworlds.game.levels.tutorial
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.levels.Level;
+	import boxesandworlds.game.levels.tutorial.Lines;
+	import boxesandworlds.game.levels.tutorial.TutorialLevelData;
 	import boxesandworlds.game.objects.items.box.Box;
 	import flash.display.Sprite;
 	import flash.filters.BitmapFilterQuality;
@@ -11,7 +13,6 @@ package boxesandworlds.game.levels.tutorial
 	import nape.callbacks.InteractionCallback;
 	import nape.callbacks.InteractionListener;
 	import nape.callbacks.InteractionType;
-	import nape.geom.Vec2;
 	/**
 	 * ...
 	 * @author Sah

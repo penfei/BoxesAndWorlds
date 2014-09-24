@@ -4,6 +4,7 @@ package boxesandworlds.game.controller
 	import boxesandworlds.game.objects.GameObject;
 	import boxesandworlds.game.objects.GameObjectView;
 	import boxesandworlds.game.objects.items.button.Button;
+	import boxesandworlds.game.objects.items.jumper.Jumper;
 	import boxesandworlds.game.objects.items.key.Key;
 	import boxesandworlds.game.world.World;
 	import flash.display.DisplayObject;
@@ -29,6 +30,7 @@ package boxesandworlds.game.controller
 		private var _doorType:CbType;
 		private var _keyType:CbType;
 		private var _buttonType:CbType;
+		private var _jumperType:CbType;
 		private var _previosTime:int;
 		
 		public function PhysicsController(game:Game) 
@@ -42,6 +44,7 @@ package boxesandworlds.game.controller
 		public function get buttonType():CbType { return _buttonType; }
 		public function get doorType():CbType {return _doorType;}
 		public function get keyType():CbType {return _keyType;}
+		public function get jumperType():CbType {return _jumperType;}
 		
 		override public function init():void 
 		{			
@@ -53,10 +56,12 @@ package boxesandworlds.game.controller
 			_buttonType = new CbType;
 			_keyType = new CbType;
 			_doorType = new CbType;
+			_jumperType = new CbType;
 			
 			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _doorType, _keyType, doorKeyContactHandler));
 			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _buttonType, _collisionType, buttonContactStartHandler));
 			game.physics.world.listeners.add(new InteractionListener(CbEvent.END, InteractionType.COLLISION, _buttonType, _collisionType, buttonContactEndHandler));
+			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _jumperType, _meType, jumperContactStartHandler));
 		}
 		
 		override public function step():void 
@@ -111,6 +116,12 @@ package boxesandworlds.game.controller
 				if(game.objects.me.hasItem && game.objects.me.item == key) game.objects.me.resetItem();
 				key.destroy();
 			}
+		}
+		
+		private function jumperContactStartHandler(e:InteractionCallback):void 
+		{
+			var jumper:Jumper = e.int1.userData.obj as Jumper;
+			jumper.addImpulse();
 		}
 		
 		private function buttonContactStartHandler(e:InteractionCallback):void 

@@ -1,0 +1,14 @@
+<xml>
+  <levelScript scriptName="boxesandworlds.game.levels.level1.Level1"/>
+  <player worldId="0" x="90" y="-50"/>
+  <world id="0">
+    <null itemName="null">
+      <id attributeName="id" type="NUMBER" value="2"/>
+      <start attributeName="start" type="VEC2" x="0" y="0"/>
+    </null>
+    <Jumper itemName="Jumper">
+      <id attributeName="id" type="NUMBER" value="0"/>
+      <start attributeName="start" type="VEC2" x="135" y="164"/>
+    </Jumper>
+  </world>
+</xml>

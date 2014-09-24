@@ -23,6 +23,8 @@ package boxesandworlds.game.controller
 		private var _menu:Menu;
 		private var _layers:Vector.<Sprite>;
 		
+		private var _offsetY:Number = 0.7;
+		
 		public function GuiController(game:Game) 
 		{
 			super(game);
@@ -34,7 +36,10 @@ package boxesandworlds.game.controller
 		public function get stageWidth():Number { return _canvas.stage.stageWidth }
 		public function get stageHeight():Number { return _canvas.stage.stageHeight}
 		public function get debug():Debug {return _debug;}
-		public function get layers():Vector.<Sprite> {return _layers;}
+		public function get layers():Vector.<Sprite> { return _layers; }
+		public function get mousePoint():Vec2 { return Vec2.get(game.stage.mouseX - container.x, game.stage.mouseY - container.y); }
+		public function get offsetY():Number {return _offsetY;}
+		public function set offsetY(value:Number):void {_offsetY = value;}
 		
 		override public function init():void 
 		{
@@ -62,7 +67,7 @@ package boxesandworlds.game.controller
 			//container.y = -data.axis.y + data.height / 2;
 			
 			container.x = -game.objects.me.body.position.x + stageWidth / 2;
-			container.y = -game.objects.me.body.position.y + stageHeight * 0.7;
+			container.y = -game.objects.me.body.position.y + stageHeight * _offsetY;
 			//TweenLite.to(container, 0.5, { x:-game.objects.me.body.position.x + stageWidth / 2, y: -game.objects.me.body.position.y + stageHeight * 0.7 } );
 			
 			if (game.data.isTest) {
@@ -82,8 +87,6 @@ package boxesandworlds.game.controller
 			_canvas = null;
 			_mainContainer = null;
 		}
-		
-		public function get mousePoint():Vec2 { return Vec2.get(game.stage.mouseX - container.x, game.stage.mouseY - container.y); }
 		
 		public function getItemUnderPoint():Item {
 			var bodyList:BodyList = game.physics.world.bodiesUnderPoint(mousePoint, null, bodyList);

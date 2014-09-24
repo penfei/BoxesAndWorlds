@@ -32,6 +32,8 @@ package boxesandworlds.game.objects.player
 			super(game, player)
 		}
 		
+		public function get ui():Sprite {return _ui;}
+		
 		override public function init():void {
 			_ui = new Sprite
 			_uiStay = new StayUI;
