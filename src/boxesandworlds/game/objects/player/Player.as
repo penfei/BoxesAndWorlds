@@ -87,7 +87,7 @@ package boxesandworlds.game.objects.player
 			if (_properties.isMoveLeft && !_properties.isMoveRight) goLeft();
 			if (_properties.isMoveRight && !_properties.isMoveLeft) goRight();
 			if ((!_properties.isMoveLeft && !_properties.isMoveRight) || (_properties.isMoveLeft && _properties.isMoveRight)) stopMotion();
-			
+			applyJumper();
 			_bodyListInItemArea = getBodiesInItemArea();
 			searchDoor();
 			searchPotencialTeleport();
@@ -118,6 +118,18 @@ package boxesandworlds.game.objects.player
 			}
 		}
 		
+		private function applyJumper():void 
+		{
+			if (_properties.jumperVelocity.x != 0 || _properties.jumperVelocity.y != 0) {
+				_properties.jumperVelocity.x *= 0.95;
+				_properties.jumperVelocity.y *= 0.6;
+				if (Math.abs(_properties.jumperVelocity.x) < 0.1) _properties.jumperVelocity.x = 0;
+				if (Math.abs(_properties.jumperVelocity.y) < 0.1) _properties.jumperVelocity.y = 0;
+				body.velocity.x += _properties.jumperVelocity.x;
+				body.velocity.y += _properties.jumperVelocity.y;
+			}
+		}
+		
 		private function teleportWithEnter():void 
 		{
 			var pEnter:Enter;
@@ -133,7 +145,8 @@ package boxesandworlds.game.objects.player
 			if (pEnter != null) {
 				var params:Object = { teleported: this, from:pEnter };
 				teleportTo(pEnter.findTarget(), params);
-			} else trace("я вывалился, а куда не знаю");
+			} 
+			//else trace("я вывалился, а куда не знаю");
 		}
 		
 		public function jump():void 
@@ -144,13 +157,13 @@ package boxesandworlds.game.objects.player
 		}
 		
 		private function jumpCallback():void {
-			addImpulse(_properties.jumpPower);
+			addImpulse(Vec2.weak(0, _properties.jumpPower));
 		}
 		
-		public function addImpulse(power:Number):void {
+		public function addImpulse(power:Vec2):void {
 			_properties.isBeforeJump = false;
 			body.velocity.set(new Vec2(0, 0));
-			body.applyImpulse(new Vec2(0.0, power));
+			body.applyImpulse(power);
 		}
 		
 		public function canJump():Boolean 

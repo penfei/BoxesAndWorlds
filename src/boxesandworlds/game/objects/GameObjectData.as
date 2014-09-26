@@ -78,6 +78,7 @@ package boxesandworlds.game.objects
 		{
 			var obj:Object = getAttributes();
 			for each(var attribute:Attribute in obj) {
+				
 				if (attribute.type == Attribute.URL) {
 					if (attribute.isArray) this[attribute.name] = [];
 					else this[attribute.name] = null;

@@ -14,8 +14,14 @@
       <start attributeName="start" type="VEC2" x="0" y="0"/>
     </WorldStructure>
 	<Jumper itemName="Jumper">
-      <id attributeName="id" type="NUMBER" value="0"/>
+      <id attributeName="id" type="NUMBER" value="3"/>
+	  <power attributeName="power" type="VEC2" x="300" y="-400"/>
       <start attributeName="start" type="VEC2" x="135" y="164"/>
+    </Jumper>
+	<Jumper itemName="Jumper">
+      <id attributeName="id" type="NUMBER" value="4"/>
+	  <power attributeName="power" type="VEC2" x="0" y="-400"/>
+      <start attributeName="start" type="VEC2" x="405" y="264"/>
     </Jumper>
   </world>
 </xml>

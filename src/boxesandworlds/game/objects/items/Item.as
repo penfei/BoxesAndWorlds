@@ -65,7 +65,8 @@ package boxesandworlds.game.objects.items
 			if (world.worldBox != null && pEnter != null) {
 				var params:Object = { teleported: this, from:pEnter };
 				teleportTo(pEnter.findTarget(), params);
-			} else trace("я вывалился, а куда не знаю", data.type, data.id);
+			}
+			//else trace("я вывалился, а куда не знаю", data.type, data.id);
 		}
 		
 		public function teleportTo(teleportTarget:GameObject, params:Object = null):void 

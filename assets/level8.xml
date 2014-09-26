@@ -6,9 +6,9 @@
       <id attributeName="id" type="NUMBER" value="2"/>
       <start attributeName="start" type="VEC2" x="0" y="0"/>
     </null>
-    <Jumper itemName="Jumper">
+    <null itemName="null">
       <id attributeName="id" type="NUMBER" value="0"/>
       <start attributeName="start" type="VEC2" x="135" y="164"/>
-    </Jumper>
+    </null>
   </world>
 </xml>

@@ -3,6 +3,7 @@ package boxesandworlds.game.objects.player
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.objects.GameObjectData;
+	import nape.geom.Vec2;
 	import nape.phys.BodyType;
 	/**
 	 * ...
@@ -22,6 +23,7 @@ package boxesandworlds.game.objects.player
 		private var _itemAreaIndentX:Number;
 		private var _itemAreaIndentY:Number;
 		private var _isRight:Boolean;
+		private var _jumperVelocity:Vec2;
 		
 		public function PlayerData(game:Game) 
 		{
@@ -50,6 +52,7 @@ package boxesandworlds.game.objects.player
 			Attribute.pushAttribute(arr, "isJump", true, Attribute.BOOL);
 			Attribute.pushAttribute(arr, "isOnEarth", false, Attribute.BOOL);
 			Attribute.pushAttribute(arr, "isRight", true, Attribute.BOOL);
+			Attribute.pushAttribute(arr, "jumperVelocity", Vec2.weak(), Attribute.VEC2);
 			Attribute.pushAttribute(arr, "itemAreaIndentX", 30, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "itemAreaIndentY", 30, Attribute.NUMBER);
 			return arr;
@@ -88,6 +91,8 @@ package boxesandworlds.game.objects.player
 		public function set isRight(value:Boolean):void {_isRight = value;}
 		public function get isBeforeJump():Boolean {return _isBeforeJump;}
 		public function set isBeforeJump(value:Boolean):void {_isBeforeJump = value;}
+		public function get jumperVelocity():Vec2 {return _jumperVelocity;}
+		public function set jumperVelocity(value:Vec2):void {_jumperVelocity = value;}
 	}
 
 }
