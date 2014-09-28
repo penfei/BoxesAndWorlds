@@ -62,6 +62,7 @@ package boxesandworlds.game.controller
 			_input.init();
 			
 			_sound.init();
+			_gui.cameraToPlayer();
 			
 			_level.start();
 			
