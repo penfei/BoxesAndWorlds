@@ -1,12 +1,12 @@
 <xml>
   <levelScript scriptName="boxesandworlds.game.levels.level1.Level1"/>
-  <player worldId="0" x="90" y="-50"/>
+  <player worldId="0" x="2890" y="-50"/>
   <world id="0">
     <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="2"/>
-	  <physicsBitmap type="URL" value="skys2.png"/>
+	  <physicsBitmap type="URL" value="skysPhysics.png"/>
       <views attributeName="views" type="URL" isArray="true">
-        <value>skys2.png</value>
+        <value>skysView.png</value>
       </views>
       <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
         <value>0</value>
@@ -16,12 +16,63 @@
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="3"/>
 	  <power attributeName="power" type="VEC2" x="300" y="-400"/>
-      <start attributeName="start" type="VEC2" x="135" y="164"/>
+      <start attributeName="start" type="VEC2" x="205" y="574"/>
+	  <width attributeName="width" type="NUMBER" value="100"/>
+	  <height attributeName="height" type="NUMBER" value="100"/>
     </Jumper>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="4"/>
 	  <power attributeName="power" type="VEC2" x="0" y="-400"/>
-      <start attributeName="start" type="VEC2" x="405" y="264"/>
+      <start attributeName="start" type="VEC2" x="825" y="734"/>
+	  <width attributeName="width" type="NUMBER" value="70"/>
+	  <startAngle attributeName="startAngle" type="NUMBER" value="-0.1"/>
+    </Jumper>
+	<Jumper itemName="Jumper">
+      <id attributeName="id" type="NUMBER" value="5"/>
+	  <power attributeName="power" type="VEC2" x="100" y="-400"/>
+      <start attributeName="start" type="VEC2" x="930" y="714"/>
+	  <width attributeName="width" type="NUMBER" value="50"/>
+	  <startAngle attributeName="startAngle" type="NUMBER" value="0.3"/>
+    </Jumper>
+	<Jumper itemName="Jumper">
+      <id attributeName="id" type="NUMBER" value="6"/>
+	  <power attributeName="power" type="VEC2" x="400" y="-500"/>
+      <start attributeName="start" type="VEC2" x="1355" y="814"/>
+	  <width attributeName="width" type="NUMBER" value="130"/>
+	  <height attributeName="height" type="NUMBER" value="100"/>
+	  <startAngle attributeName="startAngle" type="NUMBER" value="0.2"/>
+    </Jumper>
+	<Jumper itemName="Jumper">
+      <id attributeName="id" type="NUMBER" value="7"/>
+	  <power attributeName="power" type="VEC2" x="-100" y="-350"/>
+      <start attributeName="start" type="VEC2" x="2800" y="514"/>
+	  <width attributeName="width" type="NUMBER" value="100"/>
+	  <height attributeName="height" type="NUMBER" value="50"/>
+	  <startAngle attributeName="startAngle" type="NUMBER" value="-0.3"/>
+    </Jumper>
+	<Jumper itemName="Jumper">
+      <id attributeName="id" type="NUMBER" value="8"/>
+	  <power attributeName="power" type="VEC2" x="100" y="-300"/>
+      <start attributeName="start" type="VEC2" x="2590" y="384"/>
+	  <width attributeName="width" type="NUMBER" value="80"/>
+	  <height attributeName="height" type="NUMBER" value="30"/>
+	  <startAngle attributeName="startAngle" type="NUMBER" value="0.3"/>
+    </Jumper>
+	<Jumper itemName="Jumper">
+      <id attributeName="id" type="NUMBER" value="9"/>
+	  <power attributeName="power" type="VEC2" x="-100" y="-300"/>
+      <start attributeName="start" type="VEC2" x="3540" y="484"/>
+	  <width attributeName="width" type="NUMBER" value="80"/>
+	  <height attributeName="height" type="NUMBER" value="50"/>
+	  <startAngle attributeName="startAngle" type="NUMBER" value="-0.3"/>
+    </Jumper>
+	<Jumper itemName="Jumper">
+      <id attributeName="id" type="NUMBER" value="10"/>
+	  <power attributeName="power" type="VEC2" x="200" y="-300"/>
+      <start attributeName="start" type="VEC2" x="3090" y="814"/>
+	  <width attributeName="width" type="NUMBER" value="120"/>
+	  <height attributeName="height" type="NUMBER" value="50"/>
+	  <startAngle attributeName="startAngle" type="NUMBER" value="0.2"/>
     </Jumper>
   </world>
 </xml>

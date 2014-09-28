@@ -127,6 +127,7 @@ package boxesandworlds.game.objects.player
 				if (Math.abs(_properties.jumperVelocity.y) < 0.1) _properties.jumperVelocity.y = 0;
 				body.velocity.x += _properties.jumperVelocity.x;
 				body.velocity.y += _properties.jumperVelocity.y;
+				//trace(_properties.jumperVelocity.x, body.velocity.x);
 			}
 		}
 		
@@ -181,7 +182,7 @@ package boxesandworlds.game.objects.player
 				if (_properties.isOnEarth) body.velocity.x = s;
 				else if(isLeftNothing){
 					body.velocity.x -= _properties.speed / 5;
-					if (body.velocity.x < s) body.velocity.x = s;
+					if (Math.abs(body.velocity.x) > s) body.velocity.x = s;
 				}
 			}
 		}
@@ -195,7 +196,7 @@ package boxesandworlds.game.objects.player
 				if(_properties.isOnEarth) body.velocity.x = s;
 				else if(isRightNothing){
 					body.velocity.x += _properties.speed / 5;
-					if (body.velocity.x > s) body.velocity.x = s;
+					if (Math.abs(body.velocity.x) > s) body.velocity.x = s;
 				}
 			}
 		}

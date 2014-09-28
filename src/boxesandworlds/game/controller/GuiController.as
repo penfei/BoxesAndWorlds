@@ -61,14 +61,17 @@ package boxesandworlds.game.controller
 			_menu.init();
 		}
 		
+		public function cameraToPlayer():void {
+			container.x = -game.objects.me.body.position.x + stageWidth / 2;
+			container.y = -game.objects.me.body.position.y + stageHeight * _offsetY;
+		}
+		
 		override public function step():void {
 			//var data:WorldData = game.objects.me.world.data;
 			//container.x = -data.axis.x + data.width / 2;
 			//container.y = -data.axis.y + data.height / 2;
 			
-			container.x = -game.objects.me.body.position.x + stageWidth / 2;
-			container.y = -game.objects.me.body.position.y + stageHeight * _offsetY;
-			//TweenLite.to(container, 0.5, { x:-game.objects.me.body.position.x + stageWidth / 2, y: -game.objects.me.body.position.y + stageHeight * 0.7 } );
+			TweenLite.to(container, 0, { x:-game.objects.me.body.position.x + stageWidth / 2, y: -game.objects.me.body.position.y + stageHeight * _offsetY} );
 			
 			if (game.data.isTest) {
 				_debug.clear();
