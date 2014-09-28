@@ -49,7 +49,8 @@ package boxesandworlds.editor.data.items {
 		
 		// protected
 		protected function setup():void {
-			_attributeName = _attributeDataXML.@attributeName;
+			//_attributeName = _attributeDataXML.@attributeName;
+			_attributeName = _attributeDataXML.localName();
 			_type = _attributeDataXML.@type;
 			_isArray = _attributeDataXML.@isArray == "true";
 			_isEnum = _attributeDataXML.@isEnum == "true";

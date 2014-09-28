@@ -33,8 +33,11 @@ package boxesandworlds.gui.page {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.net.FileReference;
+	import flash.text.TextField;
+	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 	import flash.utils.getDefinitionByName;
 	
@@ -89,6 +92,7 @@ package boxesandworlds.gui.page {
 			_ui.areaWorld.contWorld.addChild(_areaWorld);
 			_ui.areaWorld.bg.addEventListener(MouseEvent.MOUSE_DOWN, bgWorldDownHandler);
 			Core.stage.addEventListener(MouseEvent.MOUSE_UP, bgWorldUpHandler);
+			Core.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownWorldHandler);
 			
 			_areaWorlds = new EditorAreaWorlds(_ui.btnAddWorld, _ui.btnRemoveWorld, _ui.btnSortWorlds);
 			_ui.areaWorlds.addChild(_areaWorlds);
@@ -183,6 +187,21 @@ package boxesandworlds.gui.page {
 		
 		private function bgWorldUpHandler(e:MouseEvent):void {
 			_ui.areaWorld.contWorld.stopDrag();
+		}
+		
+		private function keyDownWorldHandler(e:KeyboardEvent):void {
+			if (Core.stage.focus != null && (Core.stage.focus as TextField) != null) {
+				return;
+			}
+			if (e.keyCode == Keyboard.LEFT) {
+				_ui.areaWorld.contWorld.x -= 20;
+			}else if (e.keyCode == Keyboard.RIGHT) {
+				_ui.areaWorld.contWorld.x += 20;
+			}else if (e.keyCode == Keyboard.UP) {
+				_ui.areaWorld.contWorld.y -= 20;
+			}else if (e.keyCode == Keyboard.DOWN) {
+				_ui.areaWorld.contWorld.y += 20;
+			}
 		}
 		
 		private function btnLoadClickHandler(e:MouseEvent):void {

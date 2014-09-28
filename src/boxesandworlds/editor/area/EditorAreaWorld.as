@@ -16,9 +16,11 @@ package boxesandworlds.editor.area {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 	
 	/**
 	 * ...
@@ -214,6 +216,14 @@ package boxesandworlds.editor.area {
 			addChildItems(_currentWorld);
 		}
 		
+		public function setupStateRemoveItemByKey(isEnable:Boolean):void {
+			if (isEnable) {
+				Core.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownItemHandler);
+			}else {
+				Core.stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownItemHandler);
+			}
+		}
+		
 		// protected
 		protected function setup():void {
 			_canvasLayers = new Sprite();
@@ -243,6 +253,28 @@ package boxesandworlds.editor.area {
 				var view:EditorItemView = item.views[i];
 				if (view != null) {
 					_layers[view.containerId].addChild(view);
+				}
+			}
+		}
+		
+		protected function doItemUpHandler(isRemoveItem:Boolean = false):void {
+			Core.stage.removeEventListener(MouseEvent.MOUSE_UP, itemUpHandler);
+			removeEventListener(Event.ENTER_FRAME, enterFrameMoveItemHandler);
+			stopDragCurrentItem();
+			_currentItem.setupPosition(Math.floor(_currentItem.viewDefault.x), Math.floor(_currentItem.viewDefault.y));
+			if (_currentItem.isShowedWarning || isRemoveItem) {
+				removeItem();
+			}
+			_currentWorld.enableMoveItems();
+		}
+		
+		protected function removeItem():void {
+			for (var i:uint = 0, len:uint = _currentWorld.items.length; i < len; ++i) {
+				if (_currentItem == _currentWorld.items[i]) {
+					_currentWorld.removeItem(i);
+					_currentItem = null;
+					_editorPage.hideAttributes();
+					break;
 				}
 			}
 		}
@@ -280,7 +312,8 @@ package boxesandworlds.editor.area {
 		}
 		
 		protected function getAttributeXML(attribute:EditorAttribute):String {
-			var xml:String = "<" + attribute.nameAttribute + " attributeName='" + attribute.nameAttribute + "'" + " type='" + attribute.type + "'";
+			//var xml:String = "<" + attribute.nameAttribute + " attributeName='" + attribute.nameAttribute + "'" + " type='" + attribute.type + "'";
+			var xml:String = "<" + attribute.nameAttribute + " type='" + attribute.type + "'";
 			if (attribute.isArray) {
 				xml += " isArray='true'>";
 				xml += attribute.valueXML;
@@ -307,36 +340,30 @@ package boxesandworlds.editor.area {
 		}
 		
 		protected function doAddPlayer(player:EditorPlayer):void {
+			player.x = Core.stage.mouseX - player.width / 2 - _editorPage.containerWorld.x; 
+			player.y = Core.stage.mouseY - player.height / 2 - _editorPage.containerWorld.y;
 			_canvasTop.addChild(player);
 		}
 		
 		// handlers
 		private function itemUpHandler(e:MouseEvent):void {
-			Core.stage.removeEventListener(MouseEvent.MOUSE_UP, itemUpHandler);
-			removeEventListener(Event.ENTER_FRAME, enterFrameMoveItemHandler);
-			stopDragCurrentItem();
-			_currentItem.setupPosition(Math.floor(_currentItem.viewDefault.x), Math.floor(_currentItem.viewDefault.y));
-			if (_currentItem.isShowedWarning) {
-				for (var i:uint = 0, len:uint = _currentWorld.items.length; i < len; ++i) {
-					if (_currentItem == _currentWorld.items[i]) {
-						_currentWorld.removeItem(i);
-						_currentItem = null;
-						_editorPage.hideAttributes();
-						break;
-					}
-				}
+			doItemUpHandler();
+		}
+		
+		private function keyDownItemHandler(e:KeyboardEvent):void {
+			if (e.keyCode == Keyboard.DELETE) {
+				doItemUpHandler(true);
 			}
-			_currentWorld.enableMoveItems();
 		}
 		
 		private function enterFrameMoveItemHandler(e:Event):void {
-			//if (_currentItem.viewDefault.x < 0 || _currentItem.viewDefault.y < 0 || _currentItem.viewDefault.x + _currentItem.width > EditorUtils.WORLD_WITDH || _currentItem.viewDefault.y + _currentItem.height > EditorUtils.WORLD_HEIGHT) {
-				//_currentItem.showWarning();
-			//}else if (_currentItem.isShowedWarning) {
-				//_currentItem.hideWarning();
-			//}
+			/*if (_currentItem.viewDefault.x < 0 || _currentItem.viewDefault.y < 0 || _currentItem.viewDefault.x + _currentItem.width > EditorUtils.WORLD_WITDH || _currentItem.viewDefault.y + _currentItem.height > EditorUtils.WORLD_HEIGHT) {
+				_currentItem.showWarning();
+			}else if (_currentItem.isShowedWarning) {
+				_currentItem.hideWarning();
+			}*/
 			var p:Point = localToGlobal(new Point(_currentItem.viewDefault.x, _currentItem.viewDefault.y));
-			if (p.x + _currentItem.width > EditorUtils.WORLD_WITDH) {
+			if (p.x > EditorUtils.WORLD_WITDH) {
 				_currentItem.showWarning();
 			}else if (_currentItem.isShowedWarning) {
 				_currentItem.hideWarning();
@@ -381,7 +408,13 @@ package boxesandworlds.editor.area {
 		}
 		
 		private function enterFrameMovePlayerHandler(e:Event):void {
-			if (_currentWorld.player.x < 0 || _currentWorld.player.y < 0 || _currentWorld.player.x + _currentWorld.player.width > EditorUtils.WORLD_WITDH || _currentWorld.player.y + _currentWorld.player.height > EditorUtils.WORLD_HEIGHT) {
+			/*if (_currentWorld.player.x < 0 || _currentWorld.player.y < 0 || _currentWorld.player.x + _currentWorld.player.width > EditorUtils.WORLD_WITDH || _currentWorld.player.y + _currentWorld.player.height > EditorUtils.WORLD_HEIGHT) {
+				_currentWorld.player.showWarning();
+			}else if (_currentWorld.player.isShowedWarning) {
+				_currentWorld.player.hideWarning();
+			}*/
+			var p:Point = localToGlobal(new Point(_currentWorld.player.x, _currentWorld.player.y));
+			if (p.x + _currentWorld.player.width > EditorUtils.WORLD_WITDH) {
 				_currentWorld.player.showWarning();
 			}else if (_currentWorld.player.isShowedWarning) {
 				_currentWorld.player.hideWarning();

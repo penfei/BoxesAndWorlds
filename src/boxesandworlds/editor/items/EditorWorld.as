@@ -98,6 +98,7 @@ package boxesandworlds.editor.items {
 					_items[i].setupSelectable(false);
 				}
 			}
+			_areaWorld.setupStateRemoveItemByKey(item != null);
 		}
 		
 		public function removeItem(index:int):void {
@@ -128,6 +129,7 @@ package boxesandworlds.editor.items {
 			_items.length = len;
 			for (var i:int = 0; i < len; ++i) {
 				var attributes:Vector.<Attribute> = EditorUtils.createAttributesFromXML(worldData.itemsData[i]);
+				attributes.push(new Attribute("type", worldData.itemsData[i].itemName, Attribute.STRING, 0));
 				var item:EditorItem = new EditorItem(int(worldData.itemsData[i].uniqueId), i, attributes);
 				item.loadViews();
 				var startPosition:Vec2 = item.startPosition as Vec2;
@@ -195,7 +197,8 @@ package boxesandworlds.editor.items {
 				dispatchEvent(new Event(EditorPlayer.ADD_PLAYER));
 			}
 			if (isDrag) {
-				_player.startDrag(false, new Rectangle(0, 0, Core.stage.stageWidth - _player.width, Core.stage.stageHeight - _player.height));
+				//_player.startDrag(false, new Rectangle(0, 0, Core.stage.stageWidth - _player.width, Core.stage.stageHeight - _player.height));
+				_player.startDrag(false);
 			}
 		}
 		
