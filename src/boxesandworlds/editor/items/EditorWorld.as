@@ -72,8 +72,8 @@ package boxesandworlds.editor.items {
 			return item;
 		}
 		
-		public function addPlayer(isDrag:Boolean = true, isDefaultPositions:Boolean = true, posX:Number = 0, posY:Number = 0):void {
-			setupMoveblePlayer(isDrag, isDefaultPositions, posX, posY);
+		public function addPlayer(isDrag:Boolean = true, isDefaultPositions:Boolean = true, posX:Number = 0, posY:Number = 0, isFromXML:Boolean = false):void {
+			setupMoveblePlayer(isDrag, isDefaultPositions, posX, posY, isFromXML);
 		}
 		
 		public function removePlayer():void {
@@ -182,7 +182,7 @@ package boxesandworlds.editor.items {
 			Core.stage.addEventListener(MouseEvent.MOUSE_UP, savePositionStartInAttributeHandler);
 		}
 		
-		protected function setupMoveblePlayer(isDrag:Boolean = true, isDefaultPositions:Boolean = true, posX:Number = 0, posY:Number = 0):void {
+		protected function setupMoveblePlayer(isDrag:Boolean = true, isDefaultPositions:Boolean = true, posX:Number = 0, posY:Number = 0, isFromXML:Boolean = false):void {
 			if (_player == null) {
 				_player = new EditorPlayer();
 				if (isDefaultPositions) {
@@ -194,7 +194,9 @@ package boxesandworlds.editor.items {
 				}
 				_player.buttonMode = true;
 				_player.addEventListener(MouseEvent.MOUSE_DOWN, playerDownHandler);
-				dispatchEvent(new Event(EditorPlayer.ADD_PLAYER));
+				if (!isFromXML) {
+					dispatchEvent(new Event(EditorPlayer.ADD_PLAYER));
+				}
 			}
 			if (isDrag) {
 				//_player.startDrag(false, new Rectangle(0, 0, Core.stage.stageWidth - _player.width, Core.stage.stageHeight - _player.height));

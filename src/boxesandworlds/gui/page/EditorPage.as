@@ -194,13 +194,13 @@ package boxesandworlds.gui.page {
 				return;
 			}
 			if (e.keyCode == Keyboard.LEFT) {
-				_ui.areaWorld.contWorld.x -= 20;
-			}else if (e.keyCode == Keyboard.RIGHT) {
 				_ui.areaWorld.contWorld.x += 20;
+			}else if (e.keyCode == Keyboard.RIGHT) {
+				_ui.areaWorld.contWorld.x -= 20;
 			}else if (e.keyCode == Keyboard.UP) {
-				_ui.areaWorld.contWorld.y -= 20;
-			}else if (e.keyCode == Keyboard.DOWN) {
 				_ui.areaWorld.contWorld.y += 20;
+			}else if (e.keyCode == Keyboard.DOWN) {
+				_ui.areaWorld.contWorld.y -= 20;
 			}
 		}
 		

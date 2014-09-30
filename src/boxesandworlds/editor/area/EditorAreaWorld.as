@@ -207,8 +207,7 @@ package boxesandworlds.editor.area {
 				}
 				_currentWorld = world;
 				if (playerData.playerWorldId != "" && int(playerData.playerWorldId) == world.id) {
-					world.addPlayer(false, false, Number(playerData.playerPositionX), Number(playerData.playerPositionY));
-					doAddPlayer(world.player);
+					world.addPlayer(false, false, Number(playerData.playerPositionX), Number(playerData.playerPositionY), true);
 					_editorPage.disablePlayer();
 				}
 			}
@@ -339,9 +338,11 @@ package boxesandworlds.editor.area {
 			updateItemViewsPositionsHandler();
 		}
 		
-		protected function doAddPlayer(player:EditorPlayer):void {
-			player.x = Core.stage.mouseX - player.width / 2 - _editorPage.containerWorld.x; 
-			player.y = Core.stage.mouseY - player.height / 2 - _editorPage.containerWorld.y;
+		protected function doAddPlayer(player:EditorPlayer, isFromXML:Boolean = false):void {
+			if (!isFromXML) {
+				player.x = Core.stage.mouseX - player.width / 2 - _editorPage.containerWorld.x;
+				player.y = Core.stage.mouseY - player.height / 2 - _editorPage.containerWorld.y;
+			}
 			_canvasTop.addChild(player);
 		}
 		
