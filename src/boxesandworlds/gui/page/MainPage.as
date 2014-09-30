@@ -124,7 +124,7 @@ package boxesandworlds.gui.page {
 		
 		private function gameClickHandler(e:MouseEvent):void 
 		{
-			Core.ui.showPage(UIManager.GAME_PAGE_ID);
+			Core.ui.showPage(UIManager.GAME_PAGE_ID, Core.data.saveObject);
 		}
 		
 		override public function resize():void {
