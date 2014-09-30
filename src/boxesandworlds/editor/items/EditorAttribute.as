@@ -254,6 +254,9 @@ package boxesandworlds.editor.items {
 				_ui.mcValue.value1.addEventListener(FocusEvent.FOCUS_OUT, focusOutHandler);
 				_ui.mcValue.value2.addEventListener(FocusEvent.FOCUS_IN, focusInHandler);
 				_ui.mcValue.value2.addEventListener(FocusEvent.FOCUS_OUT, focusOutHandler);
+			}else if (_nameAttribute == "width" || _nameAttribute == "height") {
+				_ui.mcValue.label.addEventListener(Event.CHANGE, changeSizeHandler);
+				changeSizeHandler();
 			}
 		}
 		
@@ -288,6 +291,11 @@ package boxesandworlds.editor.items {
 		
 		private function changeHandler(e:Event):void {
 			dispatchEvent(new EditorEventChangeAttributeStart(EditorEventChangeAttributeStart.CHANGE_ATTRIBUTE_START, Number(EditorUtils.cutSideSpaces(_ui.mcValue.value1.text)), Number(EditorUtils.cutSideSpaces(_ui.mcValue.value2.text)), true));
+		}
+		
+		private function changeSizeHandler(e:Event = null):void {
+			_value = uint(_ui.mcValue.label.text);
+			dispatchEvent(new Event(EditorItem.CHANGE_DEFAULT_SIZE));
 		}
 		
 	}

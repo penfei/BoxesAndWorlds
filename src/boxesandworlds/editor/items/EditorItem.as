@@ -22,6 +22,8 @@ package boxesandworlds.editor.items {
 	public class EditorItem extends EventDispatcher {
 		
 		// const
+		static public const CHANGE_DEFAULT_SIZE:String = "EditorChangeDefaultSize";
+		
 		private const DEFAULT_WIDTH:uint = 100;
 		private const DEFAULT_HEIGHT:uint = 100;
 		
@@ -49,7 +51,7 @@ package boxesandworlds.editor.items {
 		// get
 		public function get width():Number {
 			if (_views.length == 0) {
-				return DEFAULT_WIDTH;
+				return _viewDefault.width;
 			}
 			var maxWidth:Number = 0;
 			var isExistRealWidth:Boolean = false;
@@ -72,7 +74,7 @@ package boxesandworlds.editor.items {
 		
 		public function get height():Number {
 			if (_views.length == 0) {
-				return DEFAULT_HEIGHT;
+				return _viewDefault.height;
 			}
 			var maxHeight:Number = 0;
 			var isExistRealHeight:Boolean = false;
@@ -233,12 +235,16 @@ package boxesandworlds.editor.items {
 			for (var i:int = 0; i < len; ++i) {
 				if (attributes[i].redactorAction) {
 					var attribute:EditorAttribute = new EditorAttribute(i, attributes[i].name, attributes[i].isEnum, attributes[i].isArray, attributes[i].type, attributes[i].value, attributes[i].defaultValue, attributes[i].enumValues);
+					if (attributes[i].name == "width" || attributes[i].name == "height") {
+						attribute.addEventListener(CHANGE_DEFAULT_SIZE, changeDefaultSizeHandler);
+					}
 					_mcAttributes.push(attribute);
 				}
 			}
 			
 			createUI(nameEditor);
 			createMCWarning();
+			updateSize();
 		}
 		
 		protected function createUI(name:String = ""):void {
@@ -284,10 +290,17 @@ package boxesandworlds.editor.items {
 		}
 		
 		protected function updateSize():void {
-			var w:Number = this.width;
-			var h:Number = this.height;
-			_viewDefault.width = w;
-			_viewDefault.height = h;
+			//var w:Number = this.width;
+			//var h:Number = this.height;
+			//_viewDefault.width = w;
+			//_viewDefault.height = h;
+			for (var i:uint = 0, len:uint = _mcAttributes.length; i < len; ++i) {
+				if (_mcAttributes[i].nameAttribute == "width") {
+					_viewDefault.width = uint(_mcAttributes[i].value);
+				}else if (_mcAttributes[i].nameAttribute == "height") {
+					_viewDefault.height = uint(_mcAttributes[i].value);
+				}
+			}
 		}
 		
 		protected function destroyView(view:EditorItemView):void {
@@ -364,6 +377,10 @@ package boxesandworlds.editor.items {
 		}
 		
 		private function updateItemSizeHandler(e:Event):void {
+			updateSize();
+		}
+		
+		private function changeDefaultSizeHandler(e:Event):void {
 			updateSize();
 		}
 	}
