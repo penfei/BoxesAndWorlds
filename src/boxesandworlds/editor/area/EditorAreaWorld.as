@@ -59,6 +59,19 @@ package boxesandworlds.editor.area {
 				}
 				_worlds = null;
 			}
+			if (_layers != null) {
+				for (var j:uint = 0, lenj:uint = _layers.length; j < lenj; ++j) {
+					if (_layers[j] != null) {
+						if (_layers[j].parent != null) {
+							_layers[j].parent.removeChild(_layers[j]);
+						}
+						_layers[j] = null;
+					}
+				}
+				_layers = null;
+			}
+			_currentWorld = null;
+			_currentItem = null;
 		}
 		
 		public function addWorld(id:int):void {

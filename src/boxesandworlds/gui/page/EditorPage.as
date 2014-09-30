@@ -220,6 +220,8 @@ package boxesandworlds.gui.page {
 			_areaWorlds.setupDataFromXML(levelData.worldsData);
 			_areaWorld.setupDataFromXML(levelData.playerData, levelData.worldsData);
 			_ui.areaWorld.contWorld.x = _ui.areaWorld.contWorld.y = 0;
+			
+			changedScriptHandler();
 		}
 		
 		private function btnSaveClickHandler(e:MouseEvent):void {
