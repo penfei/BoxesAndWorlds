@@ -41,7 +41,8 @@ package boxesandworlds.game.objects.items.jumper
 		
 		public function addImpulse():void 
 		{
-			game.objects.me.playerData.jumperVelocity = _properties.power.copy();
+			if(game.objects.me.body.position.y < body.position.y)
+				game.objects.me.playerData.jumperVelocity = _properties.power.copy();
 			//game.objects.me.addImpulse(_properties.power.copy(true));
 		}
 	}
