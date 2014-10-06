@@ -99,8 +99,7 @@ package boxesandworlds.controller {
 		}
 		
 		// private:
-		private function resize(e:Event = null):void 
-		{
+		private function resize(e:Event = null):void {
 			_miniPreloader.x = _canvas.stage.stageWidth / 2;
 			_miniPreloader.y = _canvas.stage.stageHeight / 2;
 			if(_currentPage) _currentPage.resize();
@@ -135,7 +134,7 @@ package boxesandworlds.controller {
 				case GAME_PAGE_ID:
 					return new GamePage(_nextPageParams);
 				case EDITOR_PAGE_ID:
-					return new EditorPage();
+					return new EditorPage(_nextPageParams);
 				default: 
 					return null;
 			}

@@ -10,7 +10,6 @@ package boxesandworlds.editor {
 	public class EditorPopup extends Sprite{
 		
 		// const
-		static public const EDITOR_SAVE_LEVEL:String = "editorSaveLevel";
 		static public const EDITOR_CLEAR_LEVEL:String = "editorClearLevel";
 		static public const EDITOR_EXIT:String = "editorExit";
 		static public const EDITOR_CANCEL_POPUP:String = "editorCancelPopup";
@@ -29,10 +28,6 @@ package boxesandworlds.editor {
 		public function setupType(type:String):void {
 			_type = type;
 			switch(_type) {
-				case EDITOR_SAVE_LEVEL:
-					_ui.label.text = "сохранить уровень?".toUpperCase();
-					break;
-					
 				case EDITOR_CLEAR_LEVEL:
 					_ui.label.text = "очистить весь мир?".toUpperCase();
 					break;
@@ -57,10 +52,6 @@ package boxesandworlds.editor {
 		// handlers
 		private function btnYesClickHandler(e:MouseEvent):void {
 			switch(_type) {
-				case EDITOR_SAVE_LEVEL:
-					dispatchEvent(new Event(EDITOR_SAVE_LEVEL));
-					break;
-					
 				case EDITOR_CLEAR_LEVEL:
 					dispatchEvent(new Event(EDITOR_CLEAR_LEVEL));
 					break;

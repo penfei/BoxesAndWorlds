@@ -59,10 +59,12 @@ package boxesandworlds.gui.page {
 		private var _areaScript:EditorAreaScript;
 		
 		// vars
+		private var _params:Object;
 		private var _isSetupPlayer:Boolean;
 		private var _xmlLoader:EditorXMLLoader;
 		
-		public function EditorPage() {
+		public function EditorPage(params:Object = null) {
+			_params = params;
 			super(UIManager.EDITOR_PAGE_ID);
 		}
 		
@@ -77,12 +79,12 @@ package boxesandworlds.gui.page {
 			_popup.mouseChildren = _popup.mouseEnabled = false;
 			addChild(_popup);
 			_popup.addEventListener(EditorPopup.EDITOR_CANCEL_POPUP, popupCancelHandler);
-			_popup.addEventListener(EditorPopup.EDITOR_SAVE_LEVEL, popupSaveLevelHandler);
 			_popup.addEventListener(EditorPopup.EDITOR_CLEAR_LEVEL, popupClearLevelHandler);
 			_popup.addEventListener(EditorPopup.EDITOR_EXIT, popupExitHandler);
 			
-			_ui.btnLoad.buttonMode = _ui.btnSave.buttonMode = _ui.btnClear.buttonMode = _ui.btnExit.buttonMode = true;
+			_ui.btnLoad.buttonMode = _ui.btnPlay.buttonMode = _ui.btnSave.buttonMode = _ui.btnClear.buttonMode = _ui.btnExit.buttonMode = true;
 			_ui.btnLoad.addEventListener(MouseEvent.CLICK, btnLoadClickHandler);
+			_ui.btnPlay.addEventListener(MouseEvent.CLICK, btnPlayClickHandler);
 			_ui.btnSave.addEventListener(MouseEvent.CLICK, btnSaveClickHandler);
 			_ui.btnClear.addEventListener(MouseEvent.CLICK, btnClearClickHandler);
 			_ui.btnExit.addEventListener(MouseEvent.CLICK, btnExitClickHandler);
@@ -121,6 +123,10 @@ package boxesandworlds.gui.page {
 			_areaScript.addEventListener(EditorAreaScript.EDITOR_CHANGED_SCRIPT, changedScriptHandler);
 			changedScriptHandler();
 			
+			if (_params != null && _params.xml) {
+				loadXMLFromFile(String(_params.xml));
+			}
+			
 			//setupTempPositions();
 		}
 		
@@ -145,7 +151,7 @@ package boxesandworlds.gui.page {
 		/* функция для калькулятора Бори */
 		protected function setupTempPositions():void {
 			var step:int = 100;
-			_ui.btnLoad.y = _ui.btnSave.y = _ui.btnExit.y = _ui.btnClear.y = _ui.btnClear.y - step;
+			_ui.btnLoad.y = _ui.btnPlay.y = _ui.btnSave.y = _ui.btnExit.y = _ui.btnClear.y = _ui.btnClear.y - step;
 			_ui.bgButtons.y -= step;
 		}
 		
@@ -163,20 +169,17 @@ package boxesandworlds.gui.page {
 			TweenMax.to(_popup, .4, { y: (Core.stage.stageHeight - _popup.height) / 2 + 50, alpha:0, ease:Linear.easeNone } );
 		}
 		
-		protected function saveXML():void {
-			var xml:XML = <xml></xml>;
-			xml = _areaScript.getLevelScriptXML(xml);
-			xml = _areaWorld.getWorldsAndPlayerXML(xml);
-			
-			var ba:ByteArray = new ByteArray();
-			ba.writeUTFBytes(xml);
-			var fr:FileReference = new FileReference();
-			fr.save(ba, EditorUtils.XML_NAME);
-		}
-		
 		protected function enablePlayer():void {
 			_ui.player.mc.alpha = 1;
 			_isSetupPlayer = false;
+		}
+		
+		protected function loadXMLFromFile(fileName:String):void {
+			if (_xmlLoader == null) {
+				_xmlLoader = new EditorXMLLoader();
+			}
+			_xmlLoader.addEventListener(EditorXMLLoader.XML_DATA_LOADED, xmlDataLoadedHandler);
+			_xmlLoader.loadXML(fileName);
 		}
 		
 		// handlers
@@ -224,9 +227,21 @@ package boxesandworlds.gui.page {
 			changedScriptHandler();
 		}
 		
+		private function btnPlayClickHandler(e:MouseEvent):void {
+			if (_xmlLoader != null && _xmlLoader.levelData != null) {
+				Core.ui.showPage(UIManager.GAME_PAGE_ID, { level:"../assets/" + _xmlLoader.fileName, to_cache: true } );
+			}
+		}
+		
 		private function btnSaveClickHandler(e:MouseEvent):void {
-			_popup.setupType(EditorPopup.EDITOR_SAVE_LEVEL);
-			showPopup();
+			var xml:XML = <xml></xml>;
+			xml = _areaScript.getLevelScriptXML(xml);
+			xml = _areaWorld.getWorldsAndPlayerXML(xml);
+			
+			var ba:ByteArray = new ByteArray();
+			ba.writeUTFBytes(xml);
+			var fr:FileReference = new FileReference();
+			fr.save(ba, EditorUtils.XML_NAME);
 		}
 		
 		private function btnClearClickHandler(e:MouseEvent):void {
@@ -241,11 +256,6 @@ package boxesandworlds.gui.page {
 		
 		private function popupCancelHandler(e:Event):void {
 			hidePopup();
-		}
-		
-		private function popupSaveLevelHandler(e:Event):void {
-			hidePopup();
-			saveXML();
 		}
 		
 		private function popupClearLevelHandler(e:Event):void {
