@@ -3,9 +3,13 @@ package boxesandworlds.game.objects
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.objects.items.box.Box;
+	import boxesandworlds.game.utils.BitmapDataIso;
 	import boxesandworlds.game.world.World;
 	import nape.dynamics.Arbiter;
 	import nape.dynamics.InteractionFilter;
+	import nape.geom.GeomPoly;
+	import nape.geom.GeomPolyList;
+	import nape.geom.MarchingSquares;
 	import nape.geom.Ray;
 	import nape.geom.RayResult;
 	import nape.geom.Vec2;
@@ -137,21 +141,40 @@ package boxesandworlds.game.objects
 			
 			_body.userData.obj = this;
 			_body.velocity.set(_properties.startLV);
-			var m:Material = new Material(_properties.elasticity, _properties.dynamicFriction, _properties.staticFriction, _properties.density);
-			var shape:Shape;
-			if (_properties.bodyShapeType == GameObjectData.BOX_SHAPE) {
-				shape = new Polygon(Polygon.box(_properties.width, _properties.height), m);
+			if (_properties.bodyShapeType == GameObjectData.BITMAP_SHAPE) {
+				var iso:BitmapDataIso = new BitmapDataIso(_properties.physicsBitmap.bitmapData, 0x80);
+				var polys:GeomPolyList = MarchingSquares.run(iso, iso.bounds, _properties.granularity, _properties.quality);
+				for (var i:int = 0; i < polys.length; i++) {
+					var p:GeomPoly = polys.at(i);
+
+					var qolys:GeomPolyList = p.simplify(_properties.simplification).convexDecomposition(true);
+					for (var j:int = 0; j < qolys.length; j++) {
+						var q:GeomPoly = qolys.at(j);
+						body.shapes.add(new Polygon(q));
+						q.dispose();
+					}
+					qolys.clear();
+					p.dispose();
+				}
+				polys.clear();
+				_body.rotation = _properties.startAngle;
+			} else {
+				var m:Material = new Material(_properties.elasticity, _properties.dynamicFriction, _properties.staticFriction, _properties.density);
+				var shape:Shape;
+				if (_properties.bodyShapeType == GameObjectData.BOX_SHAPE) {
+					shape = new Polygon(Polygon.box(_properties.width, _properties.height), m);
+				}
+				if (_properties.bodyShapeType == GameObjectData.POINTS_SHAPE) {
+					shape = new Polygon(_properties.shapePoints, m);
+				}
+				_body.shapes.add(shape);
+				_body.rotation = _properties.startAngle;
+				var pos:Vec2 = _body.position.copy();
+				_body.align();
+				if (_body.isStatic()) _body.position.set(pos);
 			}
-			if (_properties.bodyShapeType == GameObjectData.POINTS_SHAPE) {
-				shape = new Polygon(_properties.shapePoints, m);
-			}
-			_body.shapes.add(shape);
-			_body.rotation = _properties.startAngle;
-			var p:Vec2 = _body.position.copy();
-			_body.align();
-			if (_body.isStatic()) _body.position.set(p);
-			_body.space = game.physics.world;
 			
+			_body.space = game.physics.world;
 			_properties.mass = _body.mass;
 		}
 		

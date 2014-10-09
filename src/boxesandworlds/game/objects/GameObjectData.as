@@ -2,6 +2,7 @@ package boxesandworlds.game.objects
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.data.Attribute;
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import nape.geom.Vec2;
 	import nape.phys.BodyType;
@@ -16,6 +17,7 @@ package boxesandworlds.game.objects
 		static public const BOX_SHAPE:String = "BOX_SHAPE";
 		static public const CIRCLE_SHAPE:String = "CIRCLE_SHAPE";
 		static public const POINTS_SHAPE:String = "POINTS_SHAPE";
+		static public const BITMAP_SHAPE:String = "BITMAP_SHAPE";
 		
 		private var _bodyShapeType:String;
 		private var _bodyType:BodyType;
@@ -40,6 +42,11 @@ package boxesandworlds.game.objects
 		private var _teleportId:uint;
 		private var _canTeleport:Boolean;
 		private var _needButtonToTeleport:Boolean;
+		
+		private var _physicsBitmap:Bitmap;
+		private var _granularity:Vec2;
+		private var _quality:int;
+		private var _simplification:Number;
 		
 		public var saveCallback:Function;
 		public var loadCallback:Function;
@@ -71,6 +78,10 @@ package boxesandworlds.game.objects
 			Attribute.pushAttribute(arr, "needButtonToTeleport", false, Attribute.BOOL);
 			//Attribute.pushAttribute(arr, "canTeleport", false, Attribute.BOOL, 1 , false, null, false, true);
 			Attribute.pushAttribute(arr, "canTeleport", false, Attribute.BOOL);
+			Attribute.pushAttribute(arr, "physicsBitmap", "", Attribute.URL, 2);
+			Attribute.pushAttribute(arr, "granularity", Vec2.weak(4, 4), Attribute.VEC2);
+			Attribute.pushAttribute(arr, "quality", 2, Attribute.NUMBER);
+			Attribute.pushAttribute(arr, "simplification", 1.5, Attribute.NUMBER);
 			return arr;
 		}
 		
@@ -89,6 +100,11 @@ package boxesandworlds.game.objects
 			for (var key:String in params) {
 				if (key == "bodyType") this[key] = stringToBodyType(params[key]);
 				else this[key] = params[key];
+			}
+			
+			if(bodyShapeType == BITMAP_SHAPE){
+				width = _physicsBitmap.width;
+				height = _physicsBitmap.height;
 			}
 		}
 		
@@ -165,7 +181,15 @@ package boxesandworlds.game.objects
 		public function get containerIds():Array {return _containerIds;}
 		public function set containerIds(value:Array):void { _containerIds = value; }
 		public function get views():Array {return _views;}
-		public function set views(value:Array):void {_views = value;}
+		public function set views(value:Array):void { _views = value; }
+		public function get physicsBitmap():Bitmap {return _physicsBitmap;}
+		public function set physicsBitmap(value:Bitmap):void {_physicsBitmap = value;}
+		public function get granularity():Vec2 {return _granularity;}
+		public function set granularity(value:Vec2):void {_granularity = value;}
+		public function get quality():int {return _quality;}
+		public function set quality(value:int):void {_quality = value;}
+		public function get simplification():Number {return _simplification;}
+		public function set simplification(value:Number):void {_simplification = value;}
 	}
 
 }

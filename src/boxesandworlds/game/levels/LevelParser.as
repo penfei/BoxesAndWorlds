@@ -5,7 +5,6 @@ package boxesandworlds.game.levels
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.data.Attribute;
 	import boxesandworlds.game.objects.GameObject;
-	import boxesandworlds.game.objects.worldstructrure.WorldStructure;
 	import boxesandworlds.game.utils.ContentUtils;
 	import boxesandworlds.game.world.World;
 	import nape.geom.Vec2;

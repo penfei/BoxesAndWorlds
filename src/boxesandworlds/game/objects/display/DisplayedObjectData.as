@@ -1,4 +1,4 @@
-package boxesandworlds.game.objects.worldstructrure 
+package boxesandworlds.game.objects.display 
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.data.Attribute;
@@ -10,11 +10,11 @@ package boxesandworlds.game.objects.worldstructrure
 	 * ...
 	 * @author Sah
 	 */
-	public class WorldStructureData extends GameObjectData
+	public class DisplayedObjectData extends GameObjectData
 	{
 		
 		
-		public function WorldStructureData(game:Game) 
+		public function DisplayedObjectData(game:Game) 
 		{
 			super(game);
 		}
@@ -22,7 +22,7 @@ package boxesandworlds.game.objects.worldstructrure
 		public static function attributes():Vector.<Attribute>
 		{
 			var arr:Vector.<Attribute> = GameObjectData.attributes();
-			Attribute.pushAttribute(arr, "type", "WorldStructure", Attribute.STRING, 0);
+			Attribute.pushAttribute(arr, "type", "DisplayedObject", Attribute.STRING, 0);
 			Attribute.pushAttribute(arr, "bodyType", BodyType.STATIC, Attribute.STRING, 0);
 			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BITMAP_SHAPE, Attribute.STRING, 0);
 			return arr;

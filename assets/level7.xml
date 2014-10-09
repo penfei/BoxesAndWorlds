@@ -13,6 +13,17 @@
       </containerIds>
       <start attributeName="start" type="VEC2" x="0" y="0"/>
     </WorldStructure>
+	<DisplayedObject itemName="DisplayedObject">
+      <id attributeName="id" type="NUMBER" value="13"/>
+	  <physicsBitmap type="URL" value="mushroom.png"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>mushroom.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>0</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="3890" y="706"/>
+    </DisplayedObject>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="3"/>
 	  <power attributeName="power" type="VEC2" x="300" y="-400"/>
