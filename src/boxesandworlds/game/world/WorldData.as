@@ -25,10 +25,15 @@ package boxesandworlds.game.world
 		public function init(params:Object):void {
 			_id = params.id;
 			_rotation = 0;
-			if (params.physic.WorldStructure) {
-				var bitmapData:BitmapData = Core.content.library[params.physic.WorldStructure.physicsBitmap.@value].bitmapData;
-				_width = bitmapData.width;
-				_height = bitmapData.height;
+			if (params.physic.hasOwnProperty("WorldStructure")) {
+				if(params.physic.WorldStructure.isEmpty.@value == "true"){
+					_width = params.physic.WorldStructure.width.@value;
+					_height = params.physic.WorldStructure.height.@value;
+				} else {
+					var bitmapData:BitmapData = Core.content.library[params.physic.WorldStructure.physicsBitmap.@value].bitmapData;
+					_width = bitmapData.width;
+					_height = bitmapData.height;
+				}
 			}else {
 				_width = 800;
 				_height = 800;

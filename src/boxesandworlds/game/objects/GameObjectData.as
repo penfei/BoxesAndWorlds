@@ -99,10 +99,14 @@ package boxesandworlds.game.objects
 			
 			for (var key:String in params) {
 				if (key == "bodyType") this[key] = stringToBodyType(params[key]);
+				else if (this[key] is Boolean) {
+					if (params[key] == "true") this[key] = true;
+					else this[key] = false;
+				}
 				else this[key] = params[key];
 			}
 			
-			if(bodyShapeType == BITMAP_SHAPE){
+			if(bodyShapeType == BITMAP_SHAPE && _physicsBitmap != null){
 				width = _physicsBitmap.width;
 				height = _physicsBitmap.height;
 			}

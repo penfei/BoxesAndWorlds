@@ -49,7 +49,7 @@ package boxesandworlds.game.objects.player
 			_states.push(_uiBeforeJump);
 			
 			obj.data.views.push(_ui);
-			obj.data.containerIds[0] = 0;
+			obj.data.containerIds[0] = 10;
 			super.init();
 		}
 		

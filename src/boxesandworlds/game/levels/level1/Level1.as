@@ -6,6 +6,7 @@ package boxesandworlds.game.levels.level1
 	import com.greensock.TweenMax;
 	import flash.display.Sprite;
 	import flash.filters.BitmapFilterQuality;
+	import flash.filters.BlurFilter;
 	import flash.filters.GlowFilter;
 	import nape.callbacks.CbEvent;
 	import nape.callbacks.InteractionCallback;
@@ -23,10 +24,17 @@ package boxesandworlds.game.levels.level1
 		
 		static public function layers():Vector.<Sprite> {
 			var arr:Vector.<Sprite> = Level.layers();
-			
-			var heroLayer:Sprite = arr[0];
 			var glow:GlowFilter = new GlowFilter(0x339933, 1, 2, 2, 10, BitmapFilterQuality.HIGH, false, false);
-			heroLayer.filters = [glow];
+			var glow2:GlowFilter = new GlowFilter(0x339933, 1, 2, 2, 10, BitmapFilterQuality.HIGH, false, true);
+			var blur:BlurFilter = new BlurFilter(0, 56, 3);
+			var blur2:BlurFilter = new BlurFilter(0, 14);
+			
+			arr[10].filters = [glow];
+			arr[11].filters = [glow, blur2];
+			arr[12].filters = [glow2, blur2];
+			arr[13].filters = [glow2, blur2];
+			arr[14].filters = [glow, blur2];
+			arr[15].filters = [glow2, blur2];
 			
 			return arr;
 		}

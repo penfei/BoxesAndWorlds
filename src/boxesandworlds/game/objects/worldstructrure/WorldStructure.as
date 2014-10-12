@@ -3,6 +3,7 @@ package boxesandworlds.game.objects.worldstructrure
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.objects.GameObject;
 	import boxesandworlds.game.world.World;
+	import nape.phys.Body;
 	/**
 	 * ...
 	 * @author Sah
@@ -29,7 +30,22 @@ package boxesandworlds.game.objects.worldstructrure
 			
 			_view = new WorldStructureView(game, this);
 			view = _view;
-			super.init();
+			if (!_properties.isEmpty) {
+				super.init();
+			}
+			else {
+				initPhysics();
+			}
+		}
+		
+		override protected function initPhysics():void {
+			if (!_properties.isEmpty) {
+				super.initPhysics();
+			} else {
+				body = new Body(_properties.bodyType, _properties.start);
+				body.userData.obj = this;
+			}
+			
 		}
 		
 		override public function loadLevel(save:Object):void {
