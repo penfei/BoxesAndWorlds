@@ -29,12 +29,17 @@ package boxesandworlds.game.levels.level1
 			var blur:BlurFilter = new BlurFilter(0, 56, 3);
 			var blur2:BlurFilter = new BlurFilter(0, 14);
 			
+			arr[8].filters = [glow2, blur2];
+			arr[9].filters = [glow2, blur2];
 			arr[10].filters = [glow];
 			arr[11].filters = [glow, blur2];
 			arr[12].filters = [glow2, blur2];
 			arr[13].filters = [glow2, blur2];
 			arr[14].filters = [glow, blur2];
 			arr[15].filters = [glow2, blur2];
+			arr[16].filters = [glow, blur2];
+			arr[17].filters = [glow, blur2];
+			arr[18].filters = [glow, blur2];
 			
 			return arr;
 		}

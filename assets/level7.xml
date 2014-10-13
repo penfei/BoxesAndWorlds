@@ -1,6 +1,6 @@
 <xml>
   <levelScript scriptName="boxesandworlds.game.levels.level1.Level1"/>
-  <player worldId="0" x="153" y="270"/>
+  <player worldId="0" x="4153" y="70"/>
   <world id="0">
     <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="2"/>
@@ -28,7 +28,115 @@
 		<value>14</value>
 		<value>15</value>
       </containerIds>
-      <start attributeName="start" type="VEC2" x="100" y="300"/>
+      <start attributeName="start" type="VEC2" x="9" y="400"/>
+    </DisplayedObject>
+	<DisplayedObject itemName="DisplayedObject">
+      <id attributeName="id" type="NUMBER" value="14"/>
+	  <physicsBitmap type="URL" value="level1\house2p.png"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\house2-1.png</value>
+		<value>level1\house2-1.png</value>
+		<value>level1\house2-2.png</value>
+		<value>level1\house2-3.png</value>
+		<value>level1\house2-4.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>10</value>
+		<value>11</value>
+		<value>12</value>
+		<value>8</value>
+		<value>9</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="745" y="495"/>
+    </DisplayedObject>
+	<DisplayedObject itemName="DisplayedObject">
+      <id attributeName="id" type="NUMBER" value="15"/>
+	  <physicsBitmap type="URL" value="level1\house3p.png"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\house3-1.png</value>
+		<value>level1\house3-1.png</value>
+		<value>level1\house3-2.png</value>
+		<value>level1\house3-3.png</value>
+		<value>level1\house3-4.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>10</value>
+		<value>11</value>
+		<value>12</value>
+		<value>13</value>
+		<value>14</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="1840" y="430"/>
+    </DisplayedObject>
+	<DisplayedObject itemName="DisplayedObject">
+      <id attributeName="id" type="NUMBER" value="16"/>
+	  <physicsBitmap type="URL" value="level1\house4p.png"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\house4-1.png</value>
+		<value>level1\house4-1.png</value>
+		<value>level1\house4-2.png</value>
+		<value>level1\house4-3.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>10</value>
+		<value>11</value>
+		<value>12</value>
+		<value>14</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="2160" y="266"/>
+    </DisplayedObject>
+	<DisplayedObject itemName="DisplayedObject">
+      <id attributeName="id" type="NUMBER" value="16"/>
+	  <physicsBitmap type="URL" value="level1\house5p.png"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\house5-1.png</value>
+		<value>level1\house5-1.png</value>
+		<value>level1\house5-2.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>10</value>
+		<value>11</value>
+		<value>12</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="2640" y="100"/>
+    </DisplayedObject>
+	<DisplayedObject itemName="DisplayedObject">
+      <id attributeName="id" type="NUMBER" value="17"/>
+	  <physicsBitmap type="URL" value="level1\house6p.png"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\house6-1.png</value>
+		<value>level1\house6-1.png</value>
+		<value>level1\house6-2.png</value>
+		<value>level1\house6-3.png</value>
+		<value>level1\house6-4.png</value>
+		<value>level1\house6-5.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>10</value>
+		<value>11</value>
+		<value>14</value>
+		<value>16</value>
+		<value>17</value>
+		<value>18</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="3500" y="95"/>
+    </DisplayedObject>
+	<DisplayedObject itemName="DisplayedObject">
+      <id attributeName="id" type="NUMBER" value="18"/>
+	  <physicsBitmap type="URL" value="level1\house7p.png"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\house7-1.png</value>
+		<value>level1\house7-1.png</value>
+		<value>level1\house7-2.png</value>
+		<value>level1\house7-3.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>10</value>
+		<value>11</value>
+		<value>12</value>
+		<value>13</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="4000" y="480"/>
     </DisplayedObject>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="3"/>
