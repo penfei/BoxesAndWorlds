@@ -27,7 +27,7 @@ package boxesandworlds.game.objects.items.jumper
 			var arr:Vector.<Attribute> = ItemData.attributes();
 			Attribute.pushAttribute(arr, "type", "Jumper", Attribute.STRING, 0);
 			Attribute.pushAttribute(arr, "power", new Vec2(0, -14000), Attribute.VEC2);
-			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING, 0);
+			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING);
 			Attribute.pushAttribute(arr, "bodyType", BodyType.STATIC, Attribute.STRING, 1, true, [BodyType.STATIC, BodyType.DYNAMIC, BodyType.KINEMATIC]);
 			Attribute.pushAttribute(arr, "width", 40, Attribute.NUMBER);
 			Attribute.pushAttribute(arr, "height", 40, Attribute.NUMBER);

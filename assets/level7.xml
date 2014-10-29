@@ -1,6 +1,6 @@
 <xml>
   <levelScript scriptName="boxesandworlds.game.levels.level1.Level1"/>
-  <player worldId="0" x="4153" y="70"/>
+  <player worldId="0" x="100" y="70"/>
   <world id="0">
     <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="2"/>
@@ -8,9 +8,16 @@
 	  <isEmpty attributeName="isEmpty" type="BOOL" value="true" />
 	  <width attributeName="width" type="NUMBER" value="4710"/>
 	  <height attributeName="height" type="NUMBER" value="1190"/>
+	  <views attributeName="views" type="URL" isArray="true">
+        <value>level1\bg.swf</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>1</value>
+      </containerIds>
     </WorldStructure>
 	<DisplayedObject itemName="DisplayedObject">
       <id attributeName="id" type="NUMBER" value="13"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
 	  <physicsBitmap type="URL" value="level1\house1p.png"/>
       <views attributeName="views" type="URL" isArray="true">
         <value>level1\house1-1.png</value>
@@ -32,9 +39,12 @@
     </DisplayedObject>
 	<DisplayedObject itemName="DisplayedObject">
       <id attributeName="id" type="NUMBER" value="14"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
+	  <density type="NUMBER" value="10"/>
 	  <physicsBitmap type="URL" value="level1\house2p.png"/>
       <views attributeName="views" type="URL" isArray="true">
         <value>level1\house2-1.png</value>
+		<value>level1\smoke.swf</value>
 		<value>level1\house2-1.png</value>
 		<value>level1\house2-2.png</value>
 		<value>level1\house2-3.png</value>
@@ -42,15 +52,17 @@
       </views>
       <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
         <value>10</value>
+		<value>10</value>
 		<value>11</value>
-		<value>12</value>
-		<value>8</value>
+		<value>14</value>
+		<value>10</value>
 		<value>9</value>
       </containerIds>
       <start attributeName="start" type="VEC2" x="745" y="495"/>
     </DisplayedObject>
 	<DisplayedObject itemName="DisplayedObject">
       <id attributeName="id" type="NUMBER" value="15"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
 	  <physicsBitmap type="URL" value="level1\house3p.png"/>
       <views attributeName="views" type="URL" isArray="true">
         <value>level1\house3-1.png</value>
@@ -86,7 +98,8 @@
       <start attributeName="start" type="VEC2" x="2160" y="266"/>
     </DisplayedObject>
 	<DisplayedObject itemName="DisplayedObject">
-      <id attributeName="id" type="NUMBER" value="16"/>
+      <id attributeName="id" type="NUMBER" value="17"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
 	  <physicsBitmap type="URL" value="level1\house5p.png"/>
       <views attributeName="views" type="URL" isArray="true">
         <value>level1\house5-1.png</value>
@@ -98,14 +111,15 @@
 		<value>11</value>
 		<value>12</value>
       </containerIds>
-      <start attributeName="start" type="VEC2" x="2640" y="100"/>
+      <start attributeName="start" type="VEC2" x="2640" y="145"/>
     </DisplayedObject>
 	<DisplayedObject itemName="DisplayedObject">
-      <id attributeName="id" type="NUMBER" value="17"/>
+      <id attributeName="id" type="NUMBER" value="18"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
 	  <physicsBitmap type="URL" value="level1\house6p.png"/>
       <views attributeName="views" type="URL" isArray="true">
         <value>level1\house6-1.png</value>
-		<value>level1\house6-1.png</value>
+		<value>level1\house6-1a.png</value>
 		<value>level1\house6-2.png</value>
 		<value>level1\house6-3.png</value>
 		<value>level1\house6-4.png</value>
@@ -122,7 +136,8 @@
       <start attributeName="start" type="VEC2" x="3500" y="95"/>
     </DisplayedObject>
 	<DisplayedObject itemName="DisplayedObject">
-      <id attributeName="id" type="NUMBER" value="18"/>
+      <id attributeName="id" type="NUMBER" value="19"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
 	  <physicsBitmap type="URL" value="level1\house7p.png"/>
       <views attributeName="views" type="URL" isArray="true">
         <value>level1\house7-1.png</value>
@@ -141,79 +156,168 @@
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="3"/>
 	  <power attributeName="power" type="VEC2" x="300" y="-400"/>
-      <start attributeName="start" type="VEC2" x="205" y="574"/>
-	  <width attributeName="width" type="NUMBER" value="100"/>
-	  <height attributeName="height" type="NUMBER" value="100"/>
+      <start attributeName="start" type="VEC2" x="135" y="524"/>
+	  <physicsBitmap type="URL" value="level1\jumper1p.png"/>
+	  <bodyShapeType type="STRING" value="BITMAP_SHAPE"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\jumper1-1.png</value>
+		<value>level1\jumper1-2.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>25</value>
+		<value>26</value>
+      </containerIds>
     </Jumper>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="4"/>
 	  <power attributeName="power" type="VEC2" x="0" y="-400"/>
-      <start attributeName="start" type="VEC2" x="825" y="734"/>
-	  <width attributeName="width" type="NUMBER" value="70"/>
-	  <startAngle attributeName="startAngle" type="NUMBER" value="-0.1"/>
+      <start attributeName="start" type="VEC2" x="760" y="704"/>
+	  <physicsBitmap type="URL" value="level1\jumper2p.png"/>
+	  <bodyShapeType type="STRING" value="BITMAP_SHAPE"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\jumper2-1.png</value>
+		<value>level1\jumper2-2.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>5</value>
+		<value>6</value>
+      </containerIds>
     </Jumper>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="5"/>
 	  <power attributeName="power" type="VEC2" x="100" y="-400"/>
-      <start attributeName="start" type="VEC2" x="930" y="714"/>
-	  <width attributeName="width" type="NUMBER" value="50"/>
-	  <startAngle attributeName="startAngle" type="NUMBER" value="0.3"/>
+      <start attributeName="start" type="VEC2" x="905" y="703"/>
+	  <physicsBitmap type="URL" value="level1\jumper3p.png"/>
+	  <bodyShapeType type="STRING" value="BITMAP_SHAPE"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\jumper3-1.png</value>
+		<value>level1\jumper3-2.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>25</value>
+		<value>26</value>
+      </containerIds>
     </Jumper>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="6"/>
 	  <power attributeName="power" type="VEC2" x="400" y="-500"/>
-      <start attributeName="start" type="VEC2" x="1355" y="814"/>
-	  <width attributeName="width" type="NUMBER" value="130"/>
-	  <height attributeName="height" type="NUMBER" value="100"/>
-	  <startAngle attributeName="startAngle" type="NUMBER" value="0.2"/>
+      <start attributeName="start" type="VEC2" x="1324" y="778"/>
+	  <physicsBitmap type="URL" value="level1\jumper4p.png"/>
+	  <bodyShapeType type="STRING" value="BITMAP_SHAPE"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\jumper4-1.png</value>
+		<value>level1\jumper4-2.png</value>
+		<value>level1\jumper4-3.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>25</value>
+		<value>26</value>
+		<value>27</value>
+      </containerIds>
     </Jumper>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="7"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
 	  <power attributeName="power" type="VEC2" x="-100" y="-350"/>
-      <start attributeName="start" type="VEC2" x="2800" y="514"/>
-	  <width attributeName="width" type="NUMBER" value="100"/>
-	  <height attributeName="height" type="NUMBER" value="50"/>
-	  <startAngle attributeName="startAngle" type="NUMBER" value="-0.3"/>
+      <start attributeName="start" type="VEC2" x="2750" y="460"/>
+	  <physicsBitmap type="URL" value="level1\jumper5p.png"/>
+	  <bodyShapeType type="STRING" value="BITMAP_SHAPE"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\jumper5-1.png</value>
+		<value>level1\jumper5-2.png</value>
+		<value>level1\jumper5-3.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>25</value>
+		<value>26</value>
+		<value>27</value>
+      </containerIds>
     </Jumper>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="8"/>
 	  <power attributeName="power" type="VEC2" x="100" y="-300"/>
-      <start attributeName="start" type="VEC2" x="2590" y="384"/>
-	  <width attributeName="width" type="NUMBER" value="80"/>
-	  <height attributeName="height" type="NUMBER" value="30"/>
-	  <startAngle attributeName="startAngle" type="NUMBER" value="0.3"/>
+      <start attributeName="start" type="VEC2" x="2570" y="364"/>
+	  <physicsBitmap type="URL" value="level1\jumper6p.png"/>
+	  <bodyShapeType type="STRING" value="BITMAP_SHAPE"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\jumper6-1.png</value>
+		<value>level1\jumper6-2.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>25</value>
+		<value>26</value>
+      </containerIds>
     </Jumper>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="9"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
 	  <power attributeName="power" type="VEC2" x="-100" y="-300"/>
-      <start attributeName="start" type="VEC2" x="3540" y="484"/>
-	  <width attributeName="width" type="NUMBER" value="80"/>
-	  <height attributeName="height" type="NUMBER" value="50"/>
-	  <startAngle attributeName="startAngle" type="NUMBER" value="-0.3"/>
+      <start attributeName="start" type="VEC2" x="3495" y="424"/>
+	  <physicsBitmap type="URL" value="level1\jumper7p.png"/>
+	  <bodyShapeType type="STRING" value="BITMAP_SHAPE"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\jumper7-1.png</value>
+		<value>level1\jumper7-2.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>25</value>
+		<value>26</value>
+      </containerIds>
     </Jumper>
 	<Jumper itemName="Jumper">
+	  <bodyType type="STRING" value="DYNAMIC"/>
       <id attributeName="id" type="NUMBER" value="10"/>
-	  <power attributeName="power" type="VEC2" x="200" y="-300"/>
-      <start attributeName="start" type="VEC2" x="3090" y="814"/>
-	  <width attributeName="width" type="NUMBER" value="120"/>
-	  <height attributeName="height" type="NUMBER" value="50"/>
-	  <startAngle attributeName="startAngle" type="NUMBER" value="0.2"/>
+	  <power attributeName="power" type="VEC2" x="400" y="-300"/>
+      <start attributeName="start" type="VEC2" x="3040" y="700"/>
+	  <physicsBitmap type="URL" value="level1\jumper10p.png"/>
+	  <bodyShapeType type="STRING" value="BITMAP_SHAPE"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\jumper10-1.png</value>
+		<value>level1\jumper10-2.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>25</value>
+		<value>26</value>
+      </containerIds>
+	  <startAngle attributeName="startAngle" type="NUMBER" value="0"/>
     </Jumper>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="11"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
 	  <power attributeName="power" type="VEC2" x="-150" y="-450"/>
-      <start attributeName="start" type="VEC2" x="4060" y="854"/>
-	  <width attributeName="width" type="NUMBER" value="120"/>
-	  <height attributeName="height" type="NUMBER" value="40"/>
-	  <startAngle attributeName="startAngle" type="NUMBER" value="-0.2"/>
+      <start attributeName="start" type="VEC2" x="4000" y="804"/>
+	  <physicsBitmap type="URL" value="level1\jumper8p.png"/>
+	  <bodyShapeType type="STRING" value="BITMAP_SHAPE"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\jumper8-1.png</value>
+		<value>level1\jumper8-2.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>25</value>
+		<value>26</value>
+      </containerIds>
     </Jumper>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="12"/>
+	  <bodyType type="STRING" value="DYNAMIC"/>
 	  <power attributeName="power" type="VEC2" x="200" y="-300"/>
-      <start attributeName="start" type="VEC2" x="3860" y="544"/>
-	  <width attributeName="width" type="NUMBER" value="50"/>
-	  <height attributeName="height" type="NUMBER" value="30"/>
-	  <startAngle attributeName="startAngle" type="NUMBER" value="0.2"/>
+      <start attributeName="start" type="VEC2" x="3828" y="544"/>
+	  <physicsBitmap type="URL" value="level1\jumper9p.png"/>
+	  <bodyShapeType type="STRING" value="BITMAP_SHAPE"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\jumper9-1.png</value>
+		<value>level1\jumper9-2.png</value>
+		<value>level1\jumper9-3.png</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>25</value>
+		<value>26</value>
+		<value>27</value>
+      </containerIds>
     </Jumper>
   </world>
 </xml>

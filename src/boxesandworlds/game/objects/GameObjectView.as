@@ -1,6 +1,7 @@
 package boxesandworlds.game.objects 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.objects.worldstructrure.WorldStructureView;
 	import boxesandworlds.gui.View;
 	import flash.display.DisplayObject;
 	/**

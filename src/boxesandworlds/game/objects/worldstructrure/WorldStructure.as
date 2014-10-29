@@ -35,6 +35,7 @@ package boxesandworlds.game.objects.worldstructrure
 			}
 			else {
 				initPhysics();
+				initView();
 			}
 		}
 		
@@ -45,7 +46,6 @@ package boxesandworlds.game.objects.worldstructrure
 				body = new Body(_properties.bodyType, _properties.start);
 				body.userData.obj = this;
 			}
-			
 		}
 		
 		override public function loadLevel(save:Object):void {
@@ -62,6 +62,12 @@ package boxesandworlds.game.objects.worldstructrure
 			super.addToWorld(w);
 			
 			w.initWorldBody();
+		}
+		
+		override public function postInit():void 
+		{
+			super.postInit();
+			checkWorldVisible();
 		}
 		
 	}

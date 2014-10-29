@@ -19,12 +19,6 @@ package boxesandworlds.game.objects.items.jumper
 		}
 		
 		override public function init():void {
-			_ui = new Sprite();
-			_ui.graphics.beginFill(0x990033);
-			_ui.graphics.drawRect( -obj.data.width / 2, -obj.data.height / 2, obj.data.width, obj.data.height);
-			
-			obj.data.views.push(_ui);
-			obj.data.containerIds[0] = 0;
 			super.init();
 		}	
 	}

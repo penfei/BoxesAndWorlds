@@ -25,6 +25,7 @@ package boxesandworlds.game.objects.display
 			Attribute.pushAttribute(arr, "type", "DisplayedObject", Attribute.STRING, 0);
 			Attribute.pushAttribute(arr, "bodyType", BodyType.STATIC, Attribute.STRING, 0);
 			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BITMAP_SHAPE, Attribute.STRING, 0);
+			Attribute.pushAttribute(arr, "density", 100, Attribute.NUMBER);
 			return arr;
 		}
 		

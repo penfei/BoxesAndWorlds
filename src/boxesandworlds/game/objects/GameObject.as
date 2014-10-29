@@ -141,6 +141,7 @@ package boxesandworlds.game.objects
 			
 			_body.userData.obj = this;
 			_body.velocity.set(_properties.startLV);
+			var m:Material = new Material(_properties.elasticity, _properties.dynamicFriction, _properties.staticFriction, _properties.density);
 			if (_properties.bodyShapeType == GameObjectData.BITMAP_SHAPE) {
 				var iso:BitmapDataIso = new BitmapDataIso(_properties.physicsBitmap.bitmapData, 0x80);
 				var polys:GeomPolyList = MarchingSquares.run(iso, iso.bounds, _properties.granularity, _properties.quality);
@@ -150,7 +151,7 @@ package boxesandworlds.game.objects
 					var qolys:GeomPolyList = p.simplify(_properties.simplification).convexDecomposition(true);
 					for (var j:int = 0; j < qolys.length; j++) {
 						var q:GeomPoly = qolys.at(j);
-						body.shapes.add(new Polygon(q));
+						body.shapes.add(new Polygon(q, m));
 						q.dispose();
 					}
 					qolys.clear();
@@ -159,7 +160,6 @@ package boxesandworlds.game.objects
 				polys.clear();
 				_body.rotation = _properties.startAngle;
 			} else {
-				var m:Material = new Material(_properties.elasticity, _properties.dynamicFriction, _properties.staticFriction, _properties.density);
 				var shape:Shape;
 				if (_properties.bodyShapeType == GameObjectData.BOX_SHAPE) {
 					shape = new Polygon(Polygon.box(_properties.width, _properties.height), m);

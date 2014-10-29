@@ -36,7 +36,7 @@ package boxesandworlds.game.objects.items.jumper
 			super.init();
 			
 			body.cbTypes.add(game.physics.collisionType);
-			body.cbTypes.add(game.physics.jumperType);
+			body.cbTypes.add(game.physics.jumperType);			
 		}
 		
 		public function addImpulse():void 
