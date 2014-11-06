@@ -64,8 +64,18 @@ package boxesandworlds.game.levels.level1
 			
 			for (var i:uint = 3; i < 20; i++) {
 				for (var j:uint = 0; j < game.objects.getObjectById(i).data.views.length; j++) {
-					if (i < 13) TweenMax.to( game.objects.getObjectById(i).data.views[j], 0, { colorTransform: { tint:0x993300, tintAmount:1 }} );
-					else TweenMax.to( game.objects.getObjectById(i).data.views[j], 0, { colorTransform: { tint:0x3366CC, tintAmount:1 }} );
+					if (i < 13) {
+						if(j == 1) TweenMax.to( game.objects.getObjectById(i).data.views[j], 0, { colorTransform: { tint:0xB33A00, tintAmount:1 }} );
+						else if(j == 2) TweenMax.to( game.objects.getObjectById(i).data.views[j], 0, { colorTransform: { tint:0xCE4300, tintAmount:1 }} );
+						else TweenMax.to( game.objects.getObjectById(i).data.views[j], 0, { colorTransform: { tint:0x993300, tintAmount:1 }} );
+					}
+					else {
+						if(j == 1) TweenMax.to( game.objects.getObjectById(i).data.views[j], 0, { colorTransform: { tint:0x277827, tintAmount:1 }} ); 
+						else if(j == 2) TweenMax.to( game.objects.getObjectById(i).data.views[j], 0, { colorTransform: { tint:0x216721, tintAmount:1 }} );
+						else if(j == 3) TweenMax.to( game.objects.getObjectById(i).data.views[j], 0, { colorTransform: { tint:0x1E5B1E, tintAmount:1 }} );
+						else if(j == 4) TweenMax.to( game.objects.getObjectById(i).data.views[j], 0, { colorTransform: { tint:0x7DD57D, tintAmount:1 }} );
+						else TweenMax.to( game.objects.getObjectById(i).data.views[j], 0, { colorTransform: { tint:0x003300, tintAmount:1 }} );
+					}
 				}
 			}
 			
