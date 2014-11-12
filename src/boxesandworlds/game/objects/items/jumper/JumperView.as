@@ -9,7 +9,6 @@ package boxesandworlds.game.objects.items.jumper
 	 */
 	public class JumperView extends ItemView
 	{
-		private var _ui:Sprite;
 		private var _jumper:Jumper;
 		
 		public function JumperView(game:Game, jumper:Jumper) 

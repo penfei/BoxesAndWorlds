@@ -1,18 +1,34 @@
 <xml>
   <levelScript scriptName="boxesandworlds.game.levels.level1.Level1"/>
-  <player worldId="0" x="100" y="70"/>
+  <player worldId="2" x="100" y="470"/>
   <world id="2">
 	  <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="20"/>
       <start attributeName="start" type="VEC2" x="0" y="0"/>
 	  <physicsBitmap type="URL" value="level1\world3p.png"/>
 	  <views attributeName="views" type="URL" isArray="true">
-        <value>level1\world3p.png</value>
+		<value>level1\level1.3.1.swf</value>
+        <value>level1\level1.3.2.swf</value>
+		<value>level1\level1.3.3.swf</value>
       </views>
       <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+		<value>4</value>
         <value>10</value>
+		<value>20</value>
       </containerIds>
     </WorldStructure>
+	<DeathObject itemName="DisplayedObject">
+      <id attributeName="id" type="NUMBER" value="21"/>
+	  <width type="NUMBER" value="60"/>
+	  <height type="NUMBER" value="250"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\level1.3scissors.swf</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>11</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="359" y="1200"/>
+    </DeathObject>
   </world>
   <world id="0">
     <WorldStructure itemName="WorldStructure">

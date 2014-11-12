@@ -31,6 +31,7 @@ package boxesandworlds.game.controller
 		private var _keyType:CbType;
 		private var _buttonType:CbType;
 		private var _jumperType:CbType;
+		private var _deathType:CbType;
 		private var _previosTime:int;
 		
 		public function PhysicsController(game:Game) 
@@ -45,6 +46,7 @@ package boxesandworlds.game.controller
 		public function get doorType():CbType {return _doorType;}
 		public function get keyType():CbType {return _keyType;}
 		public function get jumperType():CbType {return _jumperType;}
+		public function get deathType():CbType {return _deathType;}
 		
 		override public function init():void 
 		{			
@@ -57,11 +59,13 @@ package boxesandworlds.game.controller
 			_keyType = new CbType;
 			_doorType = new CbType;
 			_jumperType = new CbType;
+			_deathType = new CbType;
 			
 			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _doorType, _keyType, doorKeyContactHandler));
 			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _buttonType, _collisionType, buttonContactStartHandler));
 			game.physics.world.listeners.add(new InteractionListener(CbEvent.END, InteractionType.COLLISION, _buttonType, _collisionType, buttonContactEndHandler));
 			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _jumperType, _meType, jumperContactStartHandler));
+			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _deathType, _meType, deathContactStartHandler));
 		}
 		
 		override public function step():void 
@@ -122,6 +126,11 @@ package boxesandworlds.game.controller
 		{
 			var jumper:Jumper = e.int1.userData.obj as Jumper;
 			jumper.addImpulse();
+		}
+		
+		private function deathContactStartHandler(e:InteractionCallback):void 
+		{
+			game.start();
 		}
 		
 		private function buttonContactStartHandler(e:InteractionCallback):void 

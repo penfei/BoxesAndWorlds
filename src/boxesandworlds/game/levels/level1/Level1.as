@@ -35,7 +35,7 @@ package boxesandworlds.game.levels.level1
 			//arr[6].filters = [glow3, blur3];
 			//arr[8].filters = [glow, blur2];
 			//arr[9].filters = [glow2, blur2];
-			//arr[10].filters = [glow];
+			arr[10].filters = [glow];
 			//arr[11].filters = [glow, blur2];
 			//arr[12].filters = [glow2, blur2];
 			//arr[13].filters = [glow2, blur2];
@@ -60,7 +60,8 @@ package boxesandworlds.game.levels.level1
 			super.init();
 			
 			game.gui.offsetY = 0.3;
-			TweenMax.to(game.objects.me.playerView.ui, 0, { colorTransform: { tint:0x3366CC, tintAmount:1 }} );
+			//TweenMax.to(game.objects.me.playerView.ui, 0, { colorTransform: { tint:0x3366CC, tintAmount:1 }} );
+			TweenMax.to(game.objects.me.playerView.ui, 0, { colorTransform: { tint:0, tintAmount:1 }} );
 			
 			for (var i:uint = 3; i < 20; i++) {
 				for (var j:uint = 0; j < game.objects.getObjectById(i).data.views.length; j++) {
