@@ -1,6 +1,7 @@
 package boxesandworlds.game.objects.player 
 {
 	import boxesandworlds.game.controller.Game;
+	import boxesandworlds.game.objects.activator.ActivatorObject;
 	import boxesandworlds.game.objects.door.Door;
 	import boxesandworlds.game.objects.enters.Enter;
 	import boxesandworlds.game.objects.enters.gate.Gate;
@@ -219,16 +220,26 @@ package boxesandworlds.game.objects.player
 				var bodyList:BodyList = getBodiesInItemArea();
 				var dis:Number = int.MAX_VALUE;
 				var pItem:Item;
+				var pActivator:ActivatorObject;
 				var i:Item;
+				var a:ActivatorObject;
 				for (var j:int = 0; j < bodyList.length; j++) {
 					var d:Number = Vec2.distance(body.position, bodyList.at(j).position);
 					i = bodyList.at(j).userData.obj as Item;
+					a = bodyList.at(j).userData.obj as ActivatorObject;
 					if (i != null && i.itemData.canAdded && d < dis) {
 						dis = d;
 						pItem = i;
+						pActivator = null;
+					}
+					if (a != null&& d < dis) {
+						dis = d;
+						pActivator = a;
+						pItem = null;
 					}
 				}
 				addItem(pItem);
+				doActivator(pActivator);
 			} else resetItem();
 		}
 		
@@ -316,6 +327,14 @@ package boxesandworlds.game.objects.player
 				_item.addToPlayer();
 			}
 		}
+		
+		private function doActivator(pActivator:ActivatorObject):void 
+		{
+			if (pActivator != null) {
+				pActivator.activate();
+			}
+		}
+		
 		
 		private function searchDoor():void 
 		{

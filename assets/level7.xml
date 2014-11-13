@@ -1,6 +1,6 @@
 <xml>
   <levelScript scriptName="boxesandworlds.game.levels.level1.Level1"/>
-  <player worldId="2" x="100" y="470"/>
+  <player worldId="2" x="200" y="670"/>
   <world id="2">
 	  <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="20"/>
@@ -10,14 +10,16 @@
 		<value>level1\level1.3.1.swf</value>
         <value>level1\level1.3.2.swf</value>
 		<value>level1\level1.3.3.swf</value>
+		<value>level1\level1.3shadow.swf</value>
       </views>
       <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
 		<value>4</value>
         <value>10</value>
 		<value>20</value>
+		<value>29</value>
       </containerIds>
     </WorldStructure>
-	<DeathObject itemName="DisplayedObject">
+	<DeathObject itemName="DeathObject">
       <id attributeName="id" type="NUMBER" value="21"/>
 	  <width type="NUMBER" value="60"/>
 	  <height type="NUMBER" value="250"/>
@@ -29,6 +31,30 @@
       </containerIds>
       <start attributeName="start" type="VEC2" x="359" y="1200"/>
     </DeathObject>
+	<DeathObject itemName="DeathObject">
+      <id attributeName="id" type="NUMBER" value="22"/>
+	  <width type="NUMBER" value="70"/>
+	  <height type="NUMBER" value="320"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\level1.3needle.swf</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>11</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="629" y="1200"/>
+    </DeathObject>
+	<ActivatorObject itemName="ActivatorObject">
+      <id attributeName="id" type="NUMBER" value="23"/>
+	  <bodyShapeType type="STRING" value="BITMAP_SHAPE"/>
+	  <physicsBitmap type="URL" value="level1\needlep.png"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\level1.3needle2.swf</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>21</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="789" y="1750"/>
+    </ActivatorObject>
   </world>
   <world id="0">
     <WorldStructure itemName="WorldStructure">

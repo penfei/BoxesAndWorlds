@@ -22,7 +22,7 @@ package boxesandworlds.game.objects.death
 		public static function attributes():Vector.<Attribute>
 		{
 			var arr:Vector.<Attribute> = GameObjectData.attributes();
-			Attribute.pushAttribute(arr, "type", "DisplayedObject", Attribute.STRING, 0);
+			Attribute.pushAttribute(arr, "type", "DeathObject", Attribute.STRING, 0);
 			Attribute.pushAttribute(arr, "bodyType", BodyType.STATIC, Attribute.STRING, 0);
 			Attribute.pushAttribute(arr, "bodyShapeType", GameObjectData.BOX_SHAPE, Attribute.STRING, 0);
 			Attribute.pushAttribute(arr, "width", 40, Attribute.NUMBER);

@@ -2,8 +2,11 @@ package boxesandworlds.game.levels.level1
 {
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.levels.Level;
+	import boxesandworlds.game.objects.activator.ActivatorObject;
 	import com.greensock.TweenMax;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.filters.BitmapFilterQuality;
 	import flash.filters.BlurFilter;
 	import flash.filters.GlowFilter;
@@ -80,6 +83,7 @@ package boxesandworlds.game.levels.level1
 				}
 			}
 			
+			(game.objects.getObjectById(23) as ActivatorObject).activatorData.callBack = needleCallBack;
 			jointWorldWithBody(game.objects.getObjectById(13).body, 90, -330, 90, -330);
 			jointBodyWithJumper(game.objects.getObjectById(13).body, game.objects.getObjectById(3).body);
 			
@@ -100,6 +104,25 @@ package boxesandworlds.game.levels.level1
 			
 			jointWorldWithBody(game.objects.getObjectById(19).body, 150, -330, 150, -330);
 			jointBodyWithJumper(game.objects.getObjectById(19).body, game.objects.getObjectById(11).body);
+			
+			game.stage.addEventListener(MouseEvent.CLICK, test);
+		}
+		
+		private function test(e:MouseEvent):void 
+		{
+			
+			var shadow:MovieClip = game.objects.getWorldById(2).structure.data.views[3];
+			if (shadow.currentFrame == 1) {
+				if (shadow.light.currentFrame == 1) {
+					shadow.light.gotoAndStop(2);
+				}
+				else {
+					shadow.gotoAndStop(2);
+				}
+			} else {
+				shadow.gotoAndStop(1);
+				shadow.light.gotoAndStop(1);
+			}
 		}
 		
 		private function jointWorldWithBody(body:Body, worldX:Number, worldY:Number, bodyX:Number, bodyY:Number):void {
@@ -122,6 +145,18 @@ package boxesandworlds.game.levels.level1
 			var joint:WeldJoint = new WeldJoint(jumper, body,  body.localPointToWorld(Vec2.weak()), jumper.localPointToWorld(Vec2.weak()));
 			joint.space = game.physics.world;
 			joint.ignore = true;
+		}
+		
+		private function needleCallBack(needle:ActivatorObject):void {
+			if (!needle.activatorData.isActivate) {
+				needle.activatorData.isActivate = true;
+				
+				for (var i:uint = 0; i < needle.body.shapes.length; i++) {
+					needle.body.shapes.at(i).filter.collisionMask = 0;
+				}
+				
+				needle.data.views[0].gotoAndPlay(2);
+			}
 		}
 		
 		override public function start():void 

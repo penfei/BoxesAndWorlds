@@ -1,5 +1,7 @@
 package boxesandworlds.data 
 {
+	import boxesandworlds.game.objects.activator.ActivatorObject;
+	import boxesandworlds.game.objects.activator.ActivatorObjectData;
 	import boxesandworlds.game.objects.death.DeathObject;
 	import boxesandworlds.game.objects.death.DeathObjectData;
 	import boxesandworlds.game.objects.display.DisplayedObject;
@@ -33,8 +35,8 @@ package boxesandworlds.data
 	 */
 	public class ObjectsLibrary 
 	{
-		static public const objects:Array = [WorldStructure, Box, TeleportBox, WorldBox, Button, Gate, EdgeDoor, Key, Door, Jumper, DisplayedObject, DeathObject];
-		static public const objectDatas:Array = [WorldStructureData, BoxData, TeleportBoxData, WorldBoxData, ButtonData, GateData, EdgeDoorData, KeyData, DoorData, JumperData, DisplayedObjectData, DeathObjectData];
+		static public const objects:Array = [WorldStructure, Box, TeleportBox, WorldBox, Button, Gate, EdgeDoor, Key, Door, Jumper, DisplayedObject, DeathObject, ActivatorObject];
+		static public const objectDatas:Array = [WorldStructureData, BoxData, TeleportBoxData, WorldBoxData, ButtonData, GateData, EdgeDoorData, KeyData, DoorData, JumperData, DisplayedObjectData, DeathObjectData, ActivatorObjectData];
 		static private var objectsByType:Object = {};
 		
 		public function ObjectsLibrary() 
