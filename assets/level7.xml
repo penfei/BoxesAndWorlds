@@ -1,6 +1,6 @@
 <xml>
   <levelScript scriptName="boxesandworlds.game.levels.level1.Level1"/>
-  <player worldId="1" x="200" y="670"/>
+  <player worldId="0" x="4500" y="570"/>
   <world id="1">
 	  <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="24"/>
@@ -224,6 +224,30 @@
 		<value>13</value>
       </containerIds>
       <start attributeName="start" type="VEC2" x="4000" y="480"/>
+    </DisplayedObject>
+	<DisplayedObject itemName="DisplayedObject">
+      <id attributeName="id" type="NUMBER" value="25"/>
+	  <bodyType type="STRING" value="STATIC"/>
+	  <physicsBitmap type="URL" value="level1\earthp.png"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\tree.swf</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>10</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="4350" y="680"/>
+    </DisplayedObject>
+	<DisplayedObject itemName="DisplayedObject">
+      <id attributeName="id" type="NUMBER" value="26"/>
+	  <bodyType type="STRING" value="STATIC"/>
+	  <physicsBitmap type="URL" value="level1\earth2p.png"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\tree2.swf</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>10</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="4600" y="680"/>
     </DisplayedObject>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="3"/>
