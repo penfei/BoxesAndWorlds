@@ -26,9 +26,12 @@ package boxesandworlds.game.levels.level1
 		
 		static public function layers():Vector.<Sprite> {
 			var arr:Vector.<Sprite> = Level.layers();
-			var glow:GlowFilter = new GlowFilter(0xC1E1C4, 1, 2, 2, 10, BitmapFilterQuality.HIGH, false, false);
-			var glow2:GlowFilter = new GlowFilter(0xC1E1C4, 1, 2, 2, 10, BitmapFilterQuality.HIGH, false, true);
-			var glow3:GlowFilter = new GlowFilter(0x993300, 1, 2, 2, 10, BitmapFilterQuality.HIGH, false, false);
+			//var glow:GlowFilter = new GlowFilter(0xC1E1C4, 1, 2, 2, 10, BitmapFilterQuality.HIGH, false, false);
+			//var glow2:GlowFilter = new GlowFilter(0xC1E1C4, 1, 2, 2, 10, BitmapFilterQuality.HIGH, false, true);
+			//var glow3:GlowFilter = new GlowFilter(0x993300, 1, 2, 2, 10, BitmapFilterQuality.HIGH, false, false);
+			
+			var glow:GlowFilter = new GlowFilter(0x0099CC, 1, 2, 2, 10, BitmapFilterQuality.HIGH, false, false);
+			
 			var blur:BlurFilter = new BlurFilter(0, 56, 3);
 			var blur2:BlurFilter = new BlurFilter(0, 14);
 			var blur3:BlurFilter = new BlurFilter(0, 3, 3);
@@ -105,7 +108,7 @@ package boxesandworlds.game.levels.level1
 			jointWorldWithBody(game.objects.getObjectById(19).body, 150, -330, 150, -330);
 			jointBodyWithJumper(game.objects.getObjectById(19).body, game.objects.getObjectById(11).body);
 			
-			game.stage.addEventListener(MouseEvent.CLICK, test);
+			//game.stage.addEventListener(MouseEvent.CLICK, test);
 		}
 		
 		private function test(e:MouseEvent):void 
