@@ -17,6 +17,10 @@
 		<value>20</value>
       </containerIds>
     </WorldStructure>
+	<Gate itemName="Gate">
+      <id attributeName="id" type="NUMBER" value="28"/>
+      <start attributeName="start" type="VEC2" x="0" y="380"/>
+    </Gate>
   </world>
   <world id="2">
 	  <WorldStructure itemName="WorldStructure">
@@ -249,6 +253,22 @@
       </containerIds>
       <start attributeName="start" type="VEC2" x="4600" y="680"/>
     </DisplayedObject>
+	<WorldBox itemName="WorldBox">
+      <id attributeName="id" type="NUMBER" value="27"/>
+	  <childWorldId attributeName="childWorldId" type="NUMBER" value="1"/>
+	  <bodyShapeType type="STRING" value="BITMAP_SHAPE"/>
+	  <physicsBitmap type="URL" value="level1\meelp.png"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\meel1.swf</value>
+		<value>level1\meel2.swf</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>10</value>
+		<value>11</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="4750" y="650"/>
+	  <isAlign attributeName="isAlign" type="BOOL" value="true" />
+    </WorldBox>
 	<Jumper itemName="Jumper">
       <id attributeName="id" type="NUMBER" value="3"/>
 	  <power attributeName="power" type="VEC2" x="300" y="-400"/>

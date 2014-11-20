@@ -43,8 +43,8 @@ package boxesandworlds.game.objects.items.worldBox
 			_hintContainer.alpha = 0;
 			_ui.addChild(_hintContainer);
 			
-			obj.data.views.push(_ui);
-			obj.data.containerIds[0] = 0;
+			//obj.data.views.push(_ui);
+			//obj.data.containerIds[0] = 20;
 			super.init();
 		}
 		

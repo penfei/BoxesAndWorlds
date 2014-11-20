@@ -69,12 +69,12 @@ package boxesandworlds.game.objects.enters
 		}
 		
 		public function open():void {
-			body.shapes.at(0).filter.collisionMask = 0;
+			collisionMask = 0;
 		}
 		
 		public function close():void 
 		{
-			body.shapes.at(0).filter.collisionMask = -1;
+			collisionMask = -1;
 		}
 		
 		override public function findTarget():GameObject

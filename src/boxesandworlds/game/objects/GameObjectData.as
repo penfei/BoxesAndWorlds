@@ -41,6 +41,7 @@ package boxesandworlds.game.objects
 		private var _mass:Number;
 		private var _teleportId:uint;
 		private var _canTeleport:Boolean;
+		private var _isAlign:Boolean;
 		private var _needButtonToTeleport:Boolean;
 		
 		private var _physicsBitmap:Bitmap;
@@ -78,6 +79,7 @@ package boxesandworlds.game.objects
 			Attribute.pushAttribute(arr, "needButtonToTeleport", false, Attribute.BOOL);
 			//Attribute.pushAttribute(arr, "canTeleport", false, Attribute.BOOL, 1 , false, null, false, true);
 			Attribute.pushAttribute(arr, "canTeleport", false, Attribute.BOOL);
+			Attribute.pushAttribute(arr, "isAlign", false, Attribute.BOOL);
 			Attribute.pushAttribute(arr, "physicsBitmap", "", Attribute.URL, 2);
 			Attribute.pushAttribute(arr, "granularity", Vec2.weak(4, 4), Attribute.VEC2);
 			Attribute.pushAttribute(arr, "quality", 2, Attribute.NUMBER);
@@ -194,6 +196,8 @@ package boxesandworlds.game.objects
 		public function set quality(value:int):void {_quality = value;}
 		public function get simplification():Number {return _simplification;}
 		public function set simplification(value:Number):void {_simplification = value;}
+		public function get isAlign():Boolean {return _isAlign;}
+		public function set isAlign(value:Boolean):void {_isAlign = value;}
 	}
 
 }

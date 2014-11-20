@@ -56,7 +56,7 @@ package boxesandworlds.game.objects.items.worldBox
 			super.init();
 			
 			body.cbTypes.add(game.physics.collisionType);
-			body.shapes.at(0).filter.collisionGroup = 0x0010;
+			collisionGroup = 0x0010;
 			_worldBoxArea = new AABB();
 		}
 		
@@ -136,7 +136,7 @@ package boxesandworlds.game.objects.items.worldBox
 			_childWorld.clearConnectedWorlds();
 		}
 		
-		override public function removeFromPlayer(position:Vec2):void 
+		override public function removeFromPlayer(pos:Vec2):void 
 		{	
 			if (_connectedWorldBox != null) {
 				//trace(_connectedEdge, _connectedWorldBox.connectedEdge, _connectedEdgePoint, _connectedWorldBox.connectedEdgePoint);
@@ -147,10 +147,10 @@ package boxesandworlds.game.objects.items.worldBox
 				
 				_childWorld.connectWorldToEdge(_connectedWorldBox.childWorld, _connectedEdge);
 				_connectedWorldBox.childWorld.connectWorldToEdge(_childWorld, _connectedWorldBox.connectedEdge);
-			} else body.position.set(position);
+			} else body.position.setxy(pos.x + itemData.addedOffset.x, pos.y + itemData.addedOffset.y);
 			
 			body.velocity = Vec2.weak();
-			body.shapes.at(0).filter.collisionMask = -1;
+			collisionMask = -1;
 			body.allowRotation = true;
 		}
 		

@@ -46,7 +46,7 @@ package boxesandworlds.game.objects.door
 		{
 			if (!_properties.isOpen) {
 				_properties.isOpen = true;
-				body.shapes.at(0).filter.collisionMask = 0;
+				collisionMask = 0;
 				_view.showOpen();
 			}
 		}
@@ -55,7 +55,7 @@ package boxesandworlds.game.objects.door
 		{
 			if (!_properties.isOpen && !_properties.isTemporarilyOpen) {
 				_properties.isTemporarilyOpen = true;
-				body.shapes.at(0).filter.collisionMask = 0;
+				collisionMask = 0;
 				_view.showOpen();
 			}
 		}
@@ -64,7 +64,7 @@ package boxesandworlds.game.objects.door
 		{
 			if (!_properties.isOpen && _properties.isTemporarilyOpen) {
 				_properties.isTemporarilyOpen = false;
-				body.shapes.at(0).filter.collisionMask = -1;
+				collisionMask = -1;
 				_view.showClose();
 			}
 		}

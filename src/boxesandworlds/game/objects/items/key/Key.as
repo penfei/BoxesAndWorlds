@@ -34,7 +34,7 @@ package boxesandworlds.game.objects.items.key
 			
 			super.init();
 			
-			body.shapes.at(0).filter.collisionGroup = 0x1000;
+			collisionGroup = 0x1000;
 			body.cbTypes.add(game.physics.keyType);
 		}		
 	}

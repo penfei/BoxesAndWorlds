@@ -70,8 +70,8 @@ package boxesandworlds.game.objects.player
 			
 			body.cbTypes.add(game.physics.meType);
 			body.cbTypes.add(game.physics.collisionType);
-			body.shapes.at(0).filter.collisionGroup = 0x0100;
-			body.shapes.at(0).filter.collisionMask = ~0x1010;
+			collisionGroup = 0x0100;
+			collisionMask = ~0x1010;
 			body.allowRotation = false;
 		}
 		override public function destroy():void 
@@ -93,7 +93,7 @@ package boxesandworlds.game.objects.player
 			searchDoor();
 			searchPotencialTeleport();
 			if (hasItem) {
-				_item.body.position.set(body.position);
+				_item.toPlayerPosition(body.position);
 			}
 			
 			if (!world.worldBody.contains(body.position)) {
@@ -272,10 +272,11 @@ package boxesandworlds.game.objects.player
 		public function resetItem():void 
 		{
 			if (hasItem) {
-				var pos:Vec2 = new Vec2(body.position.x - (_properties.width + _item.itemData.width + 10) / 2, body.position.y);
+				var pos:Vec2 = new Vec2(body.position.x - ((_properties.width + _item.itemData.width + 10) / 2), body.position.y);
 				if (_properties.isRight) {
-					pos.x = body.position.x + (_properties.width + _item.itemData.width + 10) / 2
+					pos.x = body.position.x + ((_properties.width + _item.itemData.width + 10) / 2);
 				}
+				trace(body.position.x,(_properties.width + _item.itemData.width + 10) / 2 , pos.x);
 				_item.removeFromPlayer(pos);
 				_item = null;
 			}

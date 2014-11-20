@@ -66,10 +66,10 @@ package boxesandworlds.game.levels.level1
 			super.init();
 			
 			game.gui.offsetY = 0.3;
-			//TweenMax.to(game.objects.me.playerView.ui, 0, { colorTransform: { tint:0x3366CC, tintAmount:1 }} );
-			TweenMax.to(game.objects.me.playerView.ui, 0, { colorTransform: { tint:0, tintAmount:1 }} );
+			TweenMax.to(game.objects.me.playerView.ui, 0, { colorTransform: { tint:0x3366CC, tintAmount:1 }} );
+			//TweenMax.to(game.objects.me.playerView.ui, 0, { colorTransform: { tint:0, tintAmount:1 }} );
 			
-			for (var i:uint = 3; i < 27; i++) {
+			for (var i:uint = 3; i < 28; i++) {
 				for (var j:uint = 0; j < game.objects.getObjectById(i).data.views.length; j++) {
 					if (i < 13) {
 						if(j == 1) TweenMax.to( game.objects.getObjectById(i).data.views[j], 0, { colorTransform: { tint:0xB33A00, tintAmount:1 }} );

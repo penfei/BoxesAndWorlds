@@ -80,19 +80,20 @@ package boxesandworlds.game.objects.items
 		
 		public function addToPlayer():void 
 		{
-			body.shapes.at(0).filter.collisionMask = 0;
+			collisionMask = 0;
 			body.allowRotation = false;
 			body.angularVel = 0;
+			//body.rotation = 0;
 			if (body.rotation >= 0) body.rotation = uint((body.rotation + 0.7854) / 1.5708) * 1.5708;
 			else body.rotation = uint((Math.abs(body.rotation) + 0.7854) / 1.5708) * -1.5708;
 		}
 		
-		public function removeFromPlayer(position:Vec2):void 
+		public function removeFromPlayer(pos:Vec2):void 
 		{
 			body.velocity = Vec2.weak();
-			body.shapes.at(0).filter.collisionMask = -1;
+			collisionMask = -1;
 			body.allowRotation = true;
-			body.position.set(position);
+			body.position.setxy(pos.x + itemData.addedOffset.x, pos.y + itemData.addedOffset.y);
 		}
 		
 		public function startTelekinesis():void 
@@ -111,6 +112,11 @@ package boxesandworlds.game.objects.items
 		{
 			_handJoint.anchor1.set(game.gui.mousePoint);
 			body.angularVel *= 0.6;
+		}
+		
+		public function toPlayerPosition(pos:Vec2):void 
+		{
+			body.position.setxy(pos.x + itemData.addedOffset.x, pos.y + itemData.addedOffset.y);
 		}
 		
 		public function get itemView():ItemView {return _view;}

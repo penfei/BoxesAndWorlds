@@ -88,6 +88,17 @@ package boxesandworlds.game.objects
 			view.destroy();
 		}
 		
+		public function set collisionGroup(value:Number):void {
+			for (var i:int = 0; i < _body.shapes.length; i++) {
+				_body.shapes.at(i).filter.collisionGroup = value;
+			}
+		}
+		
+		public function set collisionMask(value:Number):void {
+			for (var i:int = 0; i < _body.shapes.length; i++) {
+				_body.shapes.at(i).filter.collisionMask = value;
+			}
+		}
 		
 		public function set density(value:Number):void {
 			for (var i:int = 0; i < _body.shapes.length; i++) {
@@ -142,6 +153,7 @@ package boxesandworlds.game.objects
 			_body.userData.obj = this;
 			_body.velocity.set(_properties.startLV);
 			var m:Material = new Material(_properties.elasticity, _properties.dynamicFriction, _properties.staticFriction, _properties.density);
+			var pos:Vec2;
 			if (_properties.bodyShapeType == GameObjectData.BITMAP_SHAPE) {
 				var iso:BitmapDataIso = new BitmapDataIso(_properties.physicsBitmap.bitmapData, 0x80);
 				var polys:GeomPolyList = MarchingSquares.run(iso, iso.bounds, _properties.granularity, _properties.quality);
@@ -159,6 +171,11 @@ package boxesandworlds.game.objects
 				}
 				polys.clear();
 				_body.rotation = _properties.startAngle;
+				if(data.isAlign) {
+					pos = _body.position.copy();
+					_body.align();
+					if (_body.isStatic()) _body.position.set(pos);
+				}
 			} else {
 				var shape:Shape;
 				if (_properties.bodyShapeType == GameObjectData.BOX_SHAPE) {
@@ -169,7 +186,7 @@ package boxesandworlds.game.objects
 				}
 				_body.shapes.add(shape);
 				_body.rotation = _properties.startAngle;
-				var pos:Vec2 = _body.position.copy();
+				pos = _body.position.copy();
 				_body.align();
 				if (_body.isStatic()) _body.position.set(pos);
 			}
