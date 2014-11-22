@@ -82,7 +82,9 @@ package boxesandworlds.game.objects.items.worldBox
 				var pGate:Gate;
 				for each(var obj:GameObject in _childWorld.objects) {
 					pGate = obj as Gate;
-					if (pGate != null && pGate.enterData.canTeleport) gates.push(pGate);
+					if (pGate != null && pGate.enterData.canTeleport) {
+						gates.push(pGate);
+					}
 				}
 				var dis:Number = int.MAX_VALUE;
 				var ray:Ray;

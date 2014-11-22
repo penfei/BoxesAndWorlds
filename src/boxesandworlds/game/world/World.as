@@ -158,6 +158,18 @@ package boxesandworlds.game.world
 			return null;
 		}
 		
+		public function removeObjectById(id:uint):GameObject 
+		{
+			for (var i:uint = 0; i < _objects.length; i++) {
+				if (_objects[i].data.id == id) {
+					var o:GameObject = _objects[i];
+					_objects.splice(i, 1);
+					return o;
+				}
+			}
+			return null;
+		}
+		
 		public function disconnectWorld(world:World):void 
 		{
 			for (var key:String in _connectWorldsHash) {

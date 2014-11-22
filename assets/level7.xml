@@ -1,6 +1,6 @@
 <xml>
   <levelScript scriptName="boxesandworlds.game.levels.level1.Level1"/>
-  <player worldId="0" x="4500" y="570"/>
+  <player worldId="2" x="290" y="500"/>
   <world id="1">
 	  <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="24"/>
@@ -19,8 +19,24 @@
     </WorldStructure>
 	<Gate itemName="Gate">
       <id attributeName="id" type="NUMBER" value="28"/>
-      <start attributeName="start" type="VEC2" x="0" y="380"/>
+      <start attributeName="start" type="VEC2" x="20" y="1370"/>
+	  <height attributeName="height" type="NUMBER" value="155"/>
     </Gate>
+	<WorldBox itemName="WorldBox">
+      <id attributeName="id" type="NUMBER" value="29"/>
+	  <childWorldId attributeName="childWorldId" type="NUMBER" value="2"/>
+	  <width attributeName="width" type="NUMBER" value="55"/>
+	  <height attributeName="height" type="NUMBER" value="55"/>
+      <views attributeName="views" type="URL" isArray="true">
+        <value>level1\box1.swf</value>
+		<value>level1\box2.swf</value>
+      </views>
+      <containerIds attributeName="containerIds" type="NUMBER" isArray="true">
+        <value>10</value>
+		<value>11</value>
+      </containerIds>
+      <start attributeName="start" type="VEC2" x="290" y="1070"/>
+    </WorldBox>
   </world>
   <world id="2">
 	  <WorldStructure itemName="WorldStructure">
@@ -40,6 +56,22 @@
 		<value>29</value>
       </containerIds>
     </WorldStructure>
+	<Gate itemName="Gate">
+      <id attributeName="id" type="NUMBER" value="30"/>
+      <start attributeName="start" type="VEC2" x="40" y="1020"/>
+    </Gate>
+	<Gate itemName="Gate">
+      <id attributeName="id" type="NUMBER" value="31"/>
+	  <edge attributeName="edge" type="STRING" value="TOP"/>
+      <start attributeName="start" type="VEC2" x="300" y="20"/>
+	  <canTeleport attributeName="canTeleport" type="BOOL" value="false"/>
+    </Gate>
+	<Gate itemName="Gate">
+      <id attributeName="id" type="NUMBER" value="32"/>
+	  <edge attributeName="edge" type="STRING" value="RIGHT"/>
+      <start attributeName="start" type="VEC2" x="1600" y="800"/>
+	  <canTeleport attributeName="canTeleport" type="BOOL" value="false"/>
+    </Gate>
 	<DeathObject itemName="DeathObject">
       <id attributeName="id" type="NUMBER" value="21"/>
 	  <width type="NUMBER" value="60"/>

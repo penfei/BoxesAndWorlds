@@ -3,6 +3,7 @@ package boxesandworlds.game.levels.level1
 	import boxesandworlds.game.controller.Game;
 	import boxesandworlds.game.levels.Level;
 	import boxesandworlds.game.objects.activator.ActivatorObject;
+	import boxesandworlds.game.objects.enters.gate.Gate;
 	import com.greensock.TweenMax;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -86,7 +87,11 @@ package boxesandworlds.game.levels.level1
 				}
 			}
 			
+			TweenMax.to( game.objects.getObjectById(29).data.views[0], 0, { colorTransform: { tint:0x0099CC, tintAmount:1 }} );
+			TweenMax.to( game.objects.getObjectById(29).data.views[1], 0, { colorTransform: { tint:0x0066CC, tintAmount:1 }} );
+			
 			(game.objects.getObjectById(23) as ActivatorObject).activatorData.callBack = needleCallBack;
+			
 			jointWorldWithBody(game.objects.getObjectById(13).body, 90, -330, 90, -330);
 			jointBodyWithJumper(game.objects.getObjectById(13).body, game.objects.getObjectById(3).body);
 			
@@ -109,6 +114,12 @@ package boxesandworlds.game.levels.level1
 			jointBodyWithJumper(game.objects.getObjectById(19).body, game.objects.getObjectById(11).body);
 			
 			//game.stage.addEventListener(MouseEvent.CLICK, test);
+			game.objects.getWorldById(2).structure.data.views[3].light.gotoAndStop(2);
+			game.objects.getWorldById(2).structure.data.views[3].gotoAndStop(2);
+			
+			//trace((game.objects.getObjectById(32) as Gate).enterData.canTeleport)
+			game.objects.getWorldById(2).removeObjectById(31)
+			game.objects.getWorldById(2).removeObjectById(32)
 		}
 		
 		private function test(e:MouseEvent):void 

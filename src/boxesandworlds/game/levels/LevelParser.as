@@ -39,7 +39,7 @@ package boxesandworlds.game.levels
 					world = new World(_game);	
 					world.init( { id:xmlWorld.@id, axis:new Vec2(worldPosX, 0), physic:xmlWorld } );
 					_game.objects.worlds.push(world);
-					worldPosX += world.data.width + 200;
+					worldPosX += world.data.width * 10;
 						
 					for each( var child:XML in xmlWorld.children() )
 					{

@@ -47,7 +47,7 @@ package boxesandworlds.game.controller
 			_isDestroyed = false;
 			
 			_isTest = false;
-			//_isTest = true;
+			_isTest = true;
 		}
 		
 		override public function step():void 
