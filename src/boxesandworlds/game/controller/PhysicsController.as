@@ -61,11 +61,11 @@ package boxesandworlds.game.controller
 			_jumperType = new CbType;
 			_deathType = new CbType;
 			
-			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _doorType, _keyType, doorKeyContactHandler));
-			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _buttonType, _collisionType, buttonContactStartHandler));
-			game.physics.world.listeners.add(new InteractionListener(CbEvent.END, InteractionType.COLLISION, _buttonType, _collisionType, buttonContactEndHandler));
-			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _jumperType, _meType, jumperContactStartHandler));
-			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _deathType, _meType, deathContactStartHandler));
+			_world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _doorType, _keyType, doorKeyContactHandler));
+			_world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _buttonType, _collisionType, buttonContactStartHandler));
+			_world.listeners.add(new InteractionListener(CbEvent.END, InteractionType.COLLISION, _buttonType, _collisionType, buttonContactEndHandler));
+			_world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _jumperType, _meType, jumperContactStartHandler));
+			_world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _deathType, _meType, deathContactStartHandler));
 		}
 		
 		override public function step():void 

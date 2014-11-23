@@ -276,7 +276,6 @@ package boxesandworlds.game.objects.player
 				if (_properties.isRight) {
 					pos.x = body.position.x + ((_properties.width + _item.itemData.width + 10) / 2);
 				}
-				trace(body.position.x,(_properties.width + _item.itemData.width + 10) / 2 , pos.x);
 				_item.removeFromPlayer(pos);
 				_item = null;
 			}

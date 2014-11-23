@@ -4,13 +4,21 @@ package boxesandworlds.game.levels.level1
 	import boxesandworlds.game.levels.Level;
 	import boxesandworlds.game.objects.activator.ActivatorObject;
 	import boxesandworlds.game.objects.enters.gate.Gate;
+	import boxesandworlds.game.objects.items.worldBox.WorldBox;
 	import com.greensock.TweenMax;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.filters.BitmapFilterQuality;
 	import flash.filters.BlurFilter;
 	import flash.filters.GlowFilter;
+	import flash.utils.Timer;
+	import nape.callbacks.CbEvent;
+	import nape.callbacks.CbType;
+	import nape.callbacks.InteractionCallback;
+	import nape.callbacks.InteractionListener;
+	import nape.callbacks.InteractionType;
 	import nape.constraint.PivotJoint;
 	import nape.constraint.WeldJoint;
 	import nape.geom.Vec2;
@@ -20,6 +28,10 @@ package boxesandworlds.game.levels.level1
 	 */
 	public class Level1 extends Level
 	{		
+		private var _box:WorldBox;
+		private var _boxCollisionCount:uint;
+		private var _boxTimer:Timer;
+		
 		public function Level1(game:Game):void
 		{
 			super(game);
@@ -87,8 +99,14 @@ package boxesandworlds.game.levels.level1
 				}
 			}
 			
-			TweenMax.to( game.objects.getObjectById(29).data.views[0], 0, { colorTransform: { tint:0x0099CC, tintAmount:1 }} );
-			TweenMax.to( game.objects.getObjectById(29).data.views[1], 0, { colorTransform: { tint:0x0066CC, tintAmount:1 }} );
+			_boxCollisionCount = 1;
+			var boxType:CbType = new CbType;
+			_box = game.objects.getObjectById(29) as WorldBox;
+			_box.body.cbTypes.add(boxType);
+			game.physics.world.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, game.physics.collisionType, boxType, boxContactHandler));
+			
+			TweenMax.to( _box.data.views[0], 0, { colorTransform: { tint:0x0099CC, tintAmount:1 }} );
+			TweenMax.to( _box.data.views[1], 0, { colorTransform: { tint:0x0066CC, tintAmount:1 }} );
 			
 			(game.objects.getObjectById(23) as ActivatorObject).activatorData.callBack = needleCallBack;
 			
@@ -120,6 +138,25 @@ package boxesandworlds.game.levels.level1
 			//trace((game.objects.getObjectById(32) as Gate).enterData.canTeleport)
 			game.objects.getWorldById(2).removeObjectById(31)
 			game.objects.getWorldById(2).removeObjectById(32)
+		}
+		
+		private function boxContactHandler(e:InteractionCallback):void 
+		{
+			if (_box.body.velocity.y < -170 && _boxTimer == null) {
+				_boxCollisionCount++;
+				if (_boxCollisionCount > 4) _boxCollisionCount = 4;
+				_box.data.views[1].gotoAndStop(_boxCollisionCount);
+				_boxTimer = new Timer(1000, 1);
+				_boxTimer.addEventListener(TimerEvent.TIMER_COMPLETE, timerCompleteHandler);
+				_boxTimer.start();
+			}
+			
+		}
+		
+		private function timerCompleteHandler(e:TimerEvent):void 
+		{
+			_boxTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, timerCompleteHandler);
+			_boxTimer = null;
 		}
 		
 		private function test(e:MouseEvent):void 
@@ -179,12 +216,14 @@ package boxesandworlds.game.levels.level1
 		}
 		
 		override public function destroy():void {
-			
+			_boxTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, timerCompleteHandler);
+			_boxTimer = null;
 		}
 		
 		override public function gameOver():void 
 		{
-			
+			_boxTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, timerCompleteHandler);
+			_boxTimer = null;
 		}
 		
 		override public function step():void 

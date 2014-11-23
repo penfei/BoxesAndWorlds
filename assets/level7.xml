@@ -1,6 +1,6 @@
 <xml>
   <levelScript scriptName="boxesandworlds.game.levels.level1.Level1"/>
-  <player worldId="2" x="290" y="500"/>
+  <player worldId="1" x="220" y="800"/>
   <world id="1">
 	  <WorldStructure itemName="WorldStructure">
       <id attributeName="id" type="NUMBER" value="24"/>
@@ -35,7 +35,7 @@
         <value>10</value>
 		<value>11</value>
       </containerIds>
-      <start attributeName="start" type="VEC2" x="290" y="1070"/>
+      <start attributeName="start" type="VEC2" x="430" y="670"/>
     </WorldBox>
   </world>
   <world id="2">

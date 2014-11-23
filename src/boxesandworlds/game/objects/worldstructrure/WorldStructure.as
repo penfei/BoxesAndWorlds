@@ -42,6 +42,7 @@ package boxesandworlds.game.objects.worldstructrure
 		override protected function initPhysics():void {
 			if (!_properties.isEmpty) {
 				super.initPhysics();
+				body.cbTypes.add(game.physics.collisionType);
 			} else {
 				body = new Body(_properties.bodyType, _properties.start);
 				body.userData.obj = this;
